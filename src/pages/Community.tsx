@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import { Download, Home, MessageCircle, Plus, Users } from 'lucide-react'
+import { Avatar } from '../components/Avatar'
 import { Button } from '../components/Button'
 import { SpeakButton } from '../components/SpeakButton'
 import { Chip } from '../components/Chip'
@@ -276,6 +277,7 @@ export default function Community() {
             <div className="flex flex-col gap-2">
               {messages.map((m) => (
                 <article key={m.id} className="flex items-start gap-2 rounded-2xl bg-white p-3 ring-1 ring-surface">
+                  <Avatar name={m.author} size="sm" />
                   <div className="min-w-0 flex-1">
                     <p className="text-caption font-semibold">
                       {m.author} <span className="font-normal text-muted">{relativeTime(m.minutesAgo)}</span>

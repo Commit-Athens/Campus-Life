@@ -1,12 +1,13 @@
 import { BadgeCheck, Star } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
+import { Avatar } from '../components/Avatar'
 import { Button } from '../components/Button'
 import { PageTitle } from '../components/PageTitle'
 import { Sheet } from '../components/Sheet'
 import { Toggle } from '../components/Toggle'
 import { UniversitySwitcher } from '../components/UniversitySwitcher'
 import { VerifySheet } from '../components/VerifySheet'
-import { getUniversity } from '../data/universities'
+import { getUniversity, universities } from '../data/universities'
 import { useAuth } from '../hooks/useAuth'
 import { useFeedScope } from '../hooks/useFeedScope'
 import { usePoints } from '../hooks/usePoints'
@@ -92,8 +93,8 @@ export default function More() {
 
       <Card title={el.account.title}>
         <div className="flex items-center gap-3">
-          <span className="relative flex size-14 shrink-0 items-center justify-center rounded-full bg-primary-soft text-h3 text-primary">
-            {account.initials}
+          <span className="relative shrink-0">
+            <Avatar name={account.name} size="lg" />
             {verified && (
               <BadgeCheck
                 className="absolute -right-0.5 -bottom-0.5 size-5 rounded-full bg-white text-success"
@@ -175,6 +176,16 @@ export default function More() {
               {item}
             </li>
           ))}
+        </ul>
+      </Card>
+
+      <Card title={el.more.credits.title}>
+        <ul className="flex flex-col gap-1 text-caption text-muted">
+          {universities.map((u) => (
+            <li key={u.id}>{el.more.credits.campus(u.shortName, u.photoCredit)}</li>
+          ))}
+          <li>{el.more.credits.faces}</li>
+          <li>{el.more.credits.illustrations}</li>
         </ul>
       </Card>
 

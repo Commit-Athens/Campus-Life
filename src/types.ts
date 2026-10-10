@@ -10,6 +10,9 @@ export type University = {
   homepage: string
   /** Tailwind class for the small header badge only (tokens in index.css). */
   badgeClass: string
+  /** Campus photo in public/universities (Wikimedia Commons, see photoCredit). */
+  photo: string
+  photoCredit: string
 }
 
 /** Every content item in src/data carries this. */

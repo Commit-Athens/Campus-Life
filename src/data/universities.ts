@@ -7,6 +7,8 @@ export const universities: University[] = [
     shortName: 'ΕΚΠΑ',
     homepage: 'https://www.uoa.gr',
     badgeClass: 'bg-uni-nkua',
+    photo: '/universities/nkua.jpg',
+    photoCredit: 'Tomisti, Wikimedia Commons, CC BY-SA 3.0',
   },
   {
     id: 'ntua',
@@ -14,6 +16,8 @@ export const universities: University[] = [
     shortName: 'ΕΜΠ',
     homepage: 'https://www.ntua.gr',
     badgeClass: 'bg-uni-ntua',
+    photo: '/universities/ntua.jpg',
+    photoCredit: 'Neosmyrnian, Wikimedia Commons, CC BY-SA 3.0',
   },
   {
     id: 'uniwa',
@@ -21,6 +25,8 @@ export const universities: University[] = [
     shortName: 'ΠΑΔΑ',
     homepage: 'https://www.uniwa.gr',
     badgeClass: 'bg-uni-uniwa',
+    photo: '/universities/uniwa.jpg',
+    photoCredit: 'Μιχάλης Ανδρεάκος, Wikimedia Commons, CC BY-SA 4.0',
   },
 ]
 

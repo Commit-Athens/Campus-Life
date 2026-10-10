@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { MessageCircle, Send, ThumbsDown, ThumbsUp, type LucideIcon } from 'lucide-react'
 import type { Vote } from '../hooks/useVotes'
+import { Avatar } from './Avatar'
 import { el } from '../i18n/el'
 import { relativeTime } from '../i18n/relativeTime'
 import type { FeedComment } from '../types'
@@ -97,12 +98,15 @@ export function CardActions({ useful, notUseful, vote, onVote, comments, onComme
           ) : (
             <ul className="flex flex-col gap-2">
               {comments.map((c) => (
-                <li key={c.id} className="rounded-2xl bg-page px-3 py-2">
-                  <p className="text-caption">
-                    <span className="font-semibold">{c.author}</span>
-                    <span className="text-muted"> · {relativeTime(c.minutesAgo)}</span>
-                  </p>
-                  <p className="text-caption">{c.body}</p>
+                <li key={c.id} className="flex items-start gap-2 rounded-2xl bg-page px-3 py-2">
+                  <Avatar name={c.author} size="sm" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-caption">
+                      <span className="font-semibold">{c.author}</span>
+                      <span className="text-muted"> · {relativeTime(c.minutesAgo)}</span>
+                    </p>
+                    <p className="text-caption">{c.body}</p>
+                  </div>
                 </li>
               ))}
             </ul>

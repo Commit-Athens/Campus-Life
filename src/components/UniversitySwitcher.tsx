@@ -25,10 +25,13 @@ export function UniversitySwitcher({ onClose }: { onClose: () => void }) {
                   selected ? 'bg-primary-soft/50 ring-2 ring-primary' : 'ring-surface'
                 }`}
               >
-                <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold text-white ${u.badgeClass}`}>
-                  {u.shortName}
+                <img src={u.photo} alt="" className="size-11 shrink-0 rounded-full bg-surface object-cover" />
+                <span className="min-w-0 flex-1">
+                  <span className={`mb-1 inline-block rounded-full px-3 py-0.5 text-xs font-semibold text-white ${u.badgeClass}`}>
+                    {u.shortName}
+                  </span>
+                  <span className="block font-medium">{u.name}</span>
                 </span>
-                <span className="flex-1 font-medium">{u.name}</span>
               </button>
             </li>
           )

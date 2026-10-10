@@ -1,10 +1,13 @@
 import { ChevronRight } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { el } from '../i18n/el'
+import { Avatar } from './Avatar'
 import { SpeakButton } from './SpeakButton'
 
 type FeedCardProps = {
   source: string
+  /** Picture for the source; defaults to the sample avatar for the name, then initials. */
+  avatarSrc?: string
   time: string
   title?: string
   body: string
@@ -19,31 +22,11 @@ type FeedCardProps = {
   footer?: ReactNode
 }
 
-const skipWords = new Set(['και', 'της', 'του', 'των'])
-
-/** Up to two initials, without Greek accents: "Μαρία Κ." -> "ΜΚ". */
-function initials(name: string): string {
-  return name
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .split(/\s+/)
-    .filter((word) => word && !skipWords.has(word.toLowerCase()))
-    .slice(0, 2)
-    .map((word) => word[0])
-    .join('')
-    .toUpperCase()
-}
-
-export function FeedCard({ source, time, title, body, label, sourceUrl, image, children, footer }: FeedCardProps) {
+export function FeedCard({ source, avatarSrc, time, title, body, label, sourceUrl, image, children, footer }: FeedCardProps) {
   return (
     <article className="flex flex-col gap-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-surface">
       <header className="flex items-center gap-3">
-        <span
-          className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-soft text-caption font-semibold text-primary"
-          aria-hidden
-        >
-          {initials(source)}
-        </span>
+        <Avatar name={source} src={avatarSrc} />
         <div className="min-w-0 flex-1">
           <p className="truncate text-caption font-semibold">{source}</p>
           <p className="truncate text-caption text-muted">

@@ -1,5 +1,6 @@
 import { type FormEvent, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router'
+import { Avatar } from '../components/Avatar'
 import { Button } from '../components/Button'
 import { Logo } from '../components/Logo'
 import { TextInput } from '../components/TextInput'
@@ -95,9 +96,7 @@ export default function Login() {
                 email === a.email ? 'ring-2 ring-primary' : 'ring-surface'
               }`}
             >
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-soft text-caption font-semibold text-primary">
-                {a.initials}
-              </span>
+              <Avatar name={a.name} />
               <span className="min-w-0 flex-1">
                 <span className="flex items-center gap-2 font-semibold">
                   {a.name}
