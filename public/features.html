@@ -102,6 +102,8 @@
 
   .roadmap-grid { display: flex; flex-wrap: wrap; gap: 8px; }
   .roadmap-grid span { background: var(--neutral-soft); color: var(--muted); border-radius: 999px; padding: 6px 12px; font-size: 14px; }
+  #todo { scroll-margin-top: 16px; }
+  #todo .list { border-color: var(--warning); }
 
   #copy-fallback { width: 100%; min-height: 160px; font: 13px/1.5 var(--mono); border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: var(--card); color: var(--ink); }
 
@@ -122,8 +124,8 @@
       Campus<span>Life</span>
     </div>
     <h1>Feature map</h1>
-    <p class="lede">What's built in the CampusLife prototype for ΕΚΠΑ, ΕΜΠ and ΠΑΔΑ and what's left, grouped by the app's five bottom tabs. Step numbers refer to <code>BUILD_PLAN.md</code>; Track A is gribone, Track B is Odisseas.</p>
-    <span class="updated">Updated 10 Oct 2026, after PR #8</span>
+    <p class="lede">What's built in the CampusLife prototype for ΕΚΠΑ, ΕΜΠ and ΠΑΔΑ. Open work sits in <strong>To do</strong>, above the tabs. <strong>Later</strong> at the bottom is out of scope: the real systems behind the demos, same list as the Roadmap card in More.</p>
+    <span class="updated">Updated 10 Oct 2026, after the passes, exams, More page, assistant and English toggle.</span>
   </header>
 
   <div class="summary" id="summary"></div>
@@ -131,10 +133,8 @@
   <div class="toolbar">
     <div class="filters" role="group" aria-label="Filter by status">
       <button class="chip" type="button" data-filter="all" aria-pressed="true">All</button>
+      <button class="chip" type="button" data-filter="todo" aria-pressed="false">To do</button>
       <button class="chip" type="button" data-filter="built" aria-pressed="false">Built</button>
-      <button class="chip" type="button" data-filter="next" aria-pressed="false">Up next</button>
-      <button class="chip" type="button" data-filter="planned" aria-pressed="false">Planned</button>
-      <button class="chip" type="button" data-filter="blocked" aria-pressed="false">Blocked</button>
     </div>
     <button class="copy" type="button" id="copy-all">Copy whole list</button>
   </div>
@@ -143,13 +143,13 @@
 
   <div id="sections" style="display:flex;flex-direction:column;gap:28px"></div>
 
-  <section>
-    <h2>Roadmap only</h2>
-    <p class="note">Out of scope: the real systems behind the demos. Shown on a non-interactive Roadmap card in More (step 11).</p>
+  <section id="later">
+    <h2>Later</h2>
+    <p class="note">Not on the to-do list. These are the real systems behind the demos, shown as chips on the Roadmap card in More. No prototype work is scheduled for them.</p>
     <div class="roadmap-grid">
-      <span>Live university crawling</span><span>Real-time chat backend</span><span>Real student verification (SSO)</span>
-      <span>Real discount redemption</span><span>More universities (AUEB, AUTH, Patras)</span><span>Automatic exam collection</span>
-      <span>Carpool matching</span><span>AR navigation</span><span>LLM / RAG assistant</span>
+      <span>Live university crawling</span><span>Real-time chat</span><span>Real student verification (SSO)</span>
+      <span>Redeeming discounts with partners</span><span>More universities (AUEB, AUTH, Patras)</span><span>Automatic exam timetable</span>
+      <span>Shared rides (carpool)</span><span>AR navigation on campus</span><span>Live voice assistant</span><span>AI assistant</span>
     </div>
   </section>
 
@@ -157,86 +157,91 @@
 </div>
 
 <script>
-  const B = 'built', N = 'next', P = 'planned', X = 'blocked';
-  // [status, step, track, name, description]
+  // To do is its own list. Built items stay under the tab they belong to.
+  // [track, name, description, blocked?]
+  const todo = [
+    ['B', 'Auto-deploy to Cloudflare', 'GitHub Actions deploys on every push to main, but the Cloudflare API token is expired, so those runs fail. Until it is replaced, deploy by hand with npm run deploy.', true],
+    ['A+B', 'Main bar and style trials', 'Three comparison pages at /design1, /design2 and /design3, based on award-winning app navigation. The live tab bar stays as it is until one is chosen.', false],
+    ['B', 'Split the Community page', 'Study Groups, notes, housing, forum and chat still live in one large Community.tsx. Break them into section components.', false],
+  ];
+  // [step, track, name, description]
   const groups = [
     { title: 'Across the app', items: [
-      [B, '1', 'A', 'Brand theme and shared components', 'Tailwind tokens, Inter with Greek subset, Button, Chip, SearchInput, ListRow, EmptyState, Toggle, Sheet, ProgressBar, SectionNav.'],
-      [B, '2', 'A', 'App shell with 5-tab bar', 'Header with logo and avatar; tabs Ανακοινώσεις, Φοιτητές, Προνόμια, Study Groups, Περισσότερα.'],
-      [B, '3', 'A', 'University data and selection', 'ΕΚΠΑ, ΕΜΠ, ΠΑΔΑ in one file; every item scoped by university; choice saved.'],
-      [B, '4', 'A', 'Splash, onboarding and switcher', 'Dark splash, one-time onboarding with university picker, header badge opens the switcher.'],
-      [B, '+', 'A', 'Demo login', 'Three sample student accounts, one per university.'],
-      [B, 'P1', 'A', 'Student verification (demo)', 'Name + student card ID with format checks, verified badge in the header, cleared on logout. Unlocks chat.'],
-      [B, '+', 'A', 'Activity points', 'Earned once per action: votes, comments, checklist items, joins, verification.'],
-      [X, '21', 'B', 'Auto-deploy to Cloudflare', 'Runs on every merge to main. Failing since 12:05: the Cloudflare API token expired. Odisseas is replacing it.'],
+      ['1', 'A', 'Brand theme and shared components', 'Tailwind tokens, Inter with Greek subset, Button, Chip, SearchInput, ListRow, EmptyState, Toggle, Sheet, ProgressBar, SectionNav.'],
+      ['2', 'A', 'App shell with 5-tab bar', 'Header with logo and age avatar; tabs Ανακοινώσεις, Φοιτητές, Προνόμια, Study Groups, Περισσότερα.'],
+      ['3', 'A', 'University data and selection', 'ΕΚΠΑ, ΕΜΠ, ΠΑΔΑ in one file; every item scoped by university; choice saved.'],
+      ['4', 'A', 'Splash, onboarding and switcher', 'Dark splash, one-time onboarding with university picker, header badge opens the switcher.'],
+      ['+', 'A', 'Demo login', 'Three sample student accounts, one per university. The avatar shows a sample age.'],
+      ['P1', 'A', 'Student verification (demo)', 'Name + student card ID with format checks, verified badge in the header, cleared on logout. Unlocks chat.'],
+      ['+', 'A', 'Activity points', 'Earned once per action: votes, comments, posts, checklist items, joins, passes and groups.'],
+      ['+', 'A+B', 'English language toggle', 'Greek by default. Switch in More → Settings. Sample posts stay in Greek.'],
+      ['+', 'B', 'Campus assistant', 'Floating chat answers from local sample content for the selected university. Speaker buttons read cards aloud via the Worker proxy.'],
     ]},
     { title: 'Ανακοινώσεις', route: '/feed', items: [
-      [B, '5', 'A', 'Live Feed of announcements', 'Sample announcements per university with source and homepage link.'],
-      [B, '5', 'A', 'Category chips', 'Όλα, Ανακοινώσεις, Αίθουσες, Σχολή, Από το web.'],
-      [B, '+', 'A', '“Από το web” items', 'Static sample items standing in for crawled info; real crawling is roadmap.'],
-      [B, 'P3', 'B', 'University source cards', 'One card per university on the “Από το web” filter, homepage links only.'],
-      [B, '6', 'A', 'All-universities toggle', 'Mixes all three universities and labels each card.'],
-      [B, '12', 'A', 'Useful / not useful vote', 'Icon + count, one vote per card, saved, +1 point on first vote.'],
-      [B, '+', 'A', 'Comments', 'Thread under each card with sample comments and your own, saved.'],
+      ['5', 'A', 'Live Feed of announcements', 'Sample announcements per university with source and homepage link.'],
+      ['5', 'A', 'Category chips', 'Όλα, Ανακοινώσεις, Αίθουσες, Σχολή, Από το web.'],
+      ['+', 'A', '“Από το web” items', 'Static sample items standing in for crawled info. Live crawling is under Later.'],
+      ['P3', 'B', 'University source cards', 'One card per university on the “Από το web” filter, homepage links only.'],
+      ['6', 'A', 'All-universities setting', 'Saved in More → Settings. Feeds, groups and listings follow it. The switch is not repeated on each page.'],
+      ['12', 'A', 'Useful / not useful vote', 'Icon + count, one vote per card, saved, +1 point on first vote.'],
+      ['+', 'A', 'Comments', 'Thread under each card with sample comments and your own, saved.'],
     ]},
     { title: 'Φοιτητές', route: '/posts', items: [
-      [B, '6', 'A', 'Student posts', 'Per-university and shared posts with author, department and hashtags.'],
-      [B, '6', 'A', 'Lost & Found', 'Placeholder photos, Χάθηκε / Βρέθηκε badge and location.'],
-      [B, '12', 'A', 'Votes and comments', 'Same vote and comment thread as the official feed.'],
+      ['6', 'A', 'Student posts', 'Per-university and shared posts with author, department and hashtags.'],
+      ['6', 'A', 'Lost & Found', 'Photos, Χάθηκε / Βρέθηκε badge and location.'],
+      ['+', 'A', 'Create a post', 'New post or Lost & Found item, saved on this device.'],
+      ['12', 'A', 'Votes and comments', 'Same vote and comment thread as the official feed.'],
     ]},
     { title: 'Προνόμια (Hub)', route: '/hub', items: [
-      [B, '7', 'A', 'Benefits', 'Search, category chips, featured banner, detail sheet, no-results state.'],
-      [B, '8', 'A', 'Hub sections', 'Tabs for checklist, useful links (homepage + in-app), sample exam calendar, internships and hackathons.'],
-      [B, '13', 'A', 'Checklist progress', 'Tick items off, progress bar, saved, +1 point per item.'],
-      [N, 'P2', 'A', 'Partner passes', '15 fictional partners, 5 per university, “Show pass” sheet with demo code, claims saved.'],
-      [P, '16', 'A', 'My exams and countdown', 'Tap an exam to add it; countdown to the next one.'],
+      ['7', 'A', 'Benefits', 'Search, category chips, featured banner, detail sheet, no-results state.'],
+      ['8', 'A', 'Hub sections', 'Tabs for benefits, passes, checklist, useful links, exams, and internships and hackathons.'],
+      ['13', 'A', 'Checklist progress', 'Tick items off, progress bar, saved, +1 point per item.'],
+      ['P2', 'A', 'Partner passes', '15 fictional partners, 5 per university, “Show pass” sheet with a demo code, claims saved. Each one says Δείγμα συνεργάτη.'],
+      ['16', 'A', 'My exams and countdown', 'Tap an exam to add it; countdown to the next one on the Hub.'],
     ]},
     { title: 'Study Groups', route: '/community', items: [
-      [B, '9', 'B', 'Study groups and notes', 'Search, suggested groups, sample notes, “+” button.'],
-      [B, '14', 'B', 'Join / Joined toggle', 'Member count +1, saved, +1 point.'],
-      [B, '10', 'B', 'Housing cards', 'Housing and roommate listings.'],
-      [B, '15', 'B', 'Notes PDF', 'Sample PDF in public/notes.'],
-      [B, 'P4', 'B', 'Anonymous support forum', 'Aliases, categories, posts and replies, safety note.'],
-      [B, 'P5', 'B', 'Campus chat (demo)', 'Channels per university, local messages, locked until verified.'],
+      ['9', 'B', 'Study groups and notes', 'Search, suggested groups, sample notes, “+” button.'],
+      ['14', 'B', 'Join / Joined toggle', 'Member count +1, saved, +1 point.'],
+      ['10', 'B', 'Housing cards', 'Housing and roommate listings.'],
+      ['15', 'B', 'Notes PDF', 'Sample PDF in public/notes.'],
+      ['P4', 'B', 'Anonymous support forum', 'Aliases, categories, posts and replies, safety note.'],
+      ['P5', 'B', 'Campus chat (demo)', 'Channels per university, local messages, locked until verified.'],
     ]},
     { title: 'Περισσότερα', route: '/more', items: [
-      [B, '+', 'A', 'Account card', 'Name, department, year, university, verify button, logout.'],
-      [B, '+', 'B', 'Voice demo (ElevenLabs)', '“Hear campus tip” via the Worker proxy. Needs the ELEVENLABS_API_KEY secret; English strings to tidy.'],
-      [P, '11', 'A', 'Profile, switcher and roadmap', 'Profile card, university switcher, Roadmap card.'],
-      [P, '10', 'A', 'Points counter', 'Shows total activity points.'],
-    ]},
-    { title: 'Finish together', items: [
-      [P, '17', 'A+B', 'Content pass', 'Realistic Greek sample data in every section for all three universities.'],
-      [P, '18', 'A+B', 'Empty states and dead buttons', 'Every list and filter has a no-results state; nothing does nothing.'],
-      [P, '19', 'A+B', 'Visual polish', 'Design-system check at 390px; split the large Community page into components.'],
-      [P, '20', 'A+B', 'Test and fix', 'Build, lint and a click-through on a phone.'],
-      [P, '—', 'A+B', 'English toggle (stretch)', 'Only if everything else is done.'],
+      ['11', 'A', 'Profile, switcher and roadmap', 'Profile with age, university switcher, settings, and the Later roadmap card.'],
+      ['10', 'A', 'Points counter', 'Shows total activity points.'],
+      ['+', 'A', 'Demo reset', 'Clears votes, comments, posts, points and progress on this device. Sign-in, university and language stay.'],
+      ['+', 'B', 'Voice sample (ElevenLabs)', '“Hear a sample” on More, and speaker buttons on cards, via the Worker proxy.'],
     ]},
   ];
 
-  const label = { built: 'Built', next: 'Up next', planned: 'Planned', blocked: 'Blocked' };
-  const stepText = s => s === '+' ? 'extra' : s === '—' ? 'stretch' : /^P/.test(s) ? s : 'step ' + s;
-  const all = groups.flatMap(g => g.items);
-  const count = s => all.filter(i => i[0] === s).length;
+  const stepText = s => s === '+' ? 'extra' : /^P/.test(s) ? s : 'step ' + s;
+  const builtCount = groups.reduce((n, g) => n + g.items.length, 0);
 
   document.getElementById('summary').innerHTML = [
-    [count(B), 'built'], [count(N), 'up next'], [count(P), 'still planned'], [count(X), 'blocked'],
+    [todo.length, 'to do'], [builtCount, 'built'],
   ].map(([n, t]) => `<div class="stat"><b>${n}</b><small>${t}</small></div>`).join('');
 
   let filter = 'all';
-  const visible = g => g.items.filter(i => filter === 'all' || i[0] === filter);
+  const showBuilt = () => filter === 'all' || filter === 'built';
+  const showTodo = () => filter === 'all' || filter === 'todo';
 
+  function todoText() {
+    if (!showTodo()) return '';
+    const lines = todo.map(([who, name, desc, blocked]) =>
+      `- [ ] ${name} (Track ${who}${blocked ? ', blocked' : ''}): ${desc}`);
+    return ['## To do', ...lines].join('\n');
+  }
   function groupText(g) {
-    const items = visible(g);
-    if (!items.length) return '';
+    if (!showBuilt()) return '';
     const head = `## ${g.title}${g.route ? ` (${g.route})` : ''}`;
-    const lines = items.map(([s, step, who, name, desc]) =>
-      `- [${s === B ? 'x' : ' '}] ${name} (${stepText(step)}, Track ${who}${s === B ? '' : ', ' + label[s].toLowerCase()}): ${desc}`);
+    const lines = g.items.map(([step, who, name, desc]) =>
+      `- [x] ${name} (${stepText(step)}, Track ${who}): ${desc}`);
     return [head, ...lines].join('\n');
   }
   function allText() {
-    const title = filter === 'all' ? 'CampusLife features' : `CampusLife features: ${label[filter].toLowerCase()}`;
-    return [`# ${title}`, ...groups.map(groupText).filter(Boolean)].join('\n\n');
+    const title = filter === 'todo' ? 'CampusLife to do' : filter === 'built' ? 'CampusLife features: built' : 'CampusLife features';
+    return [`# ${title}`, todoText(), ...groups.map(groupText)].filter(Boolean).join('\n\n');
   }
 
   const fallback = document.getElementById('copy-fallback');
@@ -260,24 +265,39 @@
 
   const root = document.getElementById('sections');
   function render() {
-    root.innerHTML = groups.map((g, gi) => {
-      const items = visible(g);
-      const rows = items.length
-        ? items.map(([s, step, who, name, desc]) => `
-          <div class="row ${s}">
+    const todoHtml = showTodo() ? `<section id="todo">
+        <div class="sec-head">
+          <h2>To do</h2>
+          <button class="copy small" type="button" id="copy-todo">Copy to do</button>
+        </div>
+        <p class="note">Open work on this prototype. Later ideas stay in the section at the bottom, not here.</p>
+        <div class="list">${todo.map(([who, name, desc, blocked]) => `
+          <div class="row ${blocked ? 'blocked' : 'planned'}">
             <h3>${name}</h3>
-            <div class="meta"><span class="who">Track ${who}</span><span class="step">${stepText(step)}</span><span class="pill">${label[s]}</span></div>
+            <div class="meta"><span class="who">Track ${who}</span><span class="pill">${blocked ? 'Blocked' : 'To do'}</span></div>
             <p>${desc}</p>
-          </div>`).join('')
-        : `<div class="empty">Nothing ${label[filter].toLowerCase()} here.</div>`;
+          </div>`).join('')}</div>
+      </section>` : '';
+    const builtHtml = showBuilt() ? groups.map((g, gi) => {
+      const rows = g.items.map(([step, who, name, desc]) => `
+          <div class="row built">
+            <h3>${name}</h3>
+            <div class="meta"><span class="who">Track ${who}</span><span class="step">${stepText(step)}</span><span class="pill">Built</span></div>
+            <p>${desc}</p>
+          </div>`).join('');
       return `<section>
         <div class="sec-head">
           <h2>${g.title}${g.route ? `<span class="route">${g.route}</span>` : ''}</h2>
-          ${items.length ? `<button class="copy small" type="button" data-copy="${gi}">Copy section</button>` : ''}
+          <button class="copy small" type="button" data-copy="${gi}">Copy section</button>
         </div>
         <div class="list">${rows}</div>
       </section>`;
-    }).join('');
+    }).join('') : '';
+    root.innerHTML = todoHtml + builtHtml;
+    const later = document.getElementById('later');
+    if (later) later.hidden = filter === 'todo';
+    const copyTodo = document.getElementById('copy-todo');
+    if (copyTodo) copyTodo.addEventListener('click', () => copy(todoText(), copyTodo));
     root.querySelectorAll('[data-copy]').forEach(btn =>
       btn.addEventListener('click', () => copy(groupText(groups[+btn.dataset.copy]), btn)));
   }

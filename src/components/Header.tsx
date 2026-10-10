@@ -17,7 +17,11 @@ export function Header() {
         <UniversityBadge />
         <Link
           to="/more"
-          aria-label={verified ? `${el.header.profile} · ${el.verify.badge}` : el.header.profile}
+          aria-label={
+            account
+              ? `${verified ? `${el.header.profile} · ${el.verify.badge}` : el.header.profile}, ${el.more.profile.ageValue(account.age)}`
+              : el.header.profile
+          }
           className="relative flex size-11 items-center justify-center rounded-full"
         >
           {account && <Avatar name={account.name} size="sm" />}

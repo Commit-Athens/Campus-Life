@@ -105,6 +105,11 @@ export default {
       return handleTts(request, env)
     }
 
+    if (url.pathname === '/roadmap' || url.pathname === '/roadmap/') {
+      url.pathname = '/roadmap/index.html'
+      return env.ASSETS.fetch(new Request(url, request))
+    }
+
     return env.ASSETS.fetch(request)
   },
 }

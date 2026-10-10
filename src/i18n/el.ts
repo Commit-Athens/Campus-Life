@@ -1,5 +1,5 @@
-// All Greek UI strings. Components read text from here, never inline.
-export const el = {
+// Greek UI strings. `el` is a live view of the active language; see setActiveMessages.
+const messagesEl = {
   brand: {
     name: 'CampusLife',
     tagline: 'Μάθε τι γίνεται. Πριν πας.',
@@ -81,7 +81,6 @@ export const el = {
     startHere: 'Ξεκίνα εδώ',
     startChecklist: 'Λίστα πρωτοετών',
     startGroups: 'Ομάδες μελέτης',
-    startBenefits: 'Προνόμια φοιτητή',
     shared: 'Διαπανεπιστημιακό',
     lost: 'Χάθηκε',
     found: 'Βρέθηκε',
@@ -314,6 +313,8 @@ export const el = {
     hearDemo: 'Άκου ένα δείγμα',
     preparing: 'Ετοιμάζεται...',
     moreHint: 'Ο βοηθός είναι η φυσαλίδα κάτω δεξιά. Το ηχείο σε κάθε κάρτα διαβάζει το κείμενο.',
+    demoLine:
+      'Γεια σου! Είμαι ο βοηθός του CampusLife. Μπορώ να σου διαβάσω ανακοινώσεις και συμβουλές για την πανεπιστημιακή ζωή.',
   },
   passes: {
     title: 'Κάρτες συνεργατών',
@@ -363,6 +364,9 @@ export const el = {
     theme: 'Εμφάνιση',
     themes: { system: 'Αυτόματο', light: 'Φωτεινό', dark: 'Σκοτεινό' },
     themeHint: 'Το «Αυτόματο» ακολουθεί τη ρύθμιση της συσκευής σου.',
+    language: 'Γλώσσα',
+    languageEl: 'Ελληνικά',
+    languageEn: 'English',
     allUniversities: 'Όλα τα πανεπιστήμια',
     allUniversitiesHint: 'Δείξε ανακοινώσεις, αναρτήσεις, ομάδες και αγγελίες και από τα άλλα πανεπιστήμια',
   },
@@ -376,6 +380,8 @@ export const el = {
       department: 'Τμήμα',
       semester: 'Εξάμηνο',
       semesterValue: (n: number) => `${n}ο εξάμηνο`,
+      age: 'Ηλικία',
+      ageValue: (n: number) => `${n} ετών`,
     },
     content: {
       title: 'Περιεχόμενο',
@@ -406,7 +412,34 @@ export const el = {
         'Αυτόματη συλλογή προγράμματος εξετάσεων',
         'Κοινές μετακινήσεις (carpool)',
         'Πλοήγηση AR στην πανεπιστημιούπολη',
+        'Φωνητικός βοηθός σε πραγματικό χρόνο',
+        'Βοηθός με τεχνητή νοημοσύνη',
       ],
     },
   },
-} as const
+}
+
+export type Messages = typeof messagesEl
+export type Lang = 'el' | 'en'
+
+let active: Messages = messagesEl
+let activeLang: Lang = 'el'
+
+/** Point `el` at the catalog for the selected language. Called before children render. */
+export function setActiveMessages(next: Messages, lang: Lang) {
+  active = next
+  activeLang = lang
+}
+
+export function activeDateLocale(): 'el-GR' | 'en-GB' {
+  return activeLang === 'en' ? 'en-GB' : 'el-GR'
+}
+
+export const messagesElCatalog = messagesEl
+
+export const el: Messages = new Proxy(messagesEl, {
+  get(_target, prop) {
+    if (typeof prop !== 'string') return undefined
+    return active[prop as keyof Messages]
+  },
+})

@@ -28,16 +28,40 @@ const STOP = new Set([
   'και', 'το', 'τα', 'τη', 'τις', 'τον', 'την', 'του', 'της', 'των', 'οι', 'για', 'με', 'σε', 'στο', 'στη', 'στην',
   'στα', 'στις', 'στους', 'απο', 'τι', 'ποια', 'ποιο', 'ποιος', 'ποιες', 'πως', 'ειναι', 'εχει', 'μου', 'σου', 'να',
   'δεν', 'μια', 'ενα', 'ενας', 'που', 'θα', 'μην', 'ως', 'αυτο', 'αυτη', 'αυτα', 'κατι', 'κανε', 'πες', 'μου',
+  'the', 'and', 'for', 'are', 'was', 'you', 'your', 'what', 'how', 'with', 'from', 'this', 'that', 'about',
 ])
+
+/** English question words that should also match the Greek sample text. */
+const EN_ALIASES: Record<string, string[]> = {
+  announcement: ['ανακοινωσ'],
+  announcements: ['ανακοινωσ'],
+  meal: ['σιτισ', 'λεσχ'],
+  meals: ['σιτισ', 'λεσχ'],
+  food: ['σιτισ', 'φαγητ', 'λεσχ'],
+  exam: ['εξετασ'],
+  exams: ['εξετασ'],
+  examination: ['εξετασ'],
+  housing: ['στεγασ', 'συγκατοικ'],
+  roommate: ['συγκατοικ'],
+  benefit: ['προνομ'],
+  benefits: ['προνομ'],
+  group: ['ομαδ'],
+  groups: ['ομαδ'],
+  notes: ['σημειωσ'],
+  checklist: ['πρωτοετ'],
+  internship: ['πρακτικ'],
+  hackathon: ['hackathon'],
+}
 
 function fold(value: string): string {
   return value.normalize('NFD').replace(/\p{M}/gu, '').toLocaleLowerCase('el')
 }
 
 function tokens(value: string): string[] {
-  return fold(value)
+  const words = fold(value)
     .split(/[^\p{L}\p{N}]+/u)
     .filter((word) => word.length > 2 && !STOP.has(word))
+  return [...words, ...words.flatMap((word) => EN_ALIASES[word] ?? [])]
 }
 
 function clip(value: string): string {
@@ -200,8 +224,6 @@ function buildFacts(): Fact[] {
   return facts
 }
 
-const facts = buildFacts()
-
 function score(fact: Fact, words: string[]): number {
   const title = fold(fact.title)
   const text = fold(`${fact.kind} ${fact.text}`)
@@ -218,7 +240,7 @@ export function askCampus(question: string, university: University): string {
   const words = tokens(question)
   if (words.length === 0) return el.agent.hint(university.shortName)
 
-  const ranked = facts
+  const ranked = buildFacts()
     .filter((fact) => fact.universityId === university.id || fact.universityId === 'all')
     .map((fact) => ({ fact, score: score(fact, words) }))
     .filter((entry) => entry.score > 0)

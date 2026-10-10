@@ -14,10 +14,19 @@ import More from './pages/More'
 import Onboarding from './pages/Onboarding'
 import Posts from './pages/Posts'
 import Start from './pages/Start'
+import { LanguageProvider } from './i18n/LanguageProvider'
 
 const SPLASH_MS = 1200
 
 export default function App() {
+  return (
+    <LanguageProvider>
+      <AppShell />
+    </LanguageProvider>
+  )
+}
+
+function AppShell() {
   const [showSplash, setShowSplash] = useState(true)
 
   useEffect(() => {

@@ -1,12 +1,11 @@
 import { useRef, useState } from 'react'
-import { ClipboardList, Gift, Globe, LayoutGrid, MapPin, Megaphone, School, Users } from 'lucide-react'
+import { ClipboardList, Globe, LayoutGrid, MapPin, Megaphone, School, Users } from 'lucide-react'
 import { Link } from 'react-router'
 import { Button } from '../components/Button'
 import { CardActions } from '../components/CardActions'
 import { EmptyState } from '../components/EmptyState'
 import { FeedCard } from '../components/FeedCard'
 import { SpeakButton } from '../components/SpeakButton'
-import { Toggle } from '../components/Toggle'
 import { announcements } from '../data/announcements'
 import { universitySources } from '../data/sources'
 import { getUniversity } from '../data/universities'
@@ -32,13 +31,12 @@ const filters: { id: Filter; icon: typeof Megaphone }[] = [
 const startCards = [
   { to: '/hub?section=checklist', label: () => el.feed.startChecklist, icon: ClipboardList, accent: false },
   { to: '/community', label: () => el.feed.startGroups, icon: Users, accent: false },
-  { to: '/hub?section=benefits', label: () => el.feed.startBenefits, icon: Gift, accent: true },
 ] as const
 
 /** Official feed home: greeting, shortcuts, rails, then university announcements. */
 export default function Feed() {
   const [filter, setFilter] = useState<Filter>('all')
-  const { showAll, setShowAll, scope, withUniversity } = useFeedScope()
+  const { showAll, scope, withUniversity } = useFeedScope()
   const { university } = useUniversity()
   const { account } = useAuth()
   const { votes, vote } = useVotes()
@@ -75,10 +73,10 @@ export default function Feed() {
         </p>
         <Link
           to="/more"
-          aria-label={el.header.profile}
+          aria-label={account ? `${el.header.profile}, ${el.more.profile.ageValue(account.age)}` : el.header.profile}
           className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-soft text-caption font-semibold text-primary"
         >
-          {account?.initials}
+          {account?.age}
         </Link>
       </div>
 
@@ -154,13 +152,6 @@ export default function Feed() {
           ))}
         </div>
       </section>
-
-      <Toggle
-        label={el.settings.allUniversities}
-        description={el.settings.allUniversitiesHint}
-        checked={showAll}
-        onChange={setShowAll}
-      />
 
       <p className="text-caption text-muted">
         {filter === 'web' ? el.feed.webNotice : el.feed.sampleNotice}

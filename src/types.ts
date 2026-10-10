@@ -23,7 +23,8 @@ export type DemoAccount = {
   email: string
   password: string
   name: string
-  initials: string
+  /** Sample age, shown on the profile. */
+  age: number
   universityId: UniversityId
   faculty: string
   department: string

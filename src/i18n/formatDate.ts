@@ -1,5 +1,4 @@
-const dayMonth = new Intl.DateTimeFormat('el-GR', { day: 'numeric', month: 'short' })
-const weekday = new Intl.DateTimeFormat('el-GR', { weekday: 'short' })
+import { activeDateLocale } from './el'
 
 /** Parses "2027-01-18" as a local date (no timezone shift). */
 export function parseDate(iso: string): Date {
@@ -7,14 +6,14 @@ export function parseDate(iso: string): Date {
   return new Date(y, m - 1, d)
 }
 
-/** "18 Ιαν" */
+/** "18 Jan" or "18 Ιαν", following the active language. */
 export function formatDayMonth(iso: string): string {
-  return dayMonth.format(parseDate(iso))
+  return new Intl.DateTimeFormat(activeDateLocale(), { day: 'numeric', month: 'short' }).format(parseDate(iso))
 }
 
-/** "Δευ" */
+/** "Mon" or "Δευ", following the active language. */
 export function formatWeekday(iso: string): string {
-  return weekday.format(parseDate(iso))
+  return new Intl.DateTimeFormat(activeDateLocale(), { weekday: 'short' }).format(parseDate(iso))
 }
 
 /** Whole days from today (local midnight) until the ISO date; negative if past. */

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router'
 import { useAuth } from '../hooks/useAuth'
+import { useLanguage } from '../i18n/languageContext'
 import { AgentWidget } from './AgentWidget'
 import { Header } from './Header'
 import { TabBar } from './TabBar'
@@ -17,6 +18,7 @@ function ScrollToTop() {
 /** Mobile app frame: sticky header, scrollable page, fixed bottom tab bar. Requires login. */
 export function Layout() {
   const { account } = useAuth()
+  useLanguage()
   if (!account) return <Navigate to="/welcome" replace />
 
   return (

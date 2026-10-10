@@ -15,16 +15,14 @@ import { usePoints } from '../hooks/usePoints'
 import { THEME_KEY, useTheme, type ThemePreference } from '../hooks/useTheme'
 import { useUniversity } from '../hooks/useUniversity'
 import { el } from '../i18n/el'
+import { useLanguage } from '../i18n/languageContext'
 import { playSpeech } from '../lib/elevenlabs'
 import { maskStudentId } from '../lib/verification'
 
-const DEMO_LINE =
-  'Γεια σου! Είμαι ο βοηθός του CampusLife. Μπορώ να σου διαβάσω ανακοινώσεις και συμβουλές για την πανεπιστημιακή ζωή.'
-
 const themeOptions: ThemePreference[] = ['system', 'light', 'dark']
 
-/** Kept on reset so the user stays logged in and skips onboarding. */
-const KEEP_ON_RESET = ['campuslife.session', 'campuslife.university', 'campuslife.onboarded', THEME_KEY]
+/** Kept on reset so the user stays logged in, keeps theme and language, and skips onboarding. */
+const KEEP_ON_RESET = ['campuslife.session', 'campuslife.university', 'campuslife.onboarded', THEME_KEY, 'campuslife.lang']
 
 function resetDemoData() {
   try {
@@ -62,6 +60,7 @@ export default function More() {
   const { points } = usePoints()
   const { showAll, setShowAll } = useFeedScope()
   const { preference, setPreference } = useTheme()
+  const { lang, setLang } = useLanguage()
   const [verifying, setVerifying] = useState(false)
   const [switching, setSwitching] = useState(false)
   const [confirmReset, setConfirmReset] = useState(false)
@@ -75,7 +74,7 @@ export default function More() {
     setVoiceError(null)
     setVoiceState('loading')
     try {
-      await playSpeech({ text: DEMO_LINE })
+      await playSpeech({ text: el.agent.demoLine })
       setVoiceState('idle')
     } catch (err) {
       setVoiceState('error')
@@ -120,6 +119,7 @@ export default function More() {
             <ProfileRow label={el.more.profile.department} value={account.department} />
           )}
           <ProfileRow label={el.more.profile.semester} value={el.more.profile.semesterValue(account.year * 2 - 1)} />
+          <ProfileRow label={el.more.profile.age} value={el.more.profile.ageValue(account.age)} />
         </dl>
         {verified && studentId ? (
           <div className="flex items-center gap-3 rounded-2xl bg-success-soft p-3">
@@ -164,6 +164,11 @@ export default function More() {
             ))}
           </div>
           <p className="text-caption text-muted">{el.settings.themeHint}</p>
+          <p className="mt-2 text-caption font-medium">{el.settings.language}</p>
+          <div className="flex gap-2" role="group" aria-label={el.settings.language}>
+            <Chip label={el.settings.languageEl} active={lang === 'el'} onClick={() => setLang('el')} />
+            <Chip label={el.settings.languageEn} active={lang === 'en'} onClick={() => setLang('en')} />
+          </div>
         </div>
         <Toggle
           label={el.settings.allUniversities}
