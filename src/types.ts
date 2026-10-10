@@ -95,3 +95,42 @@ export type Benefit = Scoped & {
   /** Shown as the banner at the top of the page. */
   featured?: boolean
 }
+
+// Track A: Hub
+
+/** Quick link: the university homepage or a page inside the app. */
+export type UsefulLink = Scoped & {
+  id: string
+  title: string
+  description: string
+} & ({ kind: 'homepage' } | { kind: 'route'; to: string })
+
+/** First-year checklist item. */
+export type ChecklistItem = Scoped & {
+  id: string
+  title: string
+  description: string
+}
+
+/** Exam slot (sample dates, not an official timetable). */
+export type Exam = Scoped & {
+  id: string
+  course: string
+  /** ISO date, e.g. "2027-01-18". */
+  date: string
+  time: string
+  location: string
+}
+
+/** Internship or hackathon (sample). */
+export type Opportunity = Scoped & {
+  id: string
+  kind: 'internship' | 'hackathon'
+  title: string
+  organizer: string
+  location: string
+  /** ISO date of the application deadline. */
+  deadline: string
+  description: string
+  details: string
+}

@@ -38,7 +38,7 @@ export const el = {
   tabs: {
     feed: 'Ανακοινώσεις',
     posts: 'Φοιτητές',
-    hub: 'Προνόμια',
+    hub: 'Φοιτητικό Hub',
     community: 'Study Groups',
     more: 'Περισσότερα',
   },
@@ -112,5 +112,36 @@ export const el = {
     open: (title: string) => `Λεπτομέρειες: ${title}`,
     sampleNotice: 'Δείγμα πληροφοριών. Επιβεβαίωσε τις λεπτομέρειες στην ιστοσελίδα του πανεπιστημίου σου.',
     visitSite: (shortName: string) => `Ιστοσελίδα ${shortName}`,
+  },
+  hub: {
+    sections: {
+      benefits: 'Προνόμια',
+      checklist: 'Πρωτοετείς',
+      links: 'Σύνδεσμοι',
+      exams: 'Εξετάσεις',
+      opportunities: 'Ευκαιρίες',
+    },
+    sectionsLabel: 'Ενότητες του Hub',
+  },
+  links: {
+    title: 'Χρήσιμοι σύνδεσμοι',
+    viaHomepage: (shortName: string) => `Μέσα από την ιστοσελίδα ${shortName}`,
+    homepageTitle: (shortName: string) => `Ιστοσελίδα ${shortName}`,
+  },
+  checklist: {
+    title: 'Λίστα πρωτοετών',
+    intro: 'Τα πρώτα βήματα για να ξεκινήσεις το εξάμηνο χωρίς άγχος.',
+  },
+  exams: {
+    title: 'Εξεταστική',
+    notice: 'Δείγμα ημερομηνιών. Δεν είναι επίσημο πρόγραμμα: δες την ιστοσελίδα του τμήματός σου.',
+    empty: 'Δεν υπάρχουν εξετάσεις',
+  },
+  opportunities: {
+    internships: 'Πρακτική άσκηση',
+    hackathons: 'Hackathons',
+    deadline: (date: string) => `Προθεσμία: ${date}`,
+    notice: 'Δείγμα ευκαιριών. Για πραγματικές θέσεις δες το γραφείο πρακτικής άσκησης του πανεπιστημίου σου.',
+    empty: 'Δεν υπάρχουν ευκαιρίες',
   },
 } as const
