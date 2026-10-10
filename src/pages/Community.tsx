@@ -33,12 +33,6 @@ function matches(query: string, ...parts: string[]) {
   return parts.join(' ').toLocaleLowerCase('el').includes(q)
 }
 
-/** Reads the verified flag once Track A adds it. Until then, chat stays locked. */
-function useVerified() {
-  const auth = useAuth()
-  return Boolean((auth as { verified?: boolean }).verified)
-}
-
 export default function Community() {
   const [section, setSection] = useState<Section>('groups')
   const [query, setQuery] = useState('')
@@ -51,8 +45,7 @@ export default function Community() {
   const { showAll, scope, withUniversity } = useFeedScope()
   const { university } = useUniversity()
   const { award } = usePoints()
-  const verified = useVerified()
-  const { account } = useAuth()
+  const { account, verified } = useAuth()
 
   const [joined, setJoined] = useLocalStorage<string[]>('campuslife.joins', [])
   const [mine, setMine] = useLocalStorage<StudyGroup[]>('campuslife.myGroups', [])
