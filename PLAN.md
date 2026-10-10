@@ -64,18 +64,25 @@ Add realistic content, icons, empty states, and consistent styling.
 
 Fix broken screens and links, test on mobile, and get a shareable URL.
 
-## 3. Leave These Features for Later
+## 3. Build Now (promoted from roadmap)
 
-- Live university website crawling
-- Real-time chat like Discord
-- Login with student verification
+See **[new-features-to-add.md](./new-features-to-add.md)** for full specs:
+
+- Login with student verification (full name, phone, student card ID)
+- Real-time chat like Discord (logged-in only)
+- 15 dummy partner discount passes
+- Anonymous support forum
+- Dummy university website crawl pages (Greek universities)
+
+## 3b. Leave These Features for Later
+
+- Live university website crawling (real pipeline)
 - Real discount redemption with partners
 - Automatic exam calendar collection
 - Carpool matching
-- Anonymous support forums
 - AR navigation and voice assistant
 
-These features need more time for backend development, integrations, privacy, safety, or testing. Show them as future plans instead of risking the core demo.
+These still need backend development, integrations, privacy, safety, or partner work.
 
 ## 4. Definition of a Successful MVP
 

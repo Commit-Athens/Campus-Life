@@ -572,16 +572,132 @@
       color: var(--accent);
     }
 
+
+    /* —— Auth / More features —— */
+    .auth-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(20, 32, 26, 0.08);
+      color: var(--ink);
+      font-size: 0.78rem;
+      font-weight: 700;
+      border: 1px solid var(--line);
+    }
+    .auth-btn.verified {
+      background: rgba(47, 143, 98, 0.14);
+      color: var(--success);
+      border-color: rgba(47, 143, 98, 0.25);
+    }
+    .topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .subtabs {
+      display: flex; gap: 8px; overflow-x: auto; margin-bottom: 14px;
+      scrollbar-width: none; padding-bottom: 2px;
+    }
+    .subtabs::-webkit-scrollbar { display: none; }
+    .subtab {
+      flex: 0 0 auto; padding: 8px 14px; border-radius: 999px;
+      border: 1px solid var(--line); background: rgba(255,255,255,0.55);
+      color: var(--ink-soft); font-size: 0.85rem; font-weight: 700;
+    }
+    .subtab.active { background: var(--bg-deep); color: #fff; border-color: var(--bg-deep); }
+    .subpanel { display: none; }
+    .subpanel.active { display: block; animation: rise 0.35s ease both; }
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(15, 31, 24, 0.55);
+      backdrop-filter: blur(6px); z-index: 80; display: none;
+      align-items: flex-end; justify-content: center; padding: 16px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      width: min(440px, 100%); background: #f7faf7; border-radius: 22px 22px 18px 18px;
+      padding: 20px 18px 18px; box-shadow: var(--shadow); animation: rise 0.3s ease both;
+    }
+    .modal h2 { font-family: var(--display); font-size: 1.6rem; font-weight: 400; margin-bottom: 6px; }
+    .modal .hint { color: var(--muted); font-size: 0.88rem; margin-bottom: 14px; line-height: 1.4; }
+    .field { display: grid; gap: 6px; margin-bottom: 12px; }
+    .field label { font-size: 0.8rem; font-weight: 700; color: var(--ink-soft); }
+    .field input, .field textarea, .field select {
+      width: 100%; padding: 12px 12px; border-radius: 12px;
+      border: 1px solid var(--line); background: #fff; font: inherit; color: var(--ink);
+    }
+    .field textarea { min-height: 88px; resize: vertical; }
+    .field .error { color: var(--danger); font-size: 0.75rem; font-weight: 600; display: none; }
+    .field.invalid .error { display: block; }
+    .field.invalid input { border-color: var(--danger); }
+    .modal-actions { display: flex; gap: 8px; margin-top: 8px; }
+    .modal-actions .btn { flex: 1; justify-content: center; }
+    .chat-shell {
+      display: grid; grid-template-columns: 108px 1fr; gap: 10px;
+      min-height: 360px; border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--surface); overflow: hidden;
+    }
+    .chat-channels { background: rgba(15,31,24,0.04); padding: 10px 8px; display: grid; gap: 4px; align-content: start; }
+    .chan-btn {
+      text-align: left; padding: 8px 10px; border-radius: 10px;
+      font-size: 0.78rem; font-weight: 700; color: var(--ink-soft);
+    }
+    .chan-btn.active { background: var(--bg-deep); color: #fff; }
+    .chat-main { display: flex; flex-direction: column; min-height: 360px; }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 12px; display: grid; gap: 10px; max-height: 280px; }
+    .chat-msg { font-size: 0.88rem; line-height: 1.4; }
+    .chat-msg strong { display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 2px; }
+    .chat-compose { display: flex; gap: 8px; padding: 10px; border-top: 1px solid var(--line); }
+    .chat-compose input { flex: 1; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); font: inherit; }
+    .lock-card {
+      padding: 28px 18px; text-align: center; border: 1px dashed var(--line);
+      border-radius: var(--radius); background: rgba(255,255,255,0.5);
+    }
+    .lock-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+    .lock-card p { color: var(--muted); font-size: 0.88rem; margin-bottom: 14px; line-height: 1.45; }
+    .pass-grid { display: grid; gap: 10px; }
+    .pass-card {
+      padding: 14px; border-radius: var(--radius); background: var(--surface);
+      border: 1px solid var(--line); display: grid; gap: 8px;
+    }
+    .pass-card .pass-top { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
+    .pass-card h3 { font-size: 0.95rem; }
+    .pass-card p { font-size: 0.84rem; color: var(--ink-soft); line-height: 1.4; }
+    .pass-card.claimed { border-color: rgba(47,143,98,0.35); background: rgba(47,143,98,0.06); }
+    .safety {
+      font-size: 0.8rem; color: var(--muted); line-height: 1.4; padding: 10px 12px;
+      border-radius: 12px; background: rgba(196,92,74,0.08); margin-bottom: 12px;
+    }
+    .thread {
+      padding: 12px 0; border-bottom: 1px solid var(--line);
+    }
+    .thread:last-child { border-bottom: none; }
+    .thread h3 { font-size: 0.95rem; margin-bottom: 4px; }
+    .thread .meta { font-size: 0.75rem; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+    .replies { margin-top: 8px; padding-left: 10px; border-left: 2px solid var(--line); display: grid; gap: 6px; }
+    .reply { font-size: 0.84rem; color: var(--ink-soft); }
+    .uni-card { padding: 14px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); }
+    .uni-card h3 { font-size: 1rem; margin-bottom: 4px; }
+    .uni-card .crawl-tag {
+      display: inline-block; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.04em;
+      text-transform: uppercase; color: #8a5a12; background: rgba(232,165,75,0.2);
+      padding: 3px 8px; border-radius: 999px; margin-bottom: 8px;
+    }
+    .crawl-item { padding: 8px 0; border-top: 1px solid var(--line); font-size: 0.86rem; }
+    .crawl-item:first-of-type { border-top: none; }
+    .crawl-item small { display: block; color: var(--muted); margin-top: 2px; }
+    @media (max-width: 420px) {
+      .chat-shell { grid-template-columns: 1fr; }
+      .chat-channels { grid-auto-flow: column; grid-auto-columns: max-content; overflow-x: auto; }
+    }
+
     /* —— Bottom nav —— */
     .bottom-nav {
       position: fixed;
       left: 50%;
       bottom: 12px;
       transform: translateX(-50%);
-      width: min(400px, calc(100% - 24px));
+      width: min(440px, calc(100% - 24px));
       height: var(--nav-h);
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 4px;
       padding: 8px;
       background: rgba(15, 31, 24, 0.92);
@@ -657,10 +773,13 @@
         <div class="brand-mark">Campus<span>Life</span></div>
         <div class="brand-sub">Athens · student demo</div>
       </div>
-      <div class="points-pill" id="pointsPill" title="Activity points">
-        <div>
-          <small>Points</small><br />
-          <strong id="pointsValue">0</strong>
+      <div class="topbar-actions">
+        <button class="auth-btn" id="authBtn" type="button">Verify</button>
+        <div class="points-pill" id="pointsPill" title="Activity points">
+          <div>
+            <small>Points</small><br />
+            <strong id="pointsValue">0</strong>
+          </div>
         </div>
       </div>
     </header>
@@ -886,18 +1005,118 @@
       </div>
 
       <div class="roadmap">
-        <h2>Later on the roadmap</h2>
-        <p>Not in this demo — needs backend, privacy, or partner work.</p>
+        <h2>Still later</h2>
+        <p>Live crawl pipeline, real partner redemption, carpool, AR — see new-features-to-add.md.</p>
         <ul>
           <li>Live university website crawling</li>
-          <li>Real-time chat</li>
-          <li>Student verification login</li>
-          <li>Partner discount redemption</li>
+          <li>Real partner discount redemption</li>
           <li>Auto exam calendar sync</li>
           <li>Carpool matching &amp; AR nav</li>
         </ul>
       </div>
     </section>
+
+    <!-- MORE: chat, passes, support, universities -->
+    <section class="panel" id="panel-more" data-panel="more">
+      <div class="panel-intro">
+        <h1>Campus Plus</h1>
+        <p>Chat, passes, anonymous support, and university crawl demos.</p>
+      </div>
+
+      <div class="subtabs" role="tablist" aria-label="Campus plus">
+        <button class="subtab active" data-sub="passes" type="button">Passes</button>
+        <button class="subtab" data-sub="chat" type="button">Chat</button>
+        <button class="subtab" data-sub="support" type="button">Support</button>
+        <button class="subtab" data-sub="unis" type="button">Universities</button>
+      </div>
+
+      <div class="subpanel active" id="sub-passes" data-subpanel="passes">
+        <div class="section-head">
+          <h2>Partner passes</h2>
+          <span>15 sample deals</span>
+        </div>
+        <div class="pass-grid" id="passGrid"></div>
+      </div>
+
+      <div class="subpanel" id="sub-chat" data-subpanel="chat">
+        <div class="section-head">
+          <h2>Campus chat</h2>
+          <span>Logged-in only</span>
+        </div>
+        <div id="chatGate"></div>
+      </div>
+
+      <div class="subpanel" id="sub-support" data-subpanel="support">
+        <div class="section-head">
+          <h2>Anonymous support</h2>
+          <span>No real names</span>
+        </div>
+        <div class="safety">
+          This is a peer support demo, not a crisis service. If you need urgent help, contact local emergency services or your university counseling office.
+        </div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="field">
+            <label for="supportTitle">Ask anonymously</label>
+            <input id="supportTitle" maxlength="120" placeholder="What's on your mind?" />
+          </div>
+          <div class="field">
+            <label for="supportCat">Category</label>
+            <select id="supportCat">
+              <option value="stress">Stress</option>
+              <option value="housing">Housing</option>
+              <option value="courses">Courses</option>
+              <option value="money">Money</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="supportBody">Details</label>
+            <textarea id="supportBody" placeholder="Share what you need — posted as Anon…"></textarea>
+          </div>
+          <button class="btn btn-primary" id="supportPostBtn" type="button">Post anonymously</button>
+        </div>
+        <div class="card" id="supportThreads"></div>
+      </div>
+
+      <div class="subpanel" id="sub-unis" data-subpanel="unis">
+        <div class="section-head">
+          <h2>University crawl</h2>
+          <span>Demo data</span>
+        </div>
+        <p style="color:var(--muted);font-size:0.88rem;margin-bottom:12px;line-height:1.45">
+          Sample “crawled” announcements from Greek university sites. Live crawling comes later.
+        </p>
+        <div class="stack" id="uniStack"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="authModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-labelledby="authTitle">
+      <h2 id="authTitle">Student verification</h2>
+      <p class="hint">Demo login — enter full name, phone, and student card ID. No real registry check yet.</p>
+      <form id="authForm">
+        <div class="field" id="fieldName">
+          <label for="authName">Full name</label>
+          <input id="authName" name="name" autocomplete="name" placeholder="e.g. Maria Papadopoulou" />
+          <span class="error">Enter your full name</span>
+        </div>
+        <div class="field" id="fieldPhone">
+          <label for="authPhone">Phone</label>
+          <input id="authPhone" name="phone" autocomplete="tel" inputmode="tel" placeholder="e.g. 69xxxxxxxx" />
+          <span class="error">Enter a valid phone number</span>
+        </div>
+        <div class="field" id="fieldCard">
+          <label for="authCard">Student card ID</label>
+          <input id="authCard" name="card" placeholder="e.g. AM-2024-12345" />
+          <span class="error">Enter your student card ID</span>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" type="button" id="authCancel">Cancel</button>
+          <button class="btn btn-primary" type="submit">Verify</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <nav class="bottom-nav" aria-label="Main">
@@ -913,6 +1132,10 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="9" r="2.5"/><path d="M3.5 19c.8-3 3-4.5 5.5-4.5S14 16 14.8 19M14 14.5c1.6 0 3.2.7 4.2 2.5"/></svg>
       Community
     </button>
+    <button class="nav-btn" data-nav="more" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+      Plus
+    </button>
   </nav>
 
   <div class="toast" id="toast" role="status"></div>
@@ -924,6 +1147,11 @@
       checklist: "campuslife-checklist",
       joins: "campuslife-joins",
       points: "campuslife-points",
+      student: "campuslife-student",
+      chat: "campuslife-chat",
+      passes: "campuslife-passes",
+      support: "campuslife-support",
+      anon: "campuslife-anon",
     };
 
     const feedItems = [
@@ -1277,6 +1505,380 @@
     document.querySelectorAll("[data-toast]").forEach((el) => {
       el.addEventListener("click", () => showToast(el.dataset.toast));
     });
+
+
+    /* —— Build-now features —— */
+    const passes = [
+      { id: "p01", partner: "Exarchia Coffee Collective", offer: "−20% on all drinks", cat: "Cafe" },
+      { id: "p02", partner: "Pangrati Bakery", offer: "Free tea with any pastry", cat: "Food" },
+      { id: "p03", partner: "Campus Book Nook", offer: "−15% textbooks", cat: "Books" },
+      { id: "p04", partner: "Zografou Gyro Spot", offer: "Student menu €4.50", cat: "Food" },
+      { id: "p05", partner: "Metro Student Deal", offer: "Day-pass promo code", cat: "Transit" },
+      { id: "p06", partner: "Syntagma Copy Center", offer: "−10% printing & binding", cat: "Services" },
+      { id: "p07", partner: "Kolonaki Study Cafe", offer: "2-for-1 iced freddo", cat: "Cafe" },
+      { id: "p08", partner: "Pedion Areos Bike Share", offer: "First hour free", cat: "Transit" },
+      { id: "p09", partner: "Local Laundromat", offer: "−25% wash + fold", cat: "Services" },
+      { id: "p10", partner: "Museum Student Sunday", offer: "Free entry demo day", cat: "Culture" },
+      { id: "p11", partner: "University Gym Partner", offer: "1-week trial pass", cat: "Fitness" },
+      { id: "p12", partner: "Plaka Souvlaki", offer: "Free fries with wrap", cat: "Food" },
+      { id: "p13", partner: "Tech Repair Desk", offer: "−15% screen repair", cat: "Services" },
+      { id: "p14", partner: "Night Bus Cafe", offer: "Late-night student rate", cat: "Cafe" },
+      { id: "p15", partner: "Neighborhood Barber", offer: "Student cut €10", cat: "Services" },
+    ];
+
+    const universities = [
+      {
+        id: "uoa",
+        name: "NKUA · University of Athens",
+        blurb: "Central Athens faculties · sample crawl",
+        home: "https://www.uoa.gr/",
+        items: [
+          { title: "Erasmus call for applications", when: "Crawled · 2h ago", source: "uoa.gr/foitites" },
+          { title: "Library hours extended for exams", when: "Crawled · yesterday", source: "lib.uoa.gr" },
+          { title: "Student housing interest form", when: "Crawled · 3d ago", source: "uoa.gr" },
+        ],
+      },
+      {
+        id: "ntua",
+        name: "NTUA · Metsovio",
+        blurb: "Engineering schools · sample crawl",
+        home: "https://www.ntua.gr/",
+        items: [
+          { title: "Diploma thesis submission window", when: "Crawled · 5h ago", source: "ntua.gr" },
+          { title: "Lab safety briefing — mandatory", when: "Crawled · 1d ago", source: "ntua.gr/news" },
+          { title: "Career day with industry partners", when: "Crawled · 4d ago", source: "ntua.gr" },
+        ],
+      },
+      {
+        id: "aueb",
+        name: "AUEB · Economics & Business",
+        blurb: "Patission campus · sample crawl",
+        home: "https://www.aueb.gr/",
+        items: [
+          { title: "Internship fair registration open", when: "Crawled · 1h ago", source: "aueb.gr" },
+          { title: "Course evaluation period starts", when: "Crawled · 2d ago", source: "aueb.gr/students" },
+          { title: "Scholarship deadline reminder", when: "Crawled · 5d ago", source: "aueb.gr" },
+        ],
+      },
+      {
+        id: "auth",
+        name: "AUTH · Thessaloniki",
+        blurb: "Northern Greece hub · sample crawl",
+        home: "https://www.auth.gr/",
+        items: [
+          { title: "Campus shuttle schedule update", when: "Crawled · 3h ago", source: "auth.gr" },
+          { title: "Mental health workshop this week", when: "Crawled · 1d ago", source: "auth.gr/news" },
+          { title: "Open research lecture series", when: "Crawled · 6d ago", source: "auth.gr" },
+        ],
+      },
+      {
+        id: "upatras",
+        name: "University of Patras",
+        blurb: "Rio campus · sample crawl",
+        home: "https://www.upatras.gr/",
+        items: [
+          { title: "Dorm application results posted", when: "Crawled · 4h ago", source: "upatras.gr" },
+          { title: "eClass maintenance window Sunday", when: "Crawled · 2d ago", source: "upatras.gr" },
+          { title: "Student election candidacy forms", when: "Crawled · 1w ago", source: "upatras.gr" },
+        ],
+      },
+    ];
+
+    const chatChannels = ["general", "exams", "housing", "random"];
+    const anonAnimals = ["Fox", "Oak", "Harbor", "Cedar", "Lynx", "Sparrow", "Olive", "Stone"];
+
+    let student = loadJSON(STORAGE.student, null);
+    let claimedPasses = loadJSON(STORAGE.passes, {});
+    let chatStore = loadJSON(STORAGE.chat, null);
+    if (!chatStore) {
+      chatStore = {
+        general: [
+          { id: "m1", user: "Nikos", text: "Anyone in the library annex?", ts: Date.now() - 3600000 },
+          { id: "m2", user: "Eleni", text: "Bring chargers — outlets are packed.", ts: Date.now() - 3400000 },
+        ],
+        exams: [
+          { id: "m3", user: "Alex", text: "Algorithms midterm vibes only.", ts: Date.now() - 7200000 },
+        ],
+        housing: [
+          { id: "m4", user: "Sofia", text: "Looking for a roommate near Exarchia.", ts: Date.now() - 86400000 },
+        ],
+        random: [
+          { id: "m5", user: "Giorgos", text: "Best freddo within 5 minutes of campus?", ts: Date.now() - 5400000 },
+        ],
+      };
+      saveJSON(STORAGE.chat, chatStore);
+    }
+    let supportThreads = loadJSON(STORAGE.support, [
+      {
+        id: "t1",
+        alias: "Anon Fox",
+        cat: "stress",
+        title: "Feeling behind before midterms",
+        body: "Everyone seems prepared and I’m spiraling a bit. Any routines that help?",
+        replies: [
+          { alias: "Anon Oak", text: "Tiny blocks — 25 minutes then walk. You’re not alone." },
+        ],
+      },
+      {
+        id: "t2",
+        alias: "Anon Harbor",
+        cat: "housing",
+        title: "Landlord wants cash only — is that normal?",
+        body: "New to Athens. Want to make sure I’m not missing something.",
+        replies: [],
+      },
+    ]);
+    let anonAlias = localStorage.getItem(STORAGE.anon);
+    if (!anonAlias) {
+      anonAlias = "Anon " + anonAnimals[Math.floor(Math.random() * anonAnimals.length)];
+      localStorage.setItem(STORAGE.anon, anonAlias);
+    }
+
+    let activeChannel = "general";
+    const authBtn = document.getElementById("authBtn");
+    const authModal = document.getElementById("authModal");
+    const authForm = document.getElementById("authForm");
+
+    function firstName(full) {
+      return (full || "").trim().split(/\s+/)[0] || "Student";
+    }
+
+    function updateAuthUI() {
+      if (student) {
+        authBtn.textContent = firstName(student.name);
+        authBtn.classList.add("verified");
+        authBtn.title = student.name + " · " + student.card;
+      } else {
+        authBtn.textContent = "Verify";
+        authBtn.classList.remove("verified");
+        authBtn.title = "Student verification";
+      }
+      renderChat();
+    }
+
+    function openAuth() {
+      authModal.classList.add("open");
+      authModal.setAttribute("aria-hidden", "false");
+      if (student) {
+        document.getElementById("authName").value = student.name || "";
+        document.getElementById("authPhone").value = student.phone || "";
+        document.getElementById("authCard").value = student.card || "";
+      }
+    }
+    function closeAuth() {
+      authModal.classList.remove("open");
+      authModal.setAttribute("aria-hidden", "true");
+    }
+
+    authBtn.addEventListener("click", () => {
+      if (student) {
+        if (confirm("Log out of student verification?")) {
+          student = null;
+          localStorage.removeItem(STORAGE.student);
+          updateAuthUI();
+          showToast("Logged out");
+        }
+      } else openAuth();
+    });
+    document.getElementById("authCancel").addEventListener("click", closeAuth);
+    authModal.addEventListener("click", (e) => { if (e.target === authModal) closeAuth(); });
+
+    authForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("authName").value.trim();
+      const phone = document.getElementById("authPhone").value.trim();
+      const card = document.getElementById("authCard").value.trim();
+      const phoneOk = /^[+0-9\s()-]{8,}$/.test(phone);
+      document.getElementById("fieldName").classList.toggle("invalid", name.length < 3);
+      document.getElementById("fieldPhone").classList.toggle("invalid", !phoneOk);
+      document.getElementById("fieldCard").classList.toggle("invalid", card.length < 4);
+      if (name.length < 3 || !phoneOk || card.length < 4) return;
+      student = { name, phone, card, verifiedAt: Date.now() };
+      saveJSON(STORAGE.student, student);
+      closeAuth();
+      updateAuthUI();
+      addPoints(15, "+15 points · student verified");
+    });
+
+    /* Subtabs */
+    document.querySelectorAll(".subtab").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.sub;
+        document.querySelectorAll(".subtab").forEach((b) => b.classList.toggle("active", b === btn));
+        document.querySelectorAll(".subpanel").forEach((p) => p.classList.toggle("active", p.dataset.subpanel === id));
+      });
+    });
+
+    function renderPasses() {
+      const grid = document.getElementById("passGrid");
+      grid.innerHTML = passes.map((p) => {
+        const claimed = !!claimedPasses[p.id];
+        return `<article class="pass-card ${claimed ? "claimed" : ""}" data-pass="${p.id}">
+          <div class="pass-top">
+            <div>
+              <span class="badge">${p.cat}</span>
+              <h3 style="margin-top:8px">${p.partner}</h3>
+            </div>
+            <span class="badge">Sample</span>
+          </div>
+          <p>${p.offer}</p>
+          <button class="btn ${claimed ? "btn-ghost joined" : "btn-primary"}" type="button" data-claim="${p.id}">
+            ${claimed ? "✓ Pass saved" : "Show pass"}
+          </button>
+        </article>`;
+      }).join("");
+    }
+
+    document.getElementById("passGrid").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-claim]");
+      if (!btn) return;
+      const id = btn.dataset.claim;
+      if (claimedPasses[id]) {
+        delete claimedPasses[id];
+        saveJSON(STORAGE.passes, claimedPasses);
+        renderPasses();
+        showToast("Pass cleared");
+      } else {
+        claimedPasses[id] = true;
+        saveJSON(STORAGE.passes, claimedPasses);
+        addPoints(2, "+2 points · pass saved");
+        renderPasses();
+      }
+    });
+
+    function formatTime(ts) {
+      const d = new Date(ts);
+      return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    }
+
+    function renderChat() {
+      const gate = document.getElementById("chatGate");
+      if (!student) {
+        gate.innerHTML = `<div class="lock-card">
+          <h3>Chat is for verified students</h3>
+          <p>Verify with your full name, phone, and student card ID to join campus channels.</p>
+          <button class="btn btn-primary" type="button" id="chatUnlock">Verify to chat</button>
+        </div>`;
+        document.getElementById("chatUnlock").addEventListener("click", openAuth);
+        return;
+      }
+      const msgs = chatStore[activeChannel] || [];
+      gate.innerHTML = `<div class="chat-shell">
+        <div class="chat-channels">
+          ${chatChannels.map((c) => `<button class="chan-btn ${c === activeChannel ? "active" : ""}" type="button" data-chan="${c}">#${c}</button>`).join("")}
+        </div>
+        <div class="chat-main">
+          <div class="chat-messages" id="chatMessages">
+            ${msgs.map((m) => `<div class="chat-msg"><strong>${m.user} · ${formatTime(m.ts)}</strong>${m.text}</div>`).join("") || '<div class="empty">No messages yet — say hi.</div>'}
+          </div>
+          <form class="chat-compose" id="chatForm">
+            <input id="chatInput" maxlength="280" placeholder="Message #${activeChannel}" autocomplete="off" />
+            <button class="btn btn-primary" type="submit">Send</button>
+          </form>
+        </div>
+      </div>`;
+      const box = document.getElementById("chatMessages");
+      if (box) box.scrollTop = box.scrollHeight;
+      gate.querySelectorAll("[data-chan]").forEach((b) => {
+        b.addEventListener("click", () => { activeChannel = b.dataset.chan; renderChat(); });
+      });
+      document.getElementById("chatForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const input = document.getElementById("chatInput");
+        const text = input.value.trim();
+        if (!text) return;
+        chatStore[activeChannel] = chatStore[activeChannel] || [];
+        chatStore[activeChannel].push({
+          id: "m" + Date.now(),
+          user: firstName(student.name),
+          text,
+          ts: Date.now(),
+        });
+        saveJSON(STORAGE.chat, chatStore);
+        input.value = "";
+        addPoints(1, "+1 point · chat message");
+        renderChat();
+      });
+    }
+
+    function renderSupport() {
+      const el = document.getElementById("supportThreads");
+      el.innerHTML = supportThreads.map((t) => `
+        <article class="thread" data-thread="${t.id}">
+          <div class="meta">${t.alias} · ${t.cat}</div>
+          <h3>${t.title}</h3>
+          <p>${t.body}</p>
+          <div class="replies">
+            ${(t.replies || []).map((r) => `<div class="reply"><strong>${r.alias}</strong> — ${r.text}</div>`).join("") || '<div class="reply">No replies yet.</div>'}
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-ghost" type="button" data-reply="${t.id}">Reply anonymously</button>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    document.getElementById("supportPostBtn").addEventListener("click", () => {
+      const title = document.getElementById("supportTitle").value.trim();
+      const body = document.getElementById("supportBody").value.trim();
+      const cat = document.getElementById("supportCat").value;
+      if (title.length < 4 || body.length < 4) {
+        showToast("Add a short title and details");
+        return;
+      }
+      supportThreads.unshift({
+        id: "t" + Date.now(),
+        alias: anonAlias,
+        cat,
+        title,
+        body,
+        replies: [],
+      });
+      saveJSON(STORAGE.support, supportThreads);
+      document.getElementById("supportTitle").value = "";
+      document.getElementById("supportBody").value = "";
+      addPoints(4, "+4 points · support post");
+      renderSupport();
+    });
+
+    document.getElementById("supportThreads").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-reply]");
+      if (!btn) return;
+      const id = btn.dataset.reply;
+      const text = prompt("Anonymous reply:");
+      if (!text || !text.trim()) return;
+      const thread = supportThreads.find((t) => t.id === id);
+      if (!thread) return;
+      thread.replies = thread.replies || [];
+      thread.replies.push({ alias: anonAlias, text: text.trim() });
+      saveJSON(STORAGE.support, supportThreads);
+      addPoints(2, "+2 points · support reply");
+      renderSupport();
+    });
+
+    function renderUnis() {
+      document.getElementById("uniStack").innerHTML = universities.map((u) => `
+        <article class="uni-card">
+          <div class="crawl-tag">Demo crawl</div>
+          <h3>${u.name}</h3>
+          <p style="color:var(--muted);font-size:0.85rem;margin-bottom:8px">${u.blurb}</p>
+          ${u.items.map((item) => `
+            <div class="crawl-item">
+              <strong>${item.title}</strong>
+              <small>${item.when} · source ${item.source}</small>
+            </div>
+          `).join("")}
+          <div class="card-actions">
+            <a class="btn-link" href="${u.home}" target="_blank" rel="noopener">University site</a>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    renderPasses();
+    renderSupport();
+    renderUnis();
+    updateAuthUI();
 
     /* —— Init —— */
     setPoints(points, true);
