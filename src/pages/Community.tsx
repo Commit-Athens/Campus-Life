@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import { Download, Home, MessageCircle, Plus, Users } from 'lucide-react'
 import { Button } from '../components/Button'
+import { SpeakButton } from '../components/SpeakButton'
 import { Chip } from '../components/Chip'
 import { EmptyState } from '../components/EmptyState'
 import { PageTitle } from '../components/PageTitle'
@@ -147,6 +148,10 @@ export default function Community() {
                     </span>
                     <span className="block text-caption text-muted">{group.nextSession}</span>
                   </span>
+                  <SpeakButton
+                    text={`${group.name}. ${group.course}. ${group.nextSession}`}
+                    label={group.name}
+                  />
                   <button
                     type="button"
                     aria-label={`${on ? el.groups.joined : el.groups.join}: ${group.name}`}
@@ -187,20 +192,22 @@ export default function Community() {
             <EmptyState title={el.notes.empty} description={el.common.noResultsHint} />
           ) : (
             notes.map((note) => (
-              <button
-                key={note.id}
-                type="button"
-                onClick={() => setPreview(note)}
-                className="flex min-h-16 w-full items-center gap-3 rounded-2xl bg-white p-3 text-left ring-1 ring-surface"
-              >
-                <span className="min-w-0 flex-1">
-                  <span className="block font-semibold">{note.title}</span>
-                  <span className="block truncate text-caption text-muted">
-                    {withUniversity(note.universityId, `${note.course} · ${el.notes.meta(note.pages)}`)}
+              <div key={note.id} className="flex items-center rounded-2xl bg-white pr-1 ring-1 ring-surface">
+                <button
+                  type="button"
+                  onClick={() => setPreview(note)}
+                  className="flex min-h-16 min-w-0 flex-1 items-center gap-3 p-3 text-left"
+                >
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-semibold">{note.title}</span>
+                    <span className="block truncate text-caption text-muted">
+                      {withUniversity(note.universityId, `${note.course} · ${el.notes.meta(note.pages)}`)}
+                    </span>
                   </span>
-                </span>
-                <Download className="size-5 shrink-0 text-primary" strokeWidth={2} aria-hidden />
-              </button>
+                  <Download className="size-5 shrink-0 text-primary" strokeWidth={2} aria-hidden />
+                </button>
+                <SpeakButton text={`${note.title}. ${note.course}. ${el.notes.meta(note.pages)}`} label={note.title} />
+              </div>
             ))
           )}
         </section>
@@ -215,6 +222,8 @@ export default function Community() {
           ) : (
             listings.map((item) => (
               <article key={item.id} className="rounded-2xl bg-white p-4 ring-1 ring-surface">
+                <div className="flex items-start gap-2">
+                  <div className="min-w-0 flex-1">
                 <p className="text-caption font-medium text-primary">
                   {withUniversity(item.universityId, item.kind === 'room' ? el.housing.room : el.housing.roommate)}
                 </p>
@@ -223,6 +232,12 @@ export default function Community() {
                   {item.area} · {item.rent}
                 </p>
                 <p className="mt-1 text-body">{item.description}</p>
+                  </div>
+                  <SpeakButton
+                    text={`${item.title}. ${item.area}. ${item.rent}. ${item.description}`}
+                    label={item.title}
+                  />
+                </div>
               </article>
             ))
           )}
@@ -274,11 +289,14 @@ export default function Community() {
           ) : (
             <div className="flex flex-col gap-2">
               {messages.map((m) => (
-                <article key={m.id} className="rounded-2xl bg-white p-3 ring-1 ring-surface">
-                  <p className="text-caption font-semibold">
-                    {m.author} <span className="font-normal text-muted">{relativeTime(m.minutesAgo)}</span>
-                  </p>
-                  <p>{m.body}</p>
+                <article key={m.id} className="flex items-start gap-2 rounded-2xl bg-white p-3 ring-1 ring-surface">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-caption font-semibold">
+                      {m.author} <span className="font-normal text-muted">{relativeTime(m.minutesAgo)}</span>
+                    </p>
+                    <p>{m.body}</p>
+                  </div>
+                  <SpeakButton text={`${m.author}. ${m.body}`} label={m.author} />
                 </article>
               ))}
             </div>
@@ -332,8 +350,13 @@ export default function Community() {
 
       {preview && (
         <Sheet title={preview.title} onClose={() => setPreview(null)}>
-          <p className="text-caption text-muted">{el.notes.meta(preview.pages)}</p>
-          <p>{el.notes.sampleBody}</p>
+          <div className="flex items-start gap-2">
+            <div className="min-w-0 flex-1">
+              <p className="text-caption text-muted">{el.notes.meta(preview.pages)}</p>
+              <p>{el.notes.sampleBody}</p>
+            </div>
+            <SpeakButton text={`${preview.title}. ${el.notes.sampleBody}`} label={preview.title} />
+          </div>
           <a
             href={SAMPLE_PDF}
             download
@@ -461,7 +484,8 @@ function ForumSection({
           const open = openId === post.id
           return (
             <article key={post.id} className="rounded-2xl bg-white p-4 ring-1 ring-surface">
-              <button type="button" onClick={() => onOpen(open ? null : post.id)} className="w-full text-left">
+              <div className="flex items-start gap-2">
+              <button type="button" onClick={() => onOpen(open ? null : post.id)} className="min-w-0 flex-1 text-left">
                 <p className="text-caption text-muted">
                   {post.alias} · {el.forum.categories[post.category]} · {relativeTime(post.minutesAgo)}
                 </p>
@@ -469,13 +493,18 @@ function ForumSection({
                 <p className="mt-1">{post.body}</p>
                 <p className="mt-2 text-caption text-primary">{el.forum.replies(replies.length)}</p>
               </button>
+              <SpeakButton text={`${post.title}. ${post.body}`} label={post.title} />
+              </div>
               {open && (
                 <div className="mt-3 flex flex-col gap-2">
                   {replies.map((r) => (
-                    <p key={r.id} className="rounded-2xl bg-page p-3 text-caption">
-                      <span className="font-semibold">{r.alias}</span> · {relativeTime(r.minutesAgo)}
-                      <span className="mt-1 block text-body">{r.body}</span>
-                    </p>
+                    <div key={r.id} className="flex items-start gap-2 rounded-2xl bg-page p-3">
+                      <p className="min-w-0 flex-1 text-caption">
+                        <span className="font-semibold">{r.alias}</span> · {relativeTime(r.minutesAgo)}
+                        <span className="mt-1 block text-body">{r.body}</span>
+                      </p>
+                      <SpeakButton text={r.body} label={r.alias} />
+                    </div>
                   ))}
                   <form
                     className="flex flex-col gap-2"

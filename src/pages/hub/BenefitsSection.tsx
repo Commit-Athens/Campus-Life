@@ -1,6 +1,7 @@
 import { BookOpen, Bus, ChevronRight, Star, Utensils, type LucideIcon } from 'lucide-react'
 import { useState } from 'react'
 import { Button, ButtonLink } from '../../components/Button'
+import { SpeakButton } from '../../components/SpeakButton'
 import { Chip } from '../../components/Chip'
 import { EmptyState } from '../../components/EmptyState'
 import { IconCircle, type Tone } from '../../components/IconCircle'
@@ -32,6 +33,7 @@ function FeaturedBanner({ benefit, onOpen }: { benefit: Benefit; onOpen: () => v
         <h2 className="text-h3">{benefit.title}</h2>
         <p className="text-caption text-muted">{benefit.description}</p>
       </div>
+      <SpeakButton text={`${benefit.title}. ${benefit.description}. ${benefit.details}`} label={benefit.title} />
       <button
         type="button"
         onClick={onOpen}
@@ -106,7 +108,10 @@ export function BenefitsSection() {
             <IconCircle icon={categoryStyle[open.category].icon} tone={categoryStyle[open.category].tone} />
             <span className="text-caption font-semibold text-muted">{el.benefits.categories[open.category]}</span>
           </div>
-          <p>{open.details}</p>
+          <div className="flex items-start gap-2">
+            <p className="min-w-0 flex-1">{open.details}</p>
+            <SpeakButton text={`${open.title}. ${open.details}`} label={open.title} />
+          </div>
           <p className="text-caption text-muted">{el.benefits.sampleNotice}</p>
           <ButtonLink href={university.homepage}>{el.benefits.visitSite(university.shortName)}</ButtonLink>
         </Sheet>

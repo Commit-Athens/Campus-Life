@@ -1,5 +1,6 @@
 import { Calendar, MapPin } from 'lucide-react'
 import { EmptyState } from '../../components/EmptyState'
+import { SpeakButton } from '../../components/SpeakButton'
 import { exams } from '../../data/exams'
 import { forUniversity } from '../../data/universities'
 import { useUniversity } from '../../hooks/useUniversity'
@@ -20,12 +21,12 @@ export function ExamsSection() {
       ) : (
         <ul className="flex flex-col gap-3">
           {items.map((exam) => (
-            <li key={exam.id} className="flex items-center gap-3 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-surface">
+            <li key={exam.id} className="flex items-center gap-3 rounded-2xl bg-white p-3 pr-1 shadow-sm ring-1 ring-surface">
               <div className="flex w-16 shrink-0 flex-col items-center rounded-xl bg-primary-soft py-2 text-primary">
                 <span className="text-xs font-semibold">{formatWeekday(exam.date)}</span>
                 <span className="text-caption font-bold">{formatDayMonth(exam.date)}</span>
               </div>
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
                 <p className="font-semibold">{exam.course}</p>
                 <p className="flex items-center gap-1 text-caption text-muted">
                   <span className="shrink-0">{exam.time}</span>
@@ -34,6 +35,10 @@ export function ExamsSection() {
                   <span className="truncate">{exam.location}</span>
                 </p>
               </div>
+              <SpeakButton
+                text={`${exam.course}. ${formatWeekday(exam.date)} ${formatDayMonth(exam.date)}, ${exam.time}, ${exam.location}`}
+                label={exam.course}
+              />
             </li>
           ))}
         </ul>

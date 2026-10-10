@@ -1,6 +1,7 @@
 import { Briefcase, MapPin, Star } from 'lucide-react'
 import { useState } from 'react'
 import { ButtonLink } from '../../components/Button'
+import { SpeakButton } from '../../components/SpeakButton'
 import { EmptyState } from '../../components/EmptyState'
 import { ListRow } from '../../components/ListRow'
 import { Sheet } from '../../components/Sheet'
@@ -61,7 +62,10 @@ export function OpportunitiesSection() {
               {open.location}
             </span>
           </div>
-          <p>{open.details}</p>
+          <div className="flex items-start gap-2">
+            <p className="min-w-0 flex-1">{open.details}</p>
+            <SpeakButton text={`${open.title}. ${open.details}`} label={open.title} />
+          </div>
           <p className="text-caption text-muted">{el.opportunities.notice}</p>
           <ButtonLink href={university.homepage}>{el.links.homepageTitle(university.shortName)}</ButtonLink>
         </Sheet>

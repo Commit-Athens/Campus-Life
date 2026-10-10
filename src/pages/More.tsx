@@ -68,19 +68,16 @@ export default function More() {
       {verifying && <VerifySheet onClose={() => setVerifying(false)} />}
 
       <section className="mt-4 flex flex-col gap-3 rounded-2xl bg-white p-5 ring-1 ring-surface">
-        <h2 className="text-h3">Voice agent (ElevenLabs)</h2>
-        <p className="text-caption text-muted">
-          Demo TTS via the Cloudflare Worker proxy. The API key stays in Worker secrets — never in the
-          browser.
-        </p>
+        <h2 className="text-h3">{el.agent.title}</h2>
+        <p className="text-caption text-muted">{el.agent.moreHint}</p>
         <Button
           variant="primary"
           onClick={() => void onHearDemo()}
           disabled={voiceState === 'loading'}
         >
-          {voiceState === 'loading' ? 'Preparing…' : 'Hear campus tip'}
+          {voiceState === 'loading' ? el.agent.preparing : el.agent.hearDemo}
         </Button>
-        {voiceError ? <p className="text-caption text-red-600">{voiceError}</p> : null}
+        {voiceError ? <p className="text-caption text-error">{voiceError}</p> : null}
       </section>
     </>
   )

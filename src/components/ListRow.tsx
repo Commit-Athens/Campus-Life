@@ -1,5 +1,6 @@
 import { ChevronRight, type LucideIcon } from 'lucide-react'
 import { IconCircle, type Tone } from './IconCircle'
+import { SpeakButton } from './SpeakButton'
 
 type ListRowProps = {
   icon: LucideIcon
@@ -23,18 +24,21 @@ export function ListRow({ icon, tone, title, description, href, onClick }: ListR
     </>
   )
   const className =
-    'flex min-h-16 w-full items-center gap-3 rounded-2xl bg-white p-3 text-left shadow-sm ring-1 ring-surface transition-colors hover:bg-page'
+    'flex min-h-16 min-w-0 flex-1 items-center gap-3 rounded-2xl p-3 text-left transition-colors hover:bg-page'
+  const spoken = `${title}. ${description}`
 
-  if (href) {
-    return (
-      <a href={href} target="_blank" rel="noreferrer" className={className}>
-        {content}
-      </a>
-    )
-  }
   return (
-    <button type="button" onClick={onClick} className={className}>
-      {content}
-    </button>
+    <div className="flex items-center gap-1 rounded-2xl bg-white pr-1 shadow-sm ring-1 ring-surface">
+      {href ? (
+        <a href={href} target="_blank" rel="noreferrer" className={className}>
+          {content}
+        </a>
+      ) : (
+        <button type="button" onClick={onClick} className={className}>
+          {content}
+        </button>
+      )}
+      <SpeakButton text={spoken} label={title} />
+    </div>
   )
 }

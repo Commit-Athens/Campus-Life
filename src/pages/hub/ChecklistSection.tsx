@@ -1,5 +1,6 @@
 import { Check } from 'lucide-react'
 import { ProgressBar } from '../../components/ProgressBar'
+import { SpeakButton } from '../../components/SpeakButton'
 import { checklist } from '../../data/checklist'
 import { forUniversity } from '../../data/universities'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
@@ -44,13 +45,13 @@ export function ChecklistSection() {
         {items.map((item) => {
           const done = doneIds.includes(item.id)
           return (
-            <li key={item.id} className="border-t border-surface first:border-t-0">
+            <li key={item.id} className="flex items-center border-t border-surface pr-1 first:border-t-0">
               <button
                 type="button"
                 role="checkbox"
                 aria-checked={done}
                 onClick={() => toggle(item.id)}
-                className="flex min-h-16 w-full gap-3 p-4 text-left transition-colors hover:bg-page"
+                className="flex min-h-16 min-w-0 flex-1 gap-3 p-4 text-left transition-colors hover:bg-page"
               >
                 <span
                   className={`flex size-7 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${
@@ -65,6 +66,7 @@ export function ChecklistSection() {
                   <span className="block text-caption text-muted">{item.description}</span>
                 </span>
               </button>
+              <SpeakButton text={`${item.title}. ${item.description}`} label={item.title} />
             </li>
           )
         })}

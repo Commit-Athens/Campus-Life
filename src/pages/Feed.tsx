@@ -5,6 +5,7 @@ import { CardActions } from '../components/CardActions'
 import { Chip } from '../components/Chip'
 import { EmptyState } from '../components/EmptyState'
 import { FeedCard } from '../components/FeedCard'
+import { SpeakButton } from '../components/SpeakButton'
 import { PageTitle } from '../components/PageTitle'
 import { Toggle } from '../components/Toggle'
 import { announcements } from '../data/announcements'
@@ -68,19 +69,27 @@ export default function Feed() {
             const cards = webItems.filter((item) => item.universityId === source.universityId)
             return (
               <article key={source.universityId} className="flex flex-col gap-3 rounded-2xl bg-white p-4 ring-1 ring-surface">
-                <div>
+                <div className="flex items-start gap-2">
+                  <div className="min-w-0 flex-1">
                   <h3 className="text-h3">{uni.shortName}</h3>
                   <p className="text-caption text-muted">{el.sources.updated(relativeTime(source.updatedMinutesAgo))}</p>
                   <p className="mt-2">{source.blurb}</p>
+                  </div>
+                  <SpeakButton text={`${uni.shortName}. ${source.blurb}`} label={uni.shortName} />
+                </div>
+                <div>
                   <a href={uni.homepage} target="_blank" rel="noreferrer" className="mt-2 inline-flex min-h-11 items-center font-semibold text-primary">
                     {el.sources.homepage(uni.shortName)}
                   </a>
                 </div>
                 {cards.map((item) => (
-                  <div key={item.id} className="rounded-2xl bg-page p-3">
-                    <p className="text-caption text-muted">{el.sources.items}</p>
-                    <p className="font-semibold">{item.title}</p>
-                    <p className="text-caption">{item.body}</p>
+                  <div key={item.id} className="flex items-start gap-2 rounded-2xl bg-page p-3">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-caption text-muted">{el.sources.items}</p>
+                      <p className="font-semibold">{item.title}</p>
+                      <p className="text-caption">{item.body}</p>
+                    </div>
+                    <SpeakButton text={`${item.title}. ${item.body}`} label={item.title} />
                   </div>
                 ))}
               </article>

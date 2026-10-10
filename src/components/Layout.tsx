@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from 'react-router'
 import { useAuth } from '../hooks/useAuth'
+import { AgentWidget } from './AgentWidget'
 import { Header } from './Header'
 import { TabBar } from './TabBar'
 
@@ -14,6 +15,7 @@ export function Layout() {
       <main className="flex flex-col gap-6 px-4 pt-6 pb-28">
         <Outlet />
       </main>
+      <AgentWidget />
       <TabBar />
     </div>
   )

@@ -1,6 +1,7 @@
 import { ChevronRight } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { el } from '../i18n/el'
+import { SpeakButton } from './SpeakButton'
 
 type FeedCardProps = {
   source: string
@@ -43,13 +44,14 @@ export function FeedCard({ source, time, title, body, label, sourceUrl, image, c
         >
           {initials(source)}
         </span>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <p className="truncate text-caption font-semibold">{source}</p>
           <p className="truncate text-caption text-muted">
             {time}
             {label && ` · ${label}`}
           </p>
         </div>
+        <SpeakButton text={[title, body].filter(Boolean).join('. ')} label={title || source} />
       </header>
       {image && (
         <img src={image.src} alt={image.alt} className="aspect-[5/3] w-full rounded-xl bg-surface object-cover" />
