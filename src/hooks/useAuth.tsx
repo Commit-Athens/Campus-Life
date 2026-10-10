@@ -6,6 +6,12 @@ export type AuthContextValue = {
   /** Returns false if the email/password don't match a demo account. */
   login: (email: string, password: string) => boolean
   logout: () => void
+  /** True once the logged-in account passed the demo student verification. */
+  verified: boolean
+  /** Student card ID of the verified account, or null. */
+  studentId: string | null
+  /** Marks the account verified. Validate first with `validateVerification`. */
+  verify: (name: string, studentId: string) => void
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null)
