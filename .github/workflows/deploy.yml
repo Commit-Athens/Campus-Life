@@ -27,8 +27,8 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Sync site into public/
-        run: mkdir -p public && cp index.html public/index.html
+      - name: Build
+        run: npm run build
 
       - name: Deploy Worker
         uses: cloudflare/wrangler-action@v3
