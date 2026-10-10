@@ -58,6 +58,32 @@ Start every session with: "Read CLAUDE.md first."
 
 ---
 
+## Phase 2b: Campus Plus (from `new-features-to-add.md`)
+
+Demo versions only; see "Campus Plus" in CLAUDE.md for the limits (no phone numbers, no fake URLs, local data only).
+
+### P1. Student verification (demo)
+**Prompt:** Add a "Verify" step for the logged-in demo account: full name and student card ID with format validation and clear errors. Show a verified badge in the header. Persist it, clear it on logout.
+**Done when:** invalid input shows errors, a valid submit shows the badge, and logout resets it.
+
+### P2. Partner passes
+**Prompt:** Add 15 fictional sample partner passes (5 per university) to Προνόμια with a "Show pass" sheet and demo code. Persist claimed passes. Label each "Δείγμα συνεργάτη".
+**Done when:** each university shows 5 passes and claim/unclaim survives refresh.
+
+### P3. University source cards
+**Prompt:** In the Ανακοινώσεις feed, add a source card per university (blurb, demo "last updated", its "Από το web" items, homepage link only).
+**Done when:** the "Από το web" filter shows the card for the selected university, or all three with the toggle on.
+
+### P4. Anonymous support forum
+**Prompt:** Add an anonymous forum to Community: random aliases, categories, local posts and replies, and an always-visible safety note (not a crisis service, 112 for emergencies, counselling via the university homepage).
+**Done when:** a new thread and a reply appear under an alias and persist; the safety note is visible.
+
+### P5. Campus chat (demo)
+**Prompt:** Add a chat to Community with channels #general, #exams, #housing, #random per university, sample messages, and local sending. Lock sending behind verification (P1). Label it as a demo.
+**Done when:** unverified users see the lock, verified users can switch channels and send, and messages persist.
+
+---
+
 ## Phase 3: Make it work (1:15-2:00)
 
 ### 12. Confirm / like buttons
@@ -113,6 +139,7 @@ Start every session with: "Read CLAUDE.md first."
 ---
 
 ## If you run out of time, cut in this order
+0. Campus Plus, from the end: chat (P5), forum (P4), source cards (P3), passes (P2), verification (P1)
 1. English language toggle
 2. Housing listings (#10)
 3. Exam countdown (#16)
