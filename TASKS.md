@@ -57,6 +57,21 @@ Owns: `src/pages/Community.tsx`, `src/pages/Feed.tsx`, new data files for groups
 - **Branches:** one branch and PR per step (`feat/hub-...` for Track A, `feat/community-...` for Track B). Pull `main` before starting each step. Merging to `main` deploys, so merge only when `npm run build` and `npm run lint` pass.
 - **PR #1** edits the old static prototype (`index.html`), which is no longer the app. Close it; its feature list now lives in `new-features-to-add.md` and Phase 2b of `BUILD_PLAN.md`.
 
-## Starting prompt for Track B's agent
+## Deploy
+
+Every merge to `main` runs `.github/workflows/deploy.yml`: `npm ci`, `npm run build`, then `wrangler deploy`. That deploys the `campuslife` Worker (`worker/index.ts`, the ElevenLabs proxy) and serves `dist/` as static assets.
+
+### Open issue: deploys fail with "Invalid access token" (since 2026-10-10 12:05)
+
+- **Symptom:** the "Deploy Worker" step fails with `Authentication error [code: 10000]` / `Invalid access token [code: 9109]`. The build step passes.
+- **Cause:** the Cloudflare API token in the `CLOUDFLARE_API_TOKEN` GitHub secret was revoked or expired on Cloudflare's side. The secret hasn't changed since 11:16 and deployed fine at 11:39 and 11:48. Not a code problem: `wrangler deploy --dry-run` on `main` passes.
+- **Live site:** still serves the last successful deploy (`main` as of PR #3). PRs #4 and #5 aren't live yet.
+- **Fix (Odisseas, Cloudflare account owner):**
+  1. Cloudflare → My Profile → API Tokens → Create Token → **"Edit Cloudflare Workers"** template, scoped to the campuslife account, **no TTL**.
+  2. GitHub → Settings → Secrets and variables → Actions → update **`CLOUDFLARE_API_TOKEN`** (or `gh secret set CLOUDFLARE_API_TOKEN`). Don't paste the token in chat.
+  3. Actions → "Deploy to Cloudflare" → re-run the latest run.
+  4. For the voice feature (PR #4): `npx wrangler secret put ELEVENLABS_API_KEY`.
+
+
 
 > Read CLAUDE.md and TASKS.md first. You are working on Track B (Community and feed extras). Pull main, create a branch for step 9, and build it. Stay inside the files Track B owns, follow the shared contracts and the merge-conflict rules, then run `npm run build` and `npm run lint` and stop with a 1-2 line summary.
