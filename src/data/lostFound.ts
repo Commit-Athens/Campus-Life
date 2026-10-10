@@ -14,7 +14,8 @@ export const lostFound: LostFoundItem[] = [
     location: 'Αμφιθέατρο Α1, Ζωγράφου',
     image: '/lost-found/keys.svg',
     imageAlt: 'Κλειδιά με μπλε μπρελόκ',
-    confirms: 6,
+    useful: 6,
+    notUseful: 2,
   },
   {
     id: 'lf-nkua-2',
@@ -27,7 +28,8 @@ export const lostFound: LostFoundItem[] = [
     location: 'Λέσχη, Πανεπιστημιούπολη',
     image: '/lost-found/backpack.svg',
     imageAlt: 'Μαύρο σακίδιο',
-    confirms: 12,
+    useful: 12,
+    notUseful: 1,
   },
   {
     id: 'lf-nkua-3',
@@ -40,7 +42,8 @@ export const lostFound: LostFoundItem[] = [
     location: 'Βιβλιοθήκη Θετικών Επιστημών',
     image: '/lost-found/umbrella.svg',
     imageAlt: 'Κόκκινη ομπρέλα',
-    confirms: 3,
+    useful: 3,
+    notUseful: 3,
   },
   {
     id: 'lf-nkua-4',
@@ -53,7 +56,8 @@ export const lostFound: LostFoundItem[] = [
     location: 'Φιλοσοφική Σχολή',
     image: '/lost-found/headphones.svg',
     imageAlt: 'Λευκά ασύρματα ακουστικά',
-    confirms: 8,
+    useful: 8,
+    notUseful: 1,
   },
 
   // ΕΜΠ
@@ -68,7 +72,8 @@ export const lostFound: LostFoundItem[] = [
     location: 'Κτίριο ΗΜΜΥ, Ζωγράφου',
     image: '/lost-found/calculator.svg',
     imageAlt: 'Επιστημονική αριθμομηχανή',
-    confirms: 15,
+    useful: 15,
+    notUseful: 4,
   },
   {
     id: 'lf-ntua-2',
@@ -81,7 +86,8 @@ export const lostFound: LostFoundItem[] = [
     location: 'Κεντρική Βιβλιοθήκη ΕΜΠ',
     image: '/lost-found/bottle.svg',
     imageAlt: 'Μεταλλικό παγούρι',
-    confirms: 4,
+    useful: 4,
+    notUseful: 1,
   },
   {
     id: 'lf-ntua-3',
@@ -94,7 +100,8 @@ export const lostFound: LostFoundItem[] = [
     location: 'Σχολή Αρχιτεκτόνων',
     image: '/lost-found/keys.svg',
     imageAlt: 'Κλειδιά σε κρίκο',
-    confirms: 2,
+    useful: 2,
+    notUseful: 2,
   },
   {
     id: 'lf-ntua-4',
@@ -107,7 +114,8 @@ export const lostFound: LostFoundItem[] = [
     location: 'Σχολή Πολιτικών Μηχανικών',
     image: '/lost-found/backpack.svg',
     imageAlt: 'Γκρι σακίδιο',
-    confirms: 10,
+    useful: 10,
+    notUseful: 2,
   },
 
   // ΠΑΔΑ
@@ -122,7 +130,8 @@ export const lostFound: LostFoundItem[] = [
     location: 'Άλσος Αιγάλεω, εργαστήρια',
     image: '/lost-found/headphones.svg',
     imageAlt: 'Μαύρα ακουστικά κεφαλής',
-    confirms: 5,
+    useful: 5,
+    notUseful: 1,
   },
   {
     id: 'lf-uniwa-2',
@@ -135,7 +144,8 @@ export const lostFound: LostFoundItem[] = [
     location: 'Αρχαίος Ελαιώνας',
     image: '/lost-found/umbrella.svg',
     imageAlt: 'Μπλε ομπρέλα',
-    confirms: 3,
+    useful: 3,
+    notUseful: 3,
   },
   {
     id: 'lf-uniwa-3',
@@ -148,7 +158,8 @@ export const lostFound: LostFoundItem[] = [
     location: 'Άλσος Αιγάλεω, γυμναστήριο',
     image: '/lost-found/bottle.svg',
     imageAlt: 'Πράσινο παγούρι',
-    confirms: 2,
+    useful: 2,
+    notUseful: 2,
   },
   {
     id: 'lf-uniwa-4',
@@ -161,6 +172,7 @@ export const lostFound: LostFoundItem[] = [
     location: 'Πανεπιστημιούπολη Αθηνών',
     image: '/lost-found/calculator.svg',
     imageAlt: 'Αριθμομηχανή σε μαύρη θήκη',
-    confirms: 7,
+    useful: 7,
+    notUseful: 3,
   },
 ]

@@ -14,7 +14,7 @@ Built in a ~3-hour hackathon sprint. The goal is a polished, working demo, not a
 
 - The user picks a university once (first-launch picker, changeable from a switcher in the app header). Persist the choice in `localStorage`; default to `nkua`.
 - Every content item in `src/data/` carries a `universityId: 'nkua' | 'ntua' | 'uniwa' | 'all'`. `'all'` means shared across universities (e.g. cross-campus hackathons).
-- Pages show items matching the selected university plus `'all'`. Feed and Community get an extra toggle to see "All universities".
+- Pages show items matching the selected university plus `'all'`. Both feeds and Community get an extra toggle to see "All universities".
 - Keep university metadata (name, short name, accent color, homepage) in one file: `src/data/universities.ts`. Never hard-code a university name in a component.
 - Balance sample data: at least 4-5 items per section per university so no university looks empty.
 - Faculties, departments, and course names in sample data must fit the selected university (e.g. engineering schools for NTUA, not law).
@@ -41,12 +41,10 @@ No other dependencies unless clearly needed. Ask before adding one.
 
 Tab labels and layouts for these dashboards are defined in "Brand and design system" below.
 
-### 1. Campus Feed (`/feed`)
-- University announcements, each with a source link
-- Student posts (simple social feed)
-- Lost & Found posts with photos (placeholder images in `public/`)
-- Working like / "confirm" button with a live count
-- Filter chips: All / Announcements / Student posts / Lost & Found
+### 1. Campus Feed: two separate feeds, each its own bottom tab
+- **Official feed (`/feed`)**: university announcements, each with a source link, plus "Από το web" items (static sample data standing in for crawled info; no real crawling). Chips: Όλα / Ανακοινώσεις / Αίθουσες / Σχολή / Από το web
+- **Student feed (`/posts`)**: student posts (simple social feed) and Lost & Found posts with photos (placeholder images in `public/`). Chips: Όλα / Αναρτήσεις / Χαμένα & Ευρεθέντα
+- Every card has a working "Χρήσιμο / Όχι χρήσιμο" (useful / not useful) vote with live counts, persisted; first vote on a card gives +1 activity point
 
 ### 2. Student Hub (`/hub`)
 - Useful university links
@@ -131,18 +129,19 @@ Outline style, 1.5-2px stroke, via `lucide-react`: `Home`, `Gift`, `Users`, `Boo
 - **Chip / Tag**: pill on `surface`; active filter chip is solid `primary` with white text; hashtag tags like `#Μαθηματικά` use pale blue
 - **SearchInput**: rounded, `surface` background, search icon, Greek placeholder ("Αναζήτηση...")
 - **ListRow**: colored icon circle, title, one-line description, chevron
-- **FeedCard**: source avatar + name + relative time, title, body, confirm pill "✓ Το επιβεβαιώνω (342)", optional image
+- **FeedCard**: source avatar + name + relative time, title, body, vote pills "Χρήσιμο (342)" / "Όχι χρήσιμο (12)", optional image
 - **GroupRow / NoteRow**: group icon, name, "32 μέλη · Μαθηματικά"; notes show "PDF · 12 σελ." with a download icon
 - **Toggle**, **Avatar row** (name, department, year), **ProgressBar**, **EmptyState**
 - **TabBar**: bottom bar, active tab in `primary`, small labels
 
 ### Layout and navigation
 - Mobile-first (design at 390px; center in a max-width container on desktop)
-- Persistent bottom tab bar with 4 tabs, mapped to the three dashboards plus a menu:
+- Persistent bottom tab bar with 5 tabs: two feeds, the Hub, Community, and a menu:
 
 | Tab (Greek / English) | Route | Content |
 |-----------------------|-------|---------|
-| Home / Live Feed | `/feed` | Campus Feed dashboard |
+| Ανακοινώσεις / Live Feed | `/feed` | Official feed: announcements + web info |
+| Φοιτητές / Student feed | `/posts` | Student posts + Lost & Found |
 | Προνόμια / Benefits | `/hub` | Student Hub dashboard (benefits first, then checklist, links, exams, internships) |
 | Study Groups | `/community` | Student Community dashboard |
 | Περισσότερα / More | `/more` | Profile, university switcher, settings, roadmap card |
@@ -194,5 +193,5 @@ npm run lint
 - [ ] Student posts and Lost & Found sample content
 - [ ] Useful university resources and student benefits
 - [ ] Study sessions with working join, and a first-year checklist with progress
-- [ ] Matches the brand design system (colors, Inter, components, 4-tab bar, Greek-first UI)
+- [ ] Matches the brand design system (colors, Inter, components, 5-tab bar, Greek-first UI)
 - [ ] Polished mobile layout, deployed to a live URL

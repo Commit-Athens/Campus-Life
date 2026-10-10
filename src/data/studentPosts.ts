@@ -11,7 +11,8 @@ export const studentPosts: StudentPost[] = [
     minutesAgo: 40,
     body: 'Ψάχνω παρέα για διάβασμα στη Διακριτά Μαθηματικά. Βιβλιοθήκη Θετικών, απογεύματα. Όποιος θέλει ας στείλει!',
     tags: ['Μαθηματικά', 'Διάβασμα'],
-    confirms: 24,
+    useful: 24,
+    notUseful: 1,
   },
   {
     id: 'post-nkua-2',
@@ -21,7 +22,8 @@ export const studentPosts: StudentPost[] = [
     minutesAgo: 180,
     body: 'Έχει κανείς σημειώσεις από τις παραδόσεις Αστικού Δικαίου της περασμένης εβδομάδας; Έχασα δύο μαθήματα.',
     tags: ['Νομική'],
-    confirms: 11,
+    useful: 11,
+    notUseful: 3,
   },
   {
     id: 'post-nkua-3',
@@ -31,7 +33,8 @@ export const studentPosts: StudentPost[] = [
     minutesAgo: 1300,
     body: 'Tip για πρωτοετείς: η Λέσχη έχει λιγότερη ουρά λίγο πριν τη 1. Μην πάτε στις 2 ακριβώς 😅',
     tags: ['Πρωτοετείς', 'Φαγητό'],
-    confirms: 87,
+    useful: 87,
+    notUseful: 8,
   },
   {
     id: 'post-nkua-4',
@@ -41,7 +44,8 @@ export const studentPosts: StudentPost[] = [
     minutesAgo: 3200,
     body: 'Φτιάχνουμε θεατρική ομάδα στη Φιλοσοφική. Δεν χρειάζεται εμπειρία, μόνο όρεξη!',
     tags: ['Θέατρο'],
-    confirms: 35,
+    useful: 35,
+    notUseful: 5,
   },
 
   // ΕΜΠ
@@ -53,7 +57,8 @@ export const studentPosts: StudentPost[] = [
     minutesAgo: 30,
     body: 'Κάποιος για ομάδα στην εργασία Λειτουργικών Συστημάτων; Χρειαζόμαστε άλλο ένα άτομο.',
     tags: ['Προγραμματισμός'],
-    confirms: 18,
+    useful: 18,
+    notUseful: 3,
   },
   {
     id: 'post-ntua-2',
@@ -63,7 +68,8 @@ export const studentPosts: StudentPost[] = [
     minutesAgo: 210,
     body: 'Πουλάω μακέτες υλικά που περίσσεψαν (χαρτόνια, κόλλες, κοπίδι). Τα δίνω φτηνά σε πρωτοετείς.',
     tags: ['Αρχιτεκτονική', 'Πρωτοετείς'],
-    confirms: 29,
+    useful: 29,
+    notUseful: 2,
   },
   {
     id: 'post-ntua-3',
@@ -73,7 +79,8 @@ export const studentPosts: StudentPost[] = [
     minutesAgo: 1400,
     body: 'Ομάδα επίλυσης ασκήσεων Στατικής κάθε Τετάρτη στο αναγνωστήριο. Φέρτε τις απορίες σας.',
     tags: ['Στατική', 'Διάβασμα'],
-    confirms: 42,
+    useful: 42,
+    notUseful: 4,
   },
   {
     id: 'post-ntua-4',
@@ -83,7 +90,8 @@ export const studentPosts: StudentPost[] = [
     minutesAgo: 3500,
     body: 'Ποδοσφαιράκι 5x5 στα γήπεδα της Πολυτεχνειούπολης την Παρασκευή. Λείπουν δύο παίκτες!',
     tags: ['Αθλητισμός'],
-    confirms: 23,
+    useful: 23,
+    notUseful: 4,
   },
 
   // ΠΑΔΑ
@@ -95,7 +103,8 @@ export const studentPosts: StudentPost[] = [
     minutesAgo: 55,
     body: 'Ψάχνω άτομα για study group στον Προγραμματισμό Ι. Κάνουμε ασκήσεις μαζί στο Άλσος Αιγάλεω.',
     tags: ['Προγραμματισμός', 'Διάβασμα'],
-    confirms: 31,
+    useful: 31,
+    notUseful: 5,
   },
   {
     id: 'post-uniwa-2',
@@ -105,7 +114,8 @@ export const studentPosts: StudentPost[] = [
     minutesAgo: 260,
     body: 'Ποιος ξέρει πού μπορώ να εκτυπώσω αφίσα Α2 κοντά στη σχολή χωρίς να πληρώσω περιουσία;',
     tags: ['Γραφιστική'],
-    confirms: 14,
+    useful: 14,
+    notUseful: 2,
   },
   {
     id: 'post-uniwa-3',
@@ -115,7 +125,8 @@ export const studentPosts: StudentPost[] = [
     minutesAgo: 1350,
     body: 'Μοιράζομαι το πρόγραμμα που έφτιαξα για το διάβασμα της Ανατομίας. Βοήθησε πολύ πέρσι!',
     tags: ['Ανατομία', 'Πρωτοετείς'],
-    confirms: 66,
+    useful: 66,
+    notUseful: 6,
   },
   {
     id: 'post-uniwa-4',
@@ -125,7 +136,8 @@ export const studentPosts: StudentPost[] = [
     minutesAgo: 3800,
     body: 'Υπάρχει κανείς που να πηγαίνει καθημερινά από Πειραιά στο Άλσος; Να συνεννοηθούμε για τη διαδρομή.',
     tags: ['Μετακίνηση'],
-    confirms: 9,
+    useful: 9,
+    notUseful: 1,
   },
 
   // Όλα τα πανεπιστήμια
@@ -137,7 +149,8 @@ export const studentPosts: StudentPost[] = [
     minutesAgo: 600,
     body: 'Διαπανεπιστημιακό hackathon για φοιτητές όλων των σχολών! Φτιάξτε ομάδες από διαφορετικά πανεπιστήμια.',
     tags: ['Hackathon'],
-    confirms: 154,
+    useful: 154,
+    notUseful: 12,
   },
   {
     id: 'post-all-2',
@@ -147,6 +160,7 @@ export const studentPosts: StudentPost[] = [
     minutesAgo: 2600,
     body: 'Ψάχνουμε εθελοντές για δράση καθαρισμού πάρκου το Σαββατοκύριακο. Ανοιχτό σε φοιτητές όλων των πανεπιστημίων.',
     tags: ['Εθελοντισμός'],
-    confirms: 72,
+    useful: 72,
+    notUseful: 4,
   },
 ]

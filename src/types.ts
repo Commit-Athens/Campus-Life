@@ -26,9 +26,9 @@ export type DemoAccount = {
   year: number
 }
 
-export type AnnouncementCategory = 'announcement' | 'rooms' | 'school'
+export type AnnouncementCategory = 'announcement' | 'rooms' | 'school' | 'web'
 
-/** University announcement (sample). Source link is the university homepage. */
+/** Official feed item (sample): a university announcement, or info collected from the web (`'web'`). Source link is the university homepage. */
 export type Announcement = Scoped & {
   id: string
   category: AnnouncementCategory
@@ -38,7 +38,8 @@ export type Announcement = Scoped & {
   minutesAgo: number
   title: string
   body: string
-  confirms: number
+  useful: number
+  notUseful: number
 }
 
 /** Student post in the social feed (sample, fictional author). */
@@ -49,7 +50,8 @@ export type StudentPost = Scoped & {
   minutesAgo: number
   body: string
   tags: string[]
-  confirms: number
+  useful: number
+  notUseful: number
 }
 
 /** Lost & Found post with a placeholder photo from public/. */
@@ -63,5 +65,6 @@ export type LostFoundItem = Scoped & {
   location: string
   image: string
   imageAlt: string
-  confirms: number
+  useful: number
+  notUseful: number
 }

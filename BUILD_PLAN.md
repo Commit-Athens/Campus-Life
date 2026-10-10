@@ -61,6 +61,8 @@ Start every session with: "Read CLAUDE.md first."
 ## Phase 3: Make it work (1:15-2:00)
 
 ### 12. Confirm / like buttons
+> Done early: replaced by the "Χρήσιμο / Όχι χρήσιμο" vote on both feeds (persisted, +1 point on first vote).
+
 **Prompt:** Make the "Το επιβεβαιώνω" button on feed cards toggle and update the count. Persist in `localStorage`. Add +1 activity point on the first confirm of each card.
 **Done when:** the count changes, survives refresh, and the points counter increases.
 

@@ -1,58 +1,33 @@
 import { useState } from 'react'
-import { MapPin, Megaphone } from 'lucide-react'
+import { Megaphone } from 'lucide-react'
 import { Button } from '../components/Button'
-import { Chip, Tag } from '../components/Chip'
+import { Chip } from '../components/Chip'
 import { EmptyState } from '../components/EmptyState'
 import { FeedCard } from '../components/FeedCard'
 import { PageTitle } from '../components/PageTitle'
 import { Toggle } from '../components/Toggle'
+import { VoteButtons } from '../components/VoteButtons'
 import { announcements } from '../data/announcements'
-import { lostFound } from '../data/lostFound'
-import { studentPosts } from '../data/studentPosts'
-import { forUniversity, getUniversity } from '../data/universities'
-import { useUniversity } from '../hooks/useUniversity'
+import { getUniversity } from '../data/universities'
+import { useFeedScope } from '../hooks/useFeedScope'
+import { useVotes } from '../hooks/useVotes'
 import { el } from '../i18n/el'
 import { relativeTime } from '../i18n/relativeTime'
-import type { Announcement, AnnouncementCategory, LostFoundItem, Scoped, StudentPost, UniversityScope } from '../types'
+import type { AnnouncementCategory } from '../types'
 
-type Filter = 'all' | AnnouncementCategory | 'posts' | 'lostFound'
+type Filter = 'all' | AnnouncementCategory
 
-type FeedItem =
-  | { kind: 'announcement'; item: Announcement }
-  | { kind: 'post'; item: StudentPost }
-  | { kind: 'lostFound'; item: LostFoundItem }
+const filters: Filter[] = ['all', 'announcement', 'rooms', 'school', 'web']
 
-const filters: Filter[] = ['all', 'announcement', 'rooms', 'school', 'posts', 'lostFound']
-
-function matches(entry: FeedItem, filter: Filter): boolean {
-  if (filter === 'all') return true
-  if (filter === 'posts') return entry.kind === 'post'
-  if (filter === 'lostFound') return entry.kind === 'lostFound'
-  return entry.kind === 'announcement' && entry.item.category === filter
-}
-
-function universityLabel(id: UniversityScope): string {
-  return id === 'all' ? el.feed.shared : getUniversity(id).shortName
-}
-
+/** Official feed: university announcements plus info collected from the web. */
 export default function Feed() {
-  const { university } = useUniversity()
   const [filter, setFilter] = useState<Filter>('all')
-  const [showAll, setShowAll] = useState(false)
+  const { showAll, setShowAll, scope, withUniversity } = useFeedScope()
+  const { votes, vote } = useVotes()
 
-  const scope = <T extends Scoped>(items: T[]): T[] => (showAll ? items : forUniversity(items, university.id))
-
-  const entries: FeedItem[] = [
-    ...scope(announcements).map((item): FeedItem => ({ kind: 'announcement', item })),
-    ...scope(studentPosts).map((item): FeedItem => ({ kind: 'post', item })),
-    ...scope(lostFound).map((item): FeedItem => ({ kind: 'lostFound', item })),
-  ]
-    .filter((entry) => matches(entry, filter))
-    .sort((a, b) => a.item.minutesAgo - b.item.minutesAgo)
-
-  /** "ΕΜΠ · Σχολή" when showing every university, otherwise just the label. */
-  const withUniversity = (id: UniversityScope, label: string) =>
-    showAll || id === 'all' ? `${universityLabel(id)} · ${label}` : label
+  const items = scope(announcements)
+    .filter((item) => filter === 'all' || item.category === filter)
+    .sort((a, b) => a.minutesAgo - b.minutesAgo)
 
   return (
     <>
@@ -71,9 +46,11 @@ export default function Feed() {
         onChange={setShowAll}
       />
 
-      <p className="text-caption text-muted">{el.feed.sampleNotice}</p>
+      <p className="text-caption text-muted">
+        {filter === 'web' ? el.feed.webNotice : el.feed.sampleNotice}
+      </p>
 
-      {entries.length === 0 ? (
+      {items.length === 0 ? (
         <EmptyState
           icon={Megaphone}
           title={el.feed.empty}
@@ -88,71 +65,25 @@ export default function Feed() {
         />
       ) : (
         <div className="flex flex-col gap-4">
-          {entries.map((entry) => {
-            const { item } = entry
-            const time = relativeTime(item.minutesAgo)
-
-            if (entry.kind === 'announcement') {
-              const a = entry.item
-              return (
-                <FeedCard
-                  key={a.id}
-                  source={a.source}
-                  time={time}
-                  label={withUniversity(a.universityId, el.feed.filters[a.category])}
-                  title={a.title}
-                  body={a.body}
-                  sourceUrl={a.universityId === 'all' ? undefined : getUniversity(a.universityId).homepage}
+          {items.map((item) => (
+            <FeedCard
+              key={item.id}
+              source={item.source}
+              time={relativeTime(item.minutesAgo)}
+              label={withUniversity(item.universityId, el.feed.filters[item.category])}
+              title={item.title}
+              body={item.body}
+              sourceUrl={item.universityId === 'all' ? undefined : getUniversity(item.universityId).homepage}
+              footer={
+                <VoteButtons
+                  useful={item.useful}
+                  notUseful={item.notUseful}
+                  current={votes[item.id]}
+                  onVote={(choice) => vote(item.id, choice)}
                 />
-              )
-            }
-
-            if (entry.kind === 'post') {
-              const p = entry.item
-              return (
-                <FeedCard
-                  key={p.id}
-                  source={p.author}
-                  time={time}
-                  label={withUniversity(p.universityId, p.department)}
-                  body={p.body}
-                >
-                  <div className="flex flex-wrap gap-2">
-                    {p.tags.map((tag) => (
-                      <Tag key={tag} label={tag} />
-                    ))}
-                  </div>
-                </FeedCard>
-              )
-            }
-
-            const lf = entry.item
-            return (
-              <FeedCard
-                key={lf.id}
-                source={lf.author}
-                time={time}
-                label={withUniversity(lf.universityId, el.feed.filters.lostFound)}
-                title={lf.title}
-                body={lf.body}
-                image={{ src: lf.image, alt: lf.imageAlt }}
-              >
-                <div className="flex flex-wrap items-center gap-2 text-caption">
-                  <span
-                    className={`rounded-full px-3 py-1 font-semibold ${
-                      lf.kind === 'lost' ? 'bg-warning-soft text-warning' : 'bg-success-soft text-success'
-                    }`}
-                  >
-                    {lf.kind === 'lost' ? el.feed.lost : el.feed.found}
-                  </span>
-                  <span className="flex items-center gap-1 text-muted">
-                    <MapPin className="size-4" strokeWidth={2} aria-hidden />
-                    {lf.location}
-                  </span>
-                </div>
-              </FeedCard>
-            )
-          })}
+              }
+            />
+          ))}
         </div>
       )}
     </>
