@@ -60,7 +60,7 @@ export default function Feed() {
             const uni = getUniversity(source.universityId)
             const cards = webItems.filter((item) => item.universityId === source.universityId)
             return (
-              <article key={source.universityId} className="flex flex-col gap-3 overflow-hidden rounded-2xl bg-white p-4 ring-1 ring-surface">
+              <article key={source.universityId} className="flex flex-col gap-3 overflow-hidden rounded-2xl bg-card p-4 ring-1 ring-surface">
                 <img src={uni.photo} alt={el.sources.photoAlt(uni.name)} className="-mx-4 -mt-4 aspect-[5/2] w-[calc(100%+2rem)] max-w-none object-cover" />
                 <div className="flex items-start gap-2">
                   <div className="min-w-0 flex-1">

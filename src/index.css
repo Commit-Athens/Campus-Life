@@ -10,6 +10,10 @@
   --color-muted: #64748b;
   --color-surface: #e2e8f0;
   --color-page: #f8faff;
+  /* Card and sheet background (white in light mode). */
+  --color-card: #ffffff;
+  /* Always dark: splash and the sheet backdrop, in both themes. */
+  --color-night: #0f172a;
   --color-success: #22c55e;
   --color-success-soft: #dcfce7;
   --color-warning: #f59e0b;
@@ -35,6 +39,24 @@
   --text-body--line-height: 1.5rem;
   --text-caption: 0.875rem;
   --text-caption--line-height: 1.25rem;
+}
+
+/* Dark theme: same tokens, darker values. Set by useTheme() via <html data-theme="dark">. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-primary: #3b82f6;
+  --color-primary-soft: #172554;
+  --color-ink: #e2e8f0;
+  --color-muted: #94a3b8;
+  --color-surface: #1e293b;
+  --color-page: #0b1120;
+  --color-card: #111827;
+  --color-success: #4ade80;
+  --color-success-soft: #052e16;
+  --color-warning: #fbbf24;
+  --color-warning-soft: #422006;
+  --color-error: #f87171;
+  --color-error-soft: #450a0a;
 }
 
 body {

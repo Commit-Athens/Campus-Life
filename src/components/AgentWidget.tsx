@@ -51,7 +51,7 @@ export function AgentWidget() {
         {open && (
           <section
             aria-labelledby={titleId}
-            className="pointer-events-auto flex max-h-[min(70dvh,32rem)] w-full flex-col overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-surface"
+            className="pointer-events-auto flex max-h-[min(70dvh,32rem)] w-full flex-col overflow-hidden rounded-2xl bg-card shadow-xl ring-1 ring-surface"
           >
             <header className="flex items-start gap-3 border-b border-surface p-4">
               <div className="min-w-0 flex-1">

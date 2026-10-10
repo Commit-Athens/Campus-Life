@@ -35,7 +35,7 @@ export function ChecklistSection() {
         <EmptyState icon={Star} title={el.checklist.empty} description={el.checklist.emptyHint} />
       ) : (
         <>
-          <div className="flex flex-col gap-2 rounded-2xl bg-white p-4 ring-1 ring-surface">
+          <div className="flex flex-col gap-2 rounded-2xl bg-card p-4 ring-1 ring-surface">
             <div className="flex items-baseline justify-between gap-3">
               <p className="font-semibold">{el.checklist.progress(doneCount, items.length)}</p>
               <p className="text-caption text-muted">{el.checklist.pointHint}</p>
@@ -46,7 +46,7 @@ export function ChecklistSection() {
             )}
           </div>
 
-          <ul className="flex flex-col rounded-2xl bg-white ring-1 ring-surface">
+          <ul className="flex flex-col rounded-2xl bg-card ring-1 ring-surface">
             {items.map((item) => {
               const done = doneIds.includes(item.id)
               return (
@@ -60,7 +60,7 @@ export function ChecklistSection() {
                   >
                     <span
                       className={`flex size-7 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${
-                        done ? 'border-success bg-success text-white' : 'border-surface bg-white'
+                        done ? 'border-success bg-success text-white' : 'border-surface bg-card'
                       }`}
                       aria-hidden
                     >

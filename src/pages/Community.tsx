@@ -124,7 +124,7 @@ export default function Community() {
               const owned = mine.some((item) => item.id === group.id)
               const memberCount = group.members + (on && !owned ? 1 : 0)
               return (
-                <article key={group.id} className="flex items-center gap-3 rounded-2xl bg-white p-3 ring-1 ring-surface">
+                <article key={group.id} className="flex items-center gap-3 rounded-2xl bg-card p-3 ring-1 ring-surface">
                   <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
                     <Users className="size-5" strokeWidth={2} aria-hidden />
                   </span>
@@ -179,7 +179,7 @@ export default function Community() {
             <EmptyState title={el.notes.empty} description={el.common.noResultsHint} />
           ) : (
             notes.map((note) => (
-              <div key={note.id} className="flex items-center rounded-2xl bg-white pr-1 ring-1 ring-surface">
+              <div key={note.id} className="flex items-center rounded-2xl bg-card pr-1 ring-1 ring-surface">
                 <button
                   type="button"
                   onClick={() => setPreview(note)}
@@ -208,7 +208,7 @@ export default function Community() {
             <EmptyState icon={Home} title={el.housing.empty} description={el.common.noResultsHint} />
           ) : (
             listings.map((item) => (
-              <article key={item.id} className="rounded-2xl bg-white p-4 ring-1 ring-surface">
+              <article key={item.id} className="rounded-2xl bg-card p-4 ring-1 ring-surface">
                 <div className="flex items-start gap-2">
                   <div className="min-w-0 flex-1">
                 <p className="text-caption font-medium text-primary">
@@ -276,7 +276,7 @@ export default function Community() {
           ) : (
             <div className="flex flex-col gap-2">
               {messages.map((m) => (
-                <article key={m.id} className="flex items-start gap-2 rounded-2xl bg-white p-3 ring-1 ring-surface">
+                <article key={m.id} className="flex items-start gap-2 rounded-2xl bg-card p-3 ring-1 ring-surface">
                   <Avatar name={m.author} size="sm" />
                   <div className="min-w-0 flex-1">
                     <p className="text-caption font-semibold">
@@ -302,7 +302,7 @@ export default function Community() {
               }}
             />
           ) : (
-            <div className="rounded-2xl bg-white p-4 ring-1 ring-surface">
+            <div className="rounded-2xl bg-card p-4 ring-1 ring-surface">
               <p className="font-semibold">{el.chat.lockedTitle}</p>
               <p className="mt-1 text-caption text-muted">{el.chat.locked}</p>
               <Link to="/more" className="mt-3 inline-flex min-h-11 items-center font-semibold text-primary">
@@ -424,7 +424,7 @@ function ForumSection({
         ))}
       </div>
       <form
-        className="flex flex-col gap-2 rounded-2xl bg-white p-4 ring-1 ring-surface"
+        className="flex flex-col gap-2 rounded-2xl bg-card p-4 ring-1 ring-surface"
         onSubmit={(e) => {
           e.preventDefault()
           if (!draftTitle.trim() || !draftBody.trim()) return
@@ -471,7 +471,7 @@ function ForumSection({
           const replies = [...post.replies, ...(extraReplies[post.id] ?? [])]
           const open = openId === post.id
           return (
-            <article key={post.id} className="rounded-2xl bg-white p-4 ring-1 ring-surface">
+            <article key={post.id} className="rounded-2xl bg-card p-4 ring-1 ring-surface">
               <div className="flex items-start gap-2">
               <button type="button" onClick={() => onOpen(open ? null : post.id)} className="min-w-0 flex-1 text-left">
                 <p className="text-caption text-muted">

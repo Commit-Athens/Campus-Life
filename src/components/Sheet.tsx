@@ -20,12 +20,12 @@ export function Sheet({ title, onClose, children }: SheetProps) {
 
   return (
     <div className="fixed inset-0 z-40 flex items-end justify-center">
-      <button type="button" aria-label={el.common.close} onClick={onClose} className="absolute inset-0 bg-ink/40" />
+      <button type="button" aria-label={el.common.close} onClick={onClose} className="absolute inset-0 bg-night/60" />
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="relative flex max-h-[85dvh] w-full max-w-md flex-col gap-3 overflow-y-auto rounded-t-2xl bg-white p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))]"
+        className="relative flex max-h-[85dvh] w-full max-w-md flex-col gap-3 overflow-y-auto rounded-t-2xl bg-card p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))]"
       >
         <h2 id={titleId} className="text-h3">
           {title}

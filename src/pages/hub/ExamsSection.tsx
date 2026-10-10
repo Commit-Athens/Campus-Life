@@ -56,7 +56,7 @@ export function ExamsSection({ myExamIds, onToggle }: ExamsSectionProps) {
                   aria-pressed={added}
                   aria-label={added ? el.exams.remove(exam.course) : el.exams.add(exam.course)}
                   onClick={() => onToggle(exam.id)}
-                  className={`flex w-full items-center gap-3 rounded-2xl bg-white p-3 text-left shadow-sm transition-colors hover:bg-page ${
+                  className={`flex w-full items-center gap-3 rounded-2xl bg-card p-3 text-left shadow-sm transition-colors hover:bg-page ${
                     added ? 'ring-2 ring-success' : 'ring-1 ring-surface'
                   }`}
                 >

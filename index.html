@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#2563EB" />
     <title>CampusLife</title>
+    <script>
+      // Set the theme before React loads, so dark mode doesn't flash white. Mirrors ThemeProvider.
+      try {
+        var pref = JSON.parse(localStorage.getItem('campuslife.theme') || '"system"')
+        var dark = pref === 'dark' || (pref === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+      } catch (e) {}
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

@@ -41,7 +41,7 @@ export default function Login() {
         <p className="text-caption text-muted">{el.brand.tagline}</p>
       </header>
 
-      <form onSubmit={onSubmit} className="flex flex-col gap-4 rounded-2xl bg-white p-5 ring-1 ring-surface">
+      <form onSubmit={onSubmit} className="flex flex-col gap-4 rounded-2xl bg-card p-5 ring-1 ring-surface">
         <div>
           <h1 className="text-h2">{el.login.title}</h1>
           <p className="text-caption text-muted">{el.login.subtitle}</p>
@@ -92,7 +92,7 @@ export default function Login() {
               key={a.email}
               type="button"
               onClick={() => fill(a.email)}
-              className={`flex min-h-16 w-full items-center gap-3 rounded-2xl bg-white p-3 text-left ring-1 transition-colors hover:bg-page ${
+              className={`flex min-h-16 w-full items-center gap-3 rounded-2xl bg-card p-3 text-left ring-1 transition-colors hover:bg-page ${
                 email === a.email ? 'ring-2 ring-primary' : 'ring-surface'
               }`}
             >

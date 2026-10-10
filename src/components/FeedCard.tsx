@@ -24,7 +24,7 @@ type FeedCardProps = {
 
 export function FeedCard({ source, avatarSrc, time, title, body, label, sourceUrl, image, children, footer }: FeedCardProps) {
   return (
-    <article className="flex flex-col gap-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-surface">
+    <article className="flex flex-col gap-3 rounded-2xl bg-card p-4 shadow-sm ring-1 ring-surface">
       <header className="flex items-center gap-3">
         <Avatar name={source} src={avatarSrc} />
         <div className="min-w-0 flex-1">

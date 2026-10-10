@@ -28,7 +28,7 @@ export function ListRow({ icon, tone, title, description, href, onClick }: ListR
   const spoken = `${title}. ${description}`
 
   return (
-    <div className="flex items-center gap-1 rounded-2xl bg-white pr-1 shadow-sm ring-1 ring-surface">
+    <div className="flex items-center gap-1 rounded-2xl bg-card pr-1 shadow-sm ring-1 ring-surface">
       {href ? (
         <a href={href} target="_blank" rel="noreferrer" className={className}>
           {content}
