@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import { Megaphone } from 'lucide-react'
 import { Button } from '../components/Button'
+import { CardActions } from '../components/CardActions'
 import { Chip } from '../components/Chip'
 import { EmptyState } from '../components/EmptyState'
 import { FeedCard } from '../components/FeedCard'
 import { PageTitle } from '../components/PageTitle'
 import { Toggle } from '../components/Toggle'
-import { VoteButtons } from '../components/VoteButtons'
 import { announcements } from '../data/announcements'
 import { getUniversity } from '../data/universities'
+import { useComments } from '../hooks/useComments'
 import { useFeedScope } from '../hooks/useFeedScope'
 import { useVotes } from '../hooks/useVotes'
 import { el } from '../i18n/el'
@@ -24,6 +25,7 @@ export default function Feed() {
   const [filter, setFilter] = useState<Filter>('all')
   const { showAll, setShowAll, scope, withUniversity } = useFeedScope()
   const { votes, vote } = useVotes()
+  const { commentsFor, addComment } = useComments()
 
   const items = scope(announcements)
     .filter((item) => filter === 'all' || item.category === filter)
@@ -75,11 +77,13 @@ export default function Feed() {
               body={item.body}
               sourceUrl={item.universityId === 'all' ? undefined : getUniversity(item.universityId).homepage}
               footer={
-                <VoteButtons
+                <CardActions
                   useful={item.useful}
                   notUseful={item.notUseful}
-                  current={votes[item.id]}
+                  vote={votes[item.id]}
                   onVote={(choice) => vote(item.id, choice)}
+                  comments={commentsFor(item.id)}
+                  onComment={(body) => addComment(item.id, body)}
                 />
               }
             />

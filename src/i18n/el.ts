@@ -17,7 +17,6 @@ export const el = {
     open: 'Αλλαγή πανεπιστημίου',
     title: 'Επίλεξε πανεπιστήμιο',
     homepage: 'Ιστοσελίδα',
-    close: 'Κλείσιμο',
   },
   login: {
     title: 'Σύνδεση',
@@ -55,17 +54,11 @@ export const el = {
     description: 'Αυτή η ενότητα είναι υπό κατασκευή.',
   },
   common: {
+    close: 'Κλείσιμο',
     search: 'Αναζήτηση...',
     noResults: 'Δεν βρέθηκαν αποτελέσματα',
     noResultsHint: 'Δοκίμασε άλλη αναζήτηση ή φίλτρο.',
     clearFilters: 'Καθαρισμός φίλτρων',
-  },
-  demo: {
-    buttons: 'Κουμπιά',
-    chips: 'Φίλτρα',
-    list: 'Λίστα',
-    selected: 'Επιλέχθηκε',
-    secondaryAction: 'Καθαρισμός αναζήτησης',
   },
   feed: {
     filters: {
@@ -84,14 +77,21 @@ export const el = {
     found: 'Βρέθηκε',
     sampleNotice: 'Δείγμα περιεχομένου. Για επίσημες ανακοινώσεις δες την ιστοσελίδα του πανεπιστημίου.',
     webNotice: 'Τα στοιχεία "Από το web" είναι δείγμα. Η αυτόματη συλλογή από τις ιστοσελίδες είναι στο roadmap.',
-    postsNotice: 'Αναρτήσεις φοιτητών (δείγμα). Ψήφισε αν μια ανάρτηση είναι χρήσιμη.',
+    postsNotice: 'Αναρτήσεις φοιτητών (δείγμα). Ψήφισε αν μια ανάρτηση είναι χρήσιμη ή σχολίασέ τη.',
     source: 'Πηγή',
     empty: 'Δεν υπάρχουν αναρτήσεις',
     emptyHint: 'Δεν υπάρχει τίποτα σε αυτή την κατηγορία ακόμα.',
   },
   vote: {
-    useful: 'Χρήσιμο',
-    notUseful: 'Όχι χρήσιμο',
+    useful: (n: number) => `Χρήσιμο (${n})`,
+    notUseful: (n: number) => `Όχι χρήσιμο (${n})`,
+  },
+  comments: {
+    toggle: (n: number) => `Σχόλια (${n})`,
+    empty: 'Κανένα σχόλιο ακόμα. Γράψε πρώτος!',
+    placeholder: 'Γράψε ένα σχόλιο...',
+    send: 'Αποστολή σχολίου',
+    you: 'Εσύ',
   },
   time: {
     justNow: 'μόλις τώρα',
@@ -100,10 +100,17 @@ export const el = {
     yesterday: 'χθες',
     days: (n: number) => `πριν από ${n} ημέρες`,
   },
-  benefitCategories: {
-    all: 'Όλα',
-    transport: 'Μεταφορές',
-    food: 'Φαγητό',
-    books: 'Βιβλία',
+  benefits: {
+    categories: {
+      all: 'Όλα',
+      transport: 'Μεταφορές',
+      food: 'Φαγητό',
+      books: 'Βιβλία',
+      other: 'Άλλα προνόμια',
+    },
+    featured: 'Προτεινόμενο',
+    open: (title: string) => `Λεπτομέρειες: ${title}`,
+    sampleNotice: 'Δείγμα πληροφοριών. Επιβεβαίωσε τις λεπτομέρειες στην ιστοσελίδα του πανεπιστημίου σου.',
+    visitSite: (shortName: string) => `Ιστοσελίδα ${shortName}`,
   },
 } as const

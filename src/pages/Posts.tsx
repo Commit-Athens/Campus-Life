@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import { MapPin, MessageCircle } from 'lucide-react'
 import { Button } from '../components/Button'
+import { CardActions } from '../components/CardActions'
 import { Chip, Tag } from '../components/Chip'
 import { EmptyState } from '../components/EmptyState'
 import { FeedCard } from '../components/FeedCard'
 import { PageTitle } from '../components/PageTitle'
 import { Toggle } from '../components/Toggle'
-import { VoteButtons } from '../components/VoteButtons'
 import { lostFound } from '../data/lostFound'
 import { studentPosts } from '../data/studentPosts'
+import { useComments } from '../hooks/useComments'
 import { useFeedScope } from '../hooks/useFeedScope'
 import { useVotes } from '../hooks/useVotes'
 import { el } from '../i18n/el'
@@ -26,6 +27,7 @@ export default function Posts() {
   const [filter, setFilter] = useState<Filter>('all')
   const { showAll, setShowAll, scope, withUniversity } = useFeedScope()
   const { votes, vote } = useVotes()
+  const { commentsFor, addComment } = useComments()
 
   const entries: Entry[] = [
     ...(filter !== 'lostFound' ? scope(studentPosts).map((item): Entry => ({ kind: 'post', item })) : []),
@@ -67,12 +69,14 @@ export default function Posts() {
       ) : (
         <div className="flex flex-col gap-4">
           {entries.map(({ kind, item }) => {
-            const votesFooter = (
-              <VoteButtons
+            const actions = (
+              <CardActions
                 useful={item.useful}
                 notUseful={item.notUseful}
-                current={votes[item.id]}
+                vote={votes[item.id]}
                 onVote={(choice) => vote(item.id, choice)}
+                comments={commentsFor(item.id)}
+                onComment={(body) => addComment(item.id, body)}
               />
             )
 
@@ -84,7 +88,7 @@ export default function Posts() {
                   time={relativeTime(item.minutesAgo)}
                   label={withUniversity(item.universityId, item.department)}
                   body={item.body}
-                  footer={votesFooter}
+                  footer={actions}
                 >
                   <div className="flex flex-wrap gap-2">
                     {item.tags.map((tag) => (
@@ -104,7 +108,7 @@ export default function Posts() {
                 title={item.title}
                 body={item.body}
                 image={{ src: item.image, alt: item.imageAlt }}
-                footer={votesFooter}
+                footer={actions}
               >
                 <div className="flex flex-wrap items-center gap-2 text-caption">
                   <span

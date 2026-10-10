@@ -68,3 +68,30 @@ export type LostFoundItem = Scoped & {
   useful: number
   notUseful: number
 }
+
+/** Sample comment on a feed card (fictional author). */
+export type SampleComment = {
+  id: string
+  itemId: string
+  author: string
+  minutesAgo: number
+  body: string
+}
+
+/** A comment as shown on a card: sample or written by the user. */
+export type FeedComment = Omit<SampleComment, 'itemId'>
+
+export type BenefitCategory = 'transport' | 'food' | 'books' | 'other'
+
+/** Student benefit or affordable option (sample). */
+export type Benefit = Scoped & {
+  id: string
+  category: BenefitCategory
+  title: string
+  /** One line for the list row. */
+  description: string
+  /** Longer text for the detail sheet. */
+  details: string
+  /** Shown as the banner at the top of the page. */
+  featured?: boolean
+}
