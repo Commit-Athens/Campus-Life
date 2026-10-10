@@ -1,0 +1,19 @@
+{
+  "name": "campus-life",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CampusLife student prototype",
+  "scripts": {
+    "predeploy": "mkdir -p public && cp index.html public/index.html",
+    "dev": "npm run predeploy && wrangler dev",
+    "deploy": "npm run predeploy && wrangler deploy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Commit-Athens/Campus-Life.git"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "wrangler": "^4.149.0"
+  }
+}

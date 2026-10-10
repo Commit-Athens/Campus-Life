@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "campuslife",
+  "account_id": "cc30f763e73992f6f28af6471721a947",
+  "compatibility_date": "2026-10-10",
+  "assets": {
+    "directory": "./public"
+  },
+  "workers_dev": true,
+  "preview_urls": true
+}
