@@ -12,6 +12,7 @@ import Login from './pages/Login'
 import More from './pages/More'
 import Onboarding from './pages/Onboarding'
 import Posts from './pages/Posts'
+import Start from './pages/Start'
 
 const SPLASH_MS = 1200
 
@@ -32,6 +33,7 @@ export default function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/welcome" element={<Onboarding />} />
+              <Route path="/start" element={<Start />} />
               <Route path="/login" element={<Login />} />
               <Route element={<Layout />}>
                 <Route path="/feed" element={<Feed />} />

@@ -7,7 +7,7 @@ import { TabBar } from './TabBar'
 /** Mobile app frame: sticky header, scrollable page, fixed bottom tab bar. Requires login. */
 export function Layout() {
   const { account } = useAuth()
-  if (!account) return <Navigate to="/login" replace />
+  if (!account) return <Navigate to="/welcome" replace />
 
   return (
     <div className="mx-auto min-h-dvh max-w-md bg-page">
