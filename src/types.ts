@@ -95,3 +95,66 @@ export type Benefit = Scoped & {
   /** Shown as the banner at the top of the page. */
   featured?: boolean
 }
+
+// Track B — Community and feed extras
+
+export type StudyGroup = Scoped & {
+  id: string
+  name: string
+  course: string
+  members: number
+  /** Short sample line, e.g. "Πέμπτη 18:00". */
+  nextSession: string
+}
+
+export type CourseNote = Scoped & {
+  id: string
+  title: string
+  course: string
+  pages: number
+}
+
+export type HousingKind = 'room' | 'roommate'
+
+export type HousingListing = Scoped & {
+  id: string
+  kind: HousingKind
+  title: string
+  area: string
+  rent: string
+  description: string
+}
+
+export type ForumCategory = 'stress' | 'housing' | 'courses' | 'money' | 'other'
+
+export type ForumReply = {
+  id: string
+  alias: string
+  body: string
+  minutesAgo: number
+}
+
+export type ForumPost = Scoped & {
+  id: string
+  alias: string
+  category: ForumCategory
+  title: string
+  body: string
+  minutesAgo: number
+  replies: ForumReply[]
+}
+
+export type ChatChannel = 'general' | 'exams' | 'housing' | 'random'
+
+export type ChatMessage = {
+  id: string
+  author: string
+  body: string
+  minutesAgo: number
+}
+
+export type UniversitySource = {
+  universityId: UniversityId
+  blurb: string
+  updatedMinutesAgo: number
+}
