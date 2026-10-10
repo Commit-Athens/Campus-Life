@@ -65,6 +65,25 @@ export const el = {
     selected: 'Επιλέχθηκε',
     secondaryAction: 'Καθαρισμός αναζήτησης',
   },
+  feed: {
+    filters: {
+      all: 'Όλα',
+      announcement: 'Ανακοινώσεις',
+      rooms: 'Αίθουσες',
+      school: 'Σχολή',
+    },
+    sampleNotice: 'Δείγμα περιεχομένου. Για επίσημες ανακοινώσεις δες την ιστοσελίδα του πανεπιστημίου.',
+    source: 'Πηγή',
+    empty: 'Δεν υπάρχουν αναρτήσεις',
+    emptyHint: 'Δεν υπάρχει τίποτα σε αυτή την κατηγορία ακόμα.',
+  },
+  time: {
+    justNow: 'μόλις τώρα',
+    minutes: (n: number) => `πριν από ${n} λεπτ${n === 1 ? 'ό' : 'ά'}`,
+    hours: (n: number) => `πριν από ${n} ώρ${n === 1 ? 'α' : 'ες'}`,
+    yesterday: 'χθες',
+    days: (n: number) => `πριν από ${n} ημέρες`,
+  },
   benefitCategories: {
     all: 'Όλα',
     transport: 'Μεταφορές',

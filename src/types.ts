@@ -25,3 +25,18 @@ export type DemoAccount = {
   department: string
   year: number
 }
+
+export type AnnouncementCategory = 'announcement' | 'rooms' | 'school'
+
+/** University announcement (sample). Source link is the university homepage. */
+export type Announcement = Scoped & {
+  id: string
+  category: AnnouncementCategory
+  /** Who posted it, e.g. a department secretariat. */
+  source: string
+  /** Minutes before "now", so relative times stay fresh in the demo. */
+  minutesAgo: number
+  title: string
+  body: string
+  confirms: number
+}
