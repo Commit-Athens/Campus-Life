@@ -16,3 +16,9 @@ export function formatDayMonth(iso: string): string {
 export function formatWeekday(iso: string): string {
   return weekday.format(parseDate(iso))
 }
+
+/** Whole days from today (local midnight) until the ISO date; negative if past. */
+export function daysUntil(iso: string, now: Date = new Date()): number {
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  return Math.round((parseDate(iso).getTime() - today.getTime()) / 86_400_000)
+}

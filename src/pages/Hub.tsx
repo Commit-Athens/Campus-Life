@@ -1,32 +1,38 @@
-import { useState, type ComponentType } from 'react'
+import { useState } from 'react'
+import { NextExamCard } from '../components/NextExamCard'
 import { PageTitle } from '../components/PageTitle'
 import { SectionNav } from '../components/SectionNav'
+import { exams } from '../data/exams'
+import { forUniversity } from '../data/universities'
+import { useMyExams } from '../hooks/useMyExams'
+import { useUniversity } from '../hooks/useUniversity'
 import { el } from '../i18n/el'
+import { daysUntil } from '../i18n/formatDate'
 import { BenefitsSection } from './hub/BenefitsSection'
 import { ChecklistSection } from './hub/ChecklistSection'
 import { ExamsSection } from './hub/ExamsSection'
 import { LinksSection } from './hub/LinksSection'
 import { OpportunitiesSection } from './hub/OpportunitiesSection'
+import { PassesSection } from './hub/PassesSection'
 
-const sections = ['benefits', 'checklist', 'links', 'exams', 'opportunities'] as const
+const sections = ['benefits', 'passes', 'checklist', 'links', 'exams', 'opportunities'] as const
 type Section = (typeof sections)[number]
 
-const views: Record<Section, ComponentType> = {
-  benefits: BenefitsSection,
-  checklist: ChecklistSection,
-  links: LinksSection,
-  exams: ExamsSection,
-  opportunities: OpportunitiesSection,
-}
-
-/** Student Hub: benefits first, then checklist, links, exams and opportunities. */
+/** Student Hub: next-exam countdown on top, then benefits, passes, checklist, links, exams and opportunities. */
 export default function Hub() {
+  const { university } = useUniversity()
   const [section, setSection] = useState<Section>('benefits')
-  const View = views[section]
+  const { myExamIds, toggleExam } = useMyExams()
+
+  const nextExam =
+    forUniversity(exams, university.id)
+      .filter((e) => myExamIds.includes(e.id) && daysUntil(e.date) >= 0)
+      .sort((a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time))[0] ?? null
 
   return (
     <>
       <PageTitle>{el.pages.hub}</PageTitle>
+      <NextExamCard exam={nextExam} onOpen={() => setSection('exams')} />
       <SectionNav
         sections={sections}
         labels={el.hub.sections}
@@ -35,7 +41,12 @@ export default function Hub() {
         ariaLabel={el.hub.sectionsLabel}
       />
       <div role="tabpanel" className="flex flex-col gap-6">
-        <View />
+        {section === 'benefits' && <BenefitsSection />}
+        {section === 'passes' && <PassesSection />}
+        {section === 'checklist' && <ChecklistSection />}
+        {section === 'links' && <LinksSection />}
+        {section === 'exams' && <ExamsSection myExamIds={myExamIds} onToggle={toggleExam} />}
+        {section === 'opportunities' && <OpportunitiesSection />}
       </div>
     </>
   )

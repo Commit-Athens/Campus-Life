@@ -1,13 +1,13 @@
-import { useState } from 'react'
 import { forUniversity, getUniversity } from '../data/universities'
 import { el } from '../i18n/el'
 import type { Scoped, UniversityScope } from '../types'
+import { useLocalStorage } from './useLocalStorage'
 import { useUniversity } from './useUniversity'
 
-/** The "all universities" toggle shared by both feeds. */
+/** The "all universities" setting, persisted and shared by the feeds, Community and Settings in More. */
 export function useFeedScope() {
   const { university } = useUniversity()
-  const [showAll, setShowAll] = useState(false)
+  const [showAll, setShowAll] = useLocalStorage<boolean>('campuslife.showAllUniversities', false)
 
   const scope = <T extends Scoped>(items: T[]): T[] => (showAll ? items : forUniversity(items, university.id))
 
