@@ -1,0 +1,37 @@
+@import 'tailwindcss';
+
+/* Brand tokens from CLAUDE.md. Use these via utilities (bg-primary, text-ink, ...), never raw hex. */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --color-primary: #2563eb;
+  --color-primary-soft: #dbeafe;
+  --color-ink: #0f172a;
+  --color-muted: #64748b;
+  --color-surface: #e2e8f0;
+  --color-page: #f8faff;
+  --color-success: #22c55e;
+  --color-success-soft: #dcfce7;
+  --color-warning: #f59e0b;
+  --color-warning-soft: #fef3c7;
+  --color-error: #ef4444;
+  --color-error-soft: #fee2e2;
+
+  --text-h1: 2rem;
+  --text-h1--line-height: 2.5rem;
+  --text-h1--font-weight: 700;
+  --text-h2: 1.5rem;
+  --text-h2--line-height: 2rem;
+  --text-h2--font-weight: 600;
+  --text-h3: 1.125rem;
+  --text-h3--line-height: 1.625rem;
+  --text-h3--font-weight: 600;
+  --text-body: 1rem;
+  --text-body--line-height: 1.5rem;
+  --text-caption: 0.875rem;
+  --text-caption--line-height: 1.25rem;
+}
+
+body {
+  @apply bg-page font-sans text-body text-ink antialiased;
+}
