@@ -135,6 +135,18 @@ export type Opportunity = Scoped & {
   details: string
 }
 
+export type PassCategory = 'cafe' | 'food' | 'books' | 'gym' | 'services'
+
+/** Partner discount pass (fictional sample partner). */
+export type PartnerPass = Scoped & {
+  id: string
+  partner: string
+  category: PassCategory
+  area: string
+  offer: string
+  terms: string
+}
+
 // Track B — Community and feed extras
 
 export type StudyGroup = Scoped & {
