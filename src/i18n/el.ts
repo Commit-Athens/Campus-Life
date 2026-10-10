@@ -70,8 +70,6 @@ export const el = {
       posts: 'Αναρτήσεις',
       lostFound: 'Χαμένα & Ευρεθέντα',
     },
-    allUniversities: 'Όλα τα πανεπιστήμια',
-    allUniversitiesHint: 'Δείξε αναρτήσεις και από άλλα πανεπιστήμια',
     shared: 'Διαπανεπιστημιακό',
     lost: 'Χάθηκε',
     found: 'Βρέθηκε',
@@ -130,6 +128,8 @@ export const el = {
     homepageTitle: (shortName: string) => `Ιστοσελίδα ${shortName}`,
   },
   checklist: {
+    empty: 'Η λίστα είναι άδεια',
+    emptyHint: 'Δεν υπάρχουν βήματα για αυτό το πανεπιστήμιο ακόμα.',
     title: 'Λίστα πρωτοετών',
     intro: 'Τα πρώτα βήματα για να ξεκινήσεις το εξάμηνο χωρίς άγχος.',
     progress: (done: number, total: number) => `${done}/${total} ολοκληρώθηκαν`,
@@ -164,8 +164,6 @@ export const el = {
   },
   community: {
     search: 'Αναζήτηση ομάδων, σημειώσεων...',
-    allUniversities: 'Όλα τα πανεπιστήμια',
-    allUniversitiesHint: 'Δείξε ομάδες και αγγελίες και από άλλα πανεπιστήμια',
     sections: {
       groups: 'Ομάδες',
       notes: 'Σημειώσεις',
@@ -308,6 +306,8 @@ export const el = {
     title: 'Κάρτες συνεργατών',
     intro: 'Εκπτώσεις από συνεργάτες κοντά στη σχολή σου. Πάρε την κάρτα και δείξ\' την στο ταμείο.',
     sample: 'Δείγμα συνεργάτη',
+    empty: 'Δεν υπάρχουν κάρτες ακόμα',
+    emptyHint: 'Δεν έχουμε συνεργάτες κοντά σε αυτό το πανεπιστήμιο ακόμα.',
     claimed: 'Ενεργή',
     claim: 'Πάρε την κάρτα',
     unclaim: 'Αφαίρεση κάρτας',
@@ -348,7 +348,7 @@ export const el = {
   settings: {
     title: 'Ρυθμίσεις',
     allUniversities: 'Όλα τα πανεπιστήμια',
-    allUniversitiesHint: 'Δείξε αναρτήσεις, ομάδες και αγγελίες και από τα άλλα πανεπιστήμια',
+    allUniversitiesHint: 'Δείξε ανακοινώσεις, αναρτήσεις, ομάδες και αγγελίες και από τα άλλα πανεπιστήμια',
   },
   more: {
     points: (n: number) => `${n} ${n === 1 ? 'πόντος' : 'πόντοι'}`,
