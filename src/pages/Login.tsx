@@ -6,7 +6,9 @@ import { TextInput } from '../components/TextInput'
 import { DEMO_PASSWORD, demoAccounts } from '../data/demoAccounts'
 import { getUniversity } from '../data/universities'
 import { useAuth } from '../hooks/useAuth'
+import { useLocalStorage } from '../hooks/useLocalStorage'
 import { el } from '../i18n/el'
+import { ONBOARDED_KEY } from './Onboarding'
 
 export default function Login() {
   const { account, login } = useAuth()
@@ -14,8 +16,10 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(false)
+  const [onboarded] = useLocalStorage(ONBOARDED_KEY, false)
 
   if (account) return <Navigate to="/feed" replace />
+  if (!onboarded) return <Navigate to="/welcome" replace />
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault()
