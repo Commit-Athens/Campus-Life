@@ -22,6 +22,7 @@ export type DemoAccount = {
   name: string
   initials: string
   universityId: UniversityId
+  faculty: string
   department: string
   year: number
 }
