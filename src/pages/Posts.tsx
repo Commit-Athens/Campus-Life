@@ -1,20 +1,24 @@
 import { useState } from 'react'
 import { MapPin, MessageCircle } from 'lucide-react'
+import { CreatePostSheet, type NewPost } from '../components/CreatePostSheet'
 import { Button } from '../components/Button'
 import { CardActions } from '../components/CardActions'
 import { Chip, Tag } from '../components/Chip'
 import { EmptyState } from '../components/EmptyState'
 import { FeedCard } from '../components/FeedCard'
 import { PageTitle } from '../components/PageTitle'
-import { Toggle } from '../components/Toggle'
 import { lostFound } from '../data/lostFound'
 import { studentPosts } from '../data/studentPosts'
+import { useAuth } from '../hooks/useAuth'
 import { useComments } from '../hooks/useComments'
 import { useFeedScope } from '../hooks/useFeedScope'
+import { useLocalStorage } from '../hooks/useLocalStorage'
+import { usePoints } from '../hooks/usePoints'
+import { useUniversity } from '../hooks/useUniversity'
 import { useVotes } from '../hooks/useVotes'
 import { el } from '../i18n/el'
 import { relativeTime } from '../i18n/relativeTime'
-import type { LostFoundItem, StudentPost } from '../types'
+import type { LostFoundItem, StudentPost, UserPost } from '../types'
 
 type Filter = 'all' | 'posts' | 'lostFound'
 
@@ -22,14 +26,54 @@ type Entry = { kind: 'post'; item: StudentPost } | { kind: 'lostFound'; item: Lo
 
 const filters: Filter[] = ['all', 'posts', 'lostFound']
 
+const minutesSince = (time: number) => Math.max(0, Math.floor((Date.now() - time) / 60000))
+
+/** A post the user wrote, shaped like the sample data so it renders with the same cards. */
+function toEntry(p: UserPost): Entry {
+  const base = {
+    id: p.id,
+    universityId: p.universityId,
+    author: p.author,
+    minutesAgo: minutesSince(p.createdAt),
+    body: p.body,
+    useful: 0,
+    notUseful: 0,
+  }
+  return p.kind === 'post'
+    ? {
+        kind: 'post',
+        item: { ...base, department: p.department, tags: p.tags },
+      }
+    : {
+        kind: 'lostFound',
+        item: {
+          ...base,
+          kind: p.kind,
+          title: p.title ?? '',
+          location: p.location ?? '',
+        },
+      }
+}
+
 /** Student-sourced feed: posts plus Lost & Found. */
 export default function Posts() {
   const [filter, setFilter] = useState<Filter>('all')
-  const { showAll, setShowAll, scope, withUniversity } = useFeedScope()
+  const { showAll, scope, withUniversity } = useFeedScope()
+  const { university } = useUniversity()
+  const { account } = useAuth()
+  const { award } = usePoints()
+  const [myPosts, setMyPosts] = useLocalStorage<UserPost[]>('campuslife.myPosts', [])
+  const [creating, setCreating] = useState(false)
   const { votes, vote } = useVotes()
   const { commentsFor, addComment } = useComments()
 
+  const mine = myPosts
+    .filter((p) => showAll || p.universityId === university.id)
+    .map(toEntry)
+    .filter((e) => filter === 'all' || (filter === 'posts' ? e.kind === 'post' : e.kind === 'lostFound'))
+
   const entries: Entry[] = [
+    ...mine,
     ...(filter !== 'lostFound' ? scope(studentPosts).map((item): Entry => ({ kind: 'post', item })) : []),
     ...(filter !== 'posts' ? scope(lostFound).map((item): Entry => ({ kind: 'lostFound', item })) : []),
   ].sort((a, b) => a.item.minutesAgo - b.item.minutesAgo)
@@ -44,12 +88,7 @@ export default function Posts() {
         ))}
       </div>
 
-      <Toggle
-        label={el.feed.allUniversities}
-        description={el.feed.allUniversitiesHint}
-        checked={showAll}
-        onChange={setShowAll}
-      />
+      <Button onClick={() => setCreating(true)}>{el.createPost.open}</Button>
 
       <p className="text-caption text-muted">{el.feed.postsNotice}</p>
 
@@ -107,7 +146,7 @@ export default function Posts() {
                 label={withUniversity(item.universityId, el.feed.filters.lostFound)}
                 title={item.title}
                 body={item.body}
-                image={{ src: item.image, alt: item.imageAlt }}
+                image={item.image ? { src: item.image, alt: item.imageAlt ?? item.title } : undefined}
                 footer={actions}
               >
                 <div className="flex flex-wrap items-center gap-2 text-caption">
@@ -127,6 +166,27 @@ export default function Posts() {
             )
           })}
         </div>
+      )}
+      {creating && (
+        <CreatePostSheet
+          onClose={() => setCreating(false)}
+          onSubmit={(post: NewPost) => {
+            const id = `mine-${Date.now()}`
+            setMyPosts((prev) => [
+              {
+                ...post,
+                id,
+                universityId: university.id,
+                author: account?.name ?? el.comments.you,
+                department: account?.department ?? '',
+                createdAt: Date.now(),
+              },
+              ...prev,
+            ])
+            setFilter(post.kind === 'post' ? 'posts' : 'lostFound')
+            award(`post:${id}`)
+          }}
+        />
       )}
     </>
   )

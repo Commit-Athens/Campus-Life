@@ -63,8 +63,9 @@ export type LostFoundItem = Scoped & {
   title: string
   body: string
   location: string
-  image: string
-  imageAlt: string
+  /** Placeholder photo; posts created in the app have none. */
+  image?: string
+  imageAlt?: string
   useful: number
   notUseful: number
 }
@@ -145,6 +146,21 @@ export type PartnerPass = Scoped & {
   area: string
   offer: string
   terms: string
+}
+
+/** Post written by the user in the student feed, stored locally. */
+export type UserPost = {
+  id: string
+  universityId: UniversityId
+  kind: 'post' | 'lost' | 'found'
+  author: string
+  department: string
+  createdAt: number
+  body: string
+  /** Lost & Found only. */
+  title?: string
+  location?: string
+  tags: string[]
 }
 
 // Track B — Community and feed extras
