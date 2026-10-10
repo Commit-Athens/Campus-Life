@@ -7,12 +7,14 @@ import { Splash } from './components/Splash'
 import { ThemeProvider } from './components/ThemeProvider'
 import { UniversityProvider } from './components/UniversityProvider'
 import Community from './pages/Community'
+import DesignShell from './pages/designs/DesignShell'
 import Feed from './pages/Feed'
 import Hub from './pages/Hub'
 import Login from './pages/Login'
 import More from './pages/More'
 import Onboarding from './pages/Onboarding'
 import Posts from './pages/Posts'
+import Roadmap from './pages/Roadmap'
 import Start from './pages/Start'
 import { LanguageProvider } from './i18n/LanguageProvider'
 
@@ -46,6 +48,16 @@ function AppShell() {
                 <Route path="/welcome" element={<Onboarding />} />
                 <Route path="/start" element={<Start />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/roadmap" element={<Roadmap />} />
+                {([1, 2, 3] as const).map((variant) => (
+                  <Route key={variant} path={`/design${variant}`} element={<DesignShell variant={variant} />}>
+                    <Route index element={<Feed />} />
+                    <Route path="posts" element={<Posts />} />
+                    <Route path="hub" element={<Hub />} />
+                    <Route path="community" element={<Community />} />
+                    <Route path="more" element={<More />} />
+                  </Route>
+                ))}
                 <Route element={<Layout />}>
                   <Route path="/feed" element={<Feed />} />
                   <Route path="/posts" element={<Posts />} />

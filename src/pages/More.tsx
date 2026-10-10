@@ -1,6 +1,8 @@
 import { BadgeCheck, Star } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
+import { Link } from 'react-router'
 import { Avatar } from '../components/Avatar'
+import { RoadmapLists } from '../components/RoadmapLists'
 import { Button } from '../components/Button'
 import { Chip } from '../components/Chip'
 import { PageTitle } from '../components/PageTitle'
@@ -194,13 +196,10 @@ export default function More() {
 
       <Card title={el.more.roadmap.title}>
         <p className="text-caption text-muted">{el.more.roadmap.intro}</p>
-        <ul className="flex flex-wrap gap-2">
-          {el.more.roadmap.items.map((item) => (
-            <li key={item} className="rounded-full bg-surface px-3 py-1.5 text-caption text-muted">
-              {item}
-            </li>
-          ))}
-        </ul>
+        <RoadmapLists />
+        <Link to="/roadmap" className="min-h-11 text-caption font-semibold text-primary">
+          {el.more.roadmap.open}
+        </Link>
       </Card>
 
       <Card title={el.more.credits.title}>

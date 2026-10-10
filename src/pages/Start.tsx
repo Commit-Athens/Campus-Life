@@ -53,14 +53,6 @@ export default function Start() {
           )
         })}
       </section>
-
-      <button
-        type="button"
-        onClick={() => navigate('/login')}
-        className="min-h-11 text-center text-caption font-medium text-primary"
-      >
-        {el.start.useEmail}
-      </button>
     </main>
   )
 }

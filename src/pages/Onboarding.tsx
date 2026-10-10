@@ -14,9 +14,9 @@ export default function Onboarding() {
 
   if (account) return <Navigate to="/feed" replace />
 
-  const go = (path: '/start' | '/login') => {
+  const go = () => {
     setOnboarded(true)
-    navigate(path, { replace: true })
+    navigate('/start', { replace: true })
   }
 
   return (
@@ -41,10 +41,9 @@ export default function Onboarding() {
         <div className="flex-1" />
 
         <div className="flex flex-col gap-3">
-          <Button variant="inverse" onClick={() => go('/start')}>
+          <Button variant="inverse" onClick={go}>
             {el.onboarding.start}
           </Button>
-          <Button onClick={() => go('/login')}>{el.onboarding.haveAccount}</Button>
           <p className="text-center text-caption text-white/80">{el.onboarding.demoNotice}</p>
         </div>
       </div>
