@@ -8,9 +8,11 @@ import { FeedCard } from '../components/FeedCard'
 import { PageTitle } from '../components/PageTitle'
 import { Toggle } from '../components/Toggle'
 import { announcements } from '../data/announcements'
+import { universitySources } from '../data/sources'
 import { getUniversity } from '../data/universities'
 import { useComments } from '../hooks/useComments'
 import { useFeedScope } from '../hooks/useFeedScope'
+import { useUniversity } from '../hooks/useUniversity'
 import { useVotes } from '../hooks/useVotes'
 import { el } from '../i18n/el'
 import { relativeTime } from '../i18n/relativeTime'
@@ -24,11 +26,16 @@ const filters: Filter[] = ['all', 'announcement', 'rooms', 'school', 'web']
 export default function Feed() {
   const [filter, setFilter] = useState<Filter>('all')
   const { showAll, setShowAll, scope, withUniversity } = useFeedScope()
+  const { university } = useUniversity()
   const { votes, vote } = useVotes()
   const { commentsFor, addComment } = useComments()
 
+  const showSources = filter === 'web'
+  const sources = universitySources.filter((source) => showAll || source.universityId === university.id)
+  const webItems = scope(announcements).filter((item) => item.category === 'web')
+
   const items = scope(announcements)
-    .filter((item) => filter === 'all' || item.category === filter)
+    .filter((item) => item.category !== 'web' && (filter === 'all' || item.category === filter))
     .sort((a, b) => a.minutesAgo - b.minutesAgo)
 
   return (
@@ -52,7 +59,37 @@ export default function Feed() {
         {filter === 'web' ? el.feed.webNotice : el.feed.sampleNotice}
       </p>
 
-      {items.length === 0 ? (
+      {showSources && (
+        <div className="flex flex-col gap-4">
+          <h2 className="text-h3">{el.sources.title}</h2>
+          <p className="text-caption text-muted">{el.sources.demo}</p>
+          {sources.map((source) => {
+            const uni = getUniversity(source.universityId)
+            const cards = webItems.filter((item) => item.universityId === source.universityId)
+            return (
+              <article key={source.universityId} className="flex flex-col gap-3 rounded-2xl bg-white p-4 ring-1 ring-surface">
+                <div>
+                  <h3 className="text-h3">{uni.shortName}</h3>
+                  <p className="text-caption text-muted">{el.sources.updated(relativeTime(source.updatedMinutesAgo))}</p>
+                  <p className="mt-2">{source.blurb}</p>
+                  <a href={uni.homepage} target="_blank" rel="noreferrer" className="mt-2 inline-flex min-h-11 items-center font-semibold text-primary">
+                    {el.sources.homepage(uni.shortName)}
+                  </a>
+                </div>
+                {cards.map((item) => (
+                  <div key={item.id} className="rounded-2xl bg-page p-3">
+                    <p className="text-caption text-muted">{el.sources.items}</p>
+                    <p className="font-semibold">{item.title}</p>
+                    <p className="text-caption">{item.body}</p>
+                  </div>
+                ))}
+              </article>
+            )
+          })}
+        </div>
+      )}
+
+      {items.length === 0 && filter !== 'web' ? (
         <EmptyState
           icon={Megaphone}
           title={el.feed.empty}
