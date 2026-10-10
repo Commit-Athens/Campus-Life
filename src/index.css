@@ -17,6 +17,11 @@
   --color-error: #ef4444;
   --color-error-soft: #fee2e2;
 
+  /* University accents: header badge only, never the main theme. */
+  --color-uni-nkua: #9f1d35;
+  --color-uni-ntua: #1e3a5f;
+  --color-uni-uniwa: #0e7c86;
+
   --text-h1: 2rem;
   --text-h1--line-height: 2.5rem;
   --text-h1--font-weight: 700;
