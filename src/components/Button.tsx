@@ -1,6 +1,6 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react'
 
-type Variant = 'primary' | 'secondary'
+type Variant = 'primary' | 'secondary' | 'inverse'
 
 const base =
   'flex min-h-12 w-full items-center justify-center rounded-full px-6 font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50'
@@ -8,6 +8,7 @@ const base =
 const variants: Record<Variant, string> = {
   primary: 'bg-primary text-white hover:bg-primary/90',
   secondary: 'border-2 border-primary bg-card text-primary hover:bg-primary-soft',
+  inverse: 'bg-white text-night hover:bg-white/90',
 }
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant }

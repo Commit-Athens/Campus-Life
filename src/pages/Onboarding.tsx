@@ -1,8 +1,7 @@
-import { Gift, Megaphone, Users } from 'lucide-react'
-import { useNavigate } from 'react-router'
+import { Navigate, useNavigate } from 'react-router'
 import { Button } from '../components/Button'
-import { IconCircle } from '../components/IconCircle'
-import { LogoMark } from '../components/Logo'
+import { Logo } from '../components/Logo'
+import { useAuth } from '../hooks/useAuth'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { el } from '../i18n/el'
 
@@ -10,42 +9,44 @@ export const ONBOARDED_KEY = 'campuslife.onboarded'
 
 export default function Onboarding() {
   const navigate = useNavigate()
+  const { account } = useAuth()
   const [, setOnboarded] = useLocalStorage(ONBOARDED_KEY, false)
 
-  const finish = () => {
+  if (account) return <Navigate to="/feed" replace />
+
+  const go = (path: '/start' | '/login') => {
     setOnboarded(true)
-    navigate('/login', { replace: true })
+    navigate(path, { replace: true })
   }
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-md flex-col px-4 py-10">
-      {/* Illustration placeholder built from brand icons. */}
+    <main className="relative mx-auto flex min-h-dvh max-w-md flex-col overflow-hidden">
+      <img
+        src="/welcome/campus.jpg"
+        alt=""
+        aria-hidden
+        className="absolute inset-0 size-full object-cover"
+      />
       <div
         aria-hidden
-        className="flex flex-1 flex-col items-center justify-center gap-6 rounded-2xl bg-primary-soft/50 py-12"
-      >
-        <LogoMark className="size-20" />
-        <div className="flex gap-3">
-          <IconCircle icon={Megaphone} />
-          <IconCircle icon={Gift} tone="success" />
-          <IconCircle icon={Users} tone="warning" />
+        className="absolute inset-0 bg-gradient-to-b from-night/70 via-night/25 to-night/80"
+      />
+
+      <div className="relative z-10 flex flex-1 flex-col px-5 pt-14 pb-10">
+        <header className="flex flex-col gap-2">
+          <Logo inverted />
+          <p className="text-body text-white/90">{el.brand.tagline}</p>
+        </header>
+
+        <div className="flex-1" />
+
+        <div className="flex flex-col gap-3">
+          <Button variant="inverse" onClick={() => go('/start')}>
+            {el.onboarding.start}
+          </Button>
+          <Button onClick={() => go('/login')}>{el.onboarding.haveAccount}</Button>
+          <p className="text-center text-caption text-white/80">{el.onboarding.demoNotice}</p>
         </div>
-      </div>
-
-      <div className="flex flex-col gap-3 py-8 text-center">
-        <h1 className="text-h1">{el.onboarding.title}</h1>
-        <p className="text-muted">{el.onboarding.description}</p>
-      </div>
-
-      <div className="flex flex-col items-center gap-2">
-        <Button onClick={finish}>{el.onboarding.start}</Button>
-        <button
-          type="button"
-          onClick={finish}
-          className="min-h-11 px-4 text-caption font-medium text-muted hover:text-ink"
-        >
-          {el.onboarding.skip}
-        </button>
       </div>
     </main>
   )

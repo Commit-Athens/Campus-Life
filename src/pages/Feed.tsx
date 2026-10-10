@@ -1,15 +1,16 @@
-import { useState } from 'react'
-import { Megaphone } from 'lucide-react'
+import { useRef, useState } from 'react'
+import { ClipboardList, Gift, Globe, LayoutGrid, MapPin, Megaphone, School, Users } from 'lucide-react'
+import { Link } from 'react-router'
 import { Button } from '../components/Button'
 import { CardActions } from '../components/CardActions'
-import { Chip } from '../components/Chip'
 import { EmptyState } from '../components/EmptyState'
 import { FeedCard } from '../components/FeedCard'
 import { SpeakButton } from '../components/SpeakButton'
-import { PageTitle } from '../components/PageTitle'
+import { Toggle } from '../components/Toggle'
 import { announcements } from '../data/announcements'
 import { universitySources } from '../data/sources'
 import { getUniversity } from '../data/universities'
+import { useAuth } from '../hooks/useAuth'
 import { useComments } from '../hooks/useComments'
 import { useFeedScope } from '../hooks/useFeedScope'
 import { useUniversity } from '../hooks/useUniversity'
@@ -20,33 +21,146 @@ import type { AnnouncementCategory } from '../types'
 
 type Filter = 'all' | AnnouncementCategory
 
-const filters: Filter[] = ['all', 'announcement', 'rooms', 'school', 'web']
+const filters: { id: Filter; icon: typeof Megaphone }[] = [
+  { id: 'all', icon: LayoutGrid },
+  { id: 'announcement', icon: Megaphone },
+  { id: 'rooms', icon: MapPin },
+  { id: 'school', icon: School },
+  { id: 'web', icon: Globe },
+]
 
-/** Official feed: university announcements plus info collected from the web. */
+const startCards = [
+  { to: '/hub?section=checklist', label: () => el.feed.startChecklist, icon: ClipboardList, accent: false },
+  { to: '/community', label: () => el.feed.startGroups, icon: Users, accent: false },
+  { to: '/hub?section=benefits', label: () => el.feed.startBenefits, icon: Gift, accent: true },
+] as const
+
+/** Official feed home: greeting, shortcuts, rails, then university announcements. */
 export default function Feed() {
   const [filter, setFilter] = useState<Filter>('all')
-  const { showAll, scope, withUniversity } = useFeedScope()
+  const { showAll, setShowAll, scope, withUniversity } = useFeedScope()
   const { university } = useUniversity()
+  const { account } = useAuth()
   const { votes, vote } = useVotes()
   const { commentsFor, addComment } = useComments()
+  const cardRefs = useRef<Record<string, HTMLElement | null>>({})
 
   const showSources = filter === 'web'
   const sources = universitySources.filter((source) => showAll || source.universityId === university.id)
   const webItems = scope(announcements).filter((item) => item.category === 'web')
 
-  const items = scope(announcements)
+  const scoped = scope(announcements)
+  const popular = [...scoped].sort((a, b) => a.minutesAgo - b.minutesAgo).slice(0, 6)
+
+  const items = scoped
     .filter((item) => item.category !== 'web' && (filter === 'all' || item.category === filter))
     .sort((a, b) => a.minutesAgo - b.minutesAgo)
 
+  const firstName = account?.name.split(' ')[0] ?? ''
+
+  const scrollToCard = (id: string) => {
+    const category = announcements.find((a) => a.id === id)?.category
+    if (category === 'web') setFilter('web')
+    else if (category && filter !== 'all' && filter !== category) setFilter('all')
+    window.requestAnimationFrame(() => {
+      cardRefs.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    })
+  }
+
   return (
     <>
-      <PageTitle>{el.pages.feed}</PageTitle>
-
-      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
-        {filters.map((f) => (
-          <Chip key={f} label={el.feed.filters[f]} active={filter === f} onClick={() => setFilter(f)} />
-        ))}
+      <div className="flex items-center gap-2">
+        <p className="min-h-11 flex-1 rounded-full bg-night px-4 py-2.5 text-caption font-semibold text-white">
+          {el.feed.greeting(firstName)}
+        </p>
+        <Link
+          to="/more"
+          aria-label={el.header.profile}
+          className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-soft text-caption font-semibold text-primary"
+        >
+          {account?.initials}
+        </Link>
       </div>
+
+      <h1 className="text-h1">{el.feed.headline(university.shortName)}</h1>
+
+      <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1" role="toolbar" aria-label={el.pages.feed}>
+        {filters.map(({ id, icon: Icon }) => {
+          const active = filter === id
+          return (
+            <button
+              key={id}
+              type="button"
+              onClick={() => setFilter(id)}
+              aria-pressed={active}
+              className="flex min-w-16 flex-col items-center gap-2"
+            >
+              <span
+                className={`flex size-14 items-center justify-center rounded-full ring-1 transition-colors ${
+                  active ? 'bg-primary text-white ring-primary' : 'bg-card text-ink ring-surface'
+                }`}
+              >
+                <Icon className="size-6" strokeWidth={1.75} aria-hidden />
+              </span>
+              <span className={`text-xs font-medium ${active ? 'text-primary' : 'text-muted'}`}>
+                {el.feed.filters[id]}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+
+      {popular.length > 0 && (
+        <section className="flex flex-col gap-3">
+          <h2 className="text-h3">{el.feed.popularToday}</h2>
+          <div className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1">
+            {popular.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => scrollToCard(item.id)}
+                className="flex w-56 shrink-0 snap-start flex-col gap-2 rounded-2xl bg-card p-4 text-left ring-1 ring-surface"
+              >
+                <p className="text-caption text-muted">
+                  {item.source} · {relativeTime(item.minutesAgo)}
+                </p>
+                <p className="line-clamp-3 font-semibold text-ink">{item.title}</p>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section className="flex flex-col gap-3">
+        <h2 className="text-h3">{el.feed.startHere}</h2>
+        <div className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1">
+          {startCards.map(({ to, label, icon: Icon, accent }) => (
+            <Link
+              key={to}
+              to={to}
+              className={`flex h-36 w-40 shrink-0 snap-start flex-col justify-between rounded-2xl p-4 ${
+                accent ? 'bg-primary text-white' : 'bg-card text-ink ring-1 ring-surface'
+              }`}
+            >
+              <span
+                className={`flex size-11 items-center justify-center rounded-full ${
+                  accent ? 'bg-white/20 text-white' : 'bg-primary-soft text-primary'
+                }`}
+              >
+                <Icon className="size-5" strokeWidth={1.75} aria-hidden />
+              </span>
+              <span className="text-h3 font-semibold">{label()}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <Toggle
+        label={el.settings.allUniversities}
+        description={el.settings.allUniversitiesHint}
+        checked={showAll}
+        onChange={setShowAll}
+      />
 
       <p className="text-caption text-muted">
         {filter === 'web' ? el.feed.webNotice : el.feed.sampleNotice}
@@ -60,18 +174,29 @@ export default function Feed() {
             const uni = getUniversity(source.universityId)
             const cards = webItems.filter((item) => item.universityId === source.universityId)
             return (
-              <article key={source.universityId} className="flex flex-col gap-3 overflow-hidden rounded-2xl bg-card p-4 ring-1 ring-surface">
+              <article
+                key={source.universityId}
+                ref={(node) => {
+                  for (const card of cards) cardRefs.current[card.id] = node
+                }}
+                className="flex flex-col gap-3 overflow-hidden rounded-2xl bg-card p-4 ring-1 ring-surface"
+              >
                 <img src={uni.photo} alt={el.sources.photoAlt(uni.name)} className="-mx-4 -mt-4 aspect-[5/2] w-[calc(100%+2rem)] max-w-none object-cover" />
                 <div className="flex items-start gap-2">
                   <div className="min-w-0 flex-1">
-                  <h3 className="text-h3">{uni.shortName}</h3>
-                  <p className="text-caption text-muted">{el.sources.updated(relativeTime(source.updatedMinutesAgo))}</p>
-                  <p className="mt-2">{source.blurb}</p>
+                    <h3 className="text-h3">{uni.shortName}</h3>
+                    <p className="text-caption text-muted">{el.sources.updated(relativeTime(source.updatedMinutesAgo))}</p>
+                    <p className="mt-2">{source.blurb}</p>
                   </div>
                   <SpeakButton text={`${uni.shortName}. ${source.blurb}`} label={uni.shortName} />
                 </div>
                 <div>
-                  <a href={uni.homepage} target="_blank" rel="noreferrer" className="mt-2 inline-flex min-h-11 items-center font-semibold text-primary">
+                  <a
+                    href={uni.homepage}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-2 inline-flex min-h-11 items-center font-semibold text-primary"
+                  >
                     {el.sources.homepage(uni.shortName)}
                   </a>
                 </div>
@@ -107,26 +232,32 @@ export default function Feed() {
       ) : (
         <div className="flex flex-col gap-4">
           {items.map((item) => (
-            <FeedCard
+            <div
               key={item.id}
-              source={item.source}
-              avatarSrc={item.universityId === 'all' ? undefined : getUniversity(item.universityId).photo}
-              time={relativeTime(item.minutesAgo)}
-              label={withUniversity(item.universityId, el.feed.filters[item.category])}
-              title={item.title}
-              body={item.body}
-              sourceUrl={item.universityId === 'all' ? undefined : getUniversity(item.universityId).homepage}
-              footer={
-                <CardActions
-                  useful={item.useful}
-                  notUseful={item.notUseful}
-                  vote={votes[item.id]}
-                  onVote={(choice) => vote(item.id, choice)}
-                  comments={commentsFor(item.id)}
-                  onComment={(body) => addComment(item.id, body)}
-                />
-              }
-            />
+              ref={(node) => {
+                cardRefs.current[item.id] = node
+              }}
+            >
+              <FeedCard
+                source={item.source}
+                avatarSrc={item.universityId === 'all' ? undefined : getUniversity(item.universityId).photo}
+                time={relativeTime(item.minutesAgo)}
+                label={withUniversity(item.universityId, el.feed.filters[item.category])}
+                title={item.title}
+                body={item.body}
+                sourceUrl={item.universityId === 'all' ? undefined : getUniversity(item.universityId).homepage}
+                footer={
+                  <CardActions
+                    useful={item.useful}
+                    notUseful={item.notUseful}
+                    vote={votes[item.id]}
+                    onVote={(choice) => vote(item.id, choice)}
+                    comments={commentsFor(item.id)}
+                    onComment={(body) => addComment(item.id, body)}
+                  />
+                }
+              />
+            </div>
           ))}
         </div>
       )}

@@ -16,12 +16,12 @@ export function LogoMark({ className = 'size-8' }: { className?: string }) {
   )
 }
 
-/** Mark + wordmark with "Life" in primary blue. `inverted` is for the dark splash. */
+/** Mark + wordmark with "Life" in primary blue. `inverted` is for dark/photo screens. */
 export function Logo({ inverted = false }: { inverted?: boolean }) {
   const campus = el.brand.name.replace(/Life$/, '')
   return (
     <span className="flex items-center gap-2">
-      <LogoMark />
+      <LogoMark className={`size-8 ${inverted ? 'text-white' : ''}`} />
       <span className={`text-h3 font-bold ${inverted ? 'text-white' : 'text-ink'}`}>
         {campus}
         <span className="text-primary">Life</span>
