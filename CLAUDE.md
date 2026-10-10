@@ -59,11 +59,20 @@ Tab labels and layouts for these dashboards are defined in "Brand and design sys
 - Housing and roommate listing cards
 - Simple activity points counter (increments on likes, joins, checklist items)
 
+### 4. Campus Plus (demo versions, from `new-features-to-add.md`)
+Adopted from the team's "build now" list, scaled to what a static demo can honestly show. Everything is local sample data, clearly labelled as demo.
+
+- **Student verification (demo)**: a "Verify" step on top of the existing demo login. Collects full name and student card ID, validates format only (no phone numbers, no real registry check). Verified accounts get a badge in the header; posting in chat requires it. Persisted in `localStorage`, reset on logout.
+- **Campus chat (demo)** in Community: channels `#general`, `#exams`, `#housing`, `#random` per university, sample messages, send/receive stored locally. Locked with a "Verify to chat" prompt when not verified. Label it as a demo, not real-time.
+- **Partner passes** in Προνόμια: 15 fictional sample partners (5 per university, near each campus) with offer, category and a "Show pass" sheet with a demo code; claimed state persisted. Every pass says "Δείγμα συνεργάτη". Invent names that can't be mistaken for real businesses or transit operators.
+- **Anonymous support forum** in Community: random aliases (e.g. "Ανώνυμη Αλεπού"), categories (άγχος, στέγαση, μαθήματα, οικονομικά, άλλο), post and reply locally. Always show a safety note: not a crisis service; in an emergency call 112; for support, contact the university's counselling service via its homepage.
+- **University sources (demo crawl)** in the Ανακοινώσεις feed: one card per university with a short blurb, a demo "last updated" time and its "Από το web" items. Links go only to the real homepage; no fake source URLs. Stays at the three supported universities (AUEB, AUTH and Patras are roadmap).
+
 ## Out of scope (roadmap only, no code)
 
-Live university crawling, real-time chat, login / student verification, real discount redemption, automatic exam collection, carpool matching, anonymous forums, AR navigation, voice assistant, LLM/RAG assistant.
+Live university crawling (real fetch/scrape pipeline), real-time chat backend (WebSockets), real student verification (SSO / registry), real discount redemption with partners, more universities (AUEB, AUTH, Patras), automatic exam collection, carpool matching, AR navigation, voice assistant, LLM/RAG assistant.
 
-Show these on a small "Roadmap" card in the Hub, not as working features.
+The demo versions under "Campus Plus" are in scope; the real systems behind them are not. Show these on a small "Roadmap" card in More, not as working features.
 
 ## Project structure
 
@@ -194,4 +203,5 @@ npm run lint
 - [ ] Useful university resources and student benefits
 - [ ] Study sessions with working join, and a first-year checklist with progress
 - [ ] Matches the brand design system (colors, Inter, components, 5-tab bar, Greek-first UI)
+- [ ] Campus Plus demos: verification, chat, 15 partner passes, anonymous forum, university source cards (if time allows, see BUILD_PLAN cut order)
 - [ ] Polished mobile layout, deployed to a live URL
