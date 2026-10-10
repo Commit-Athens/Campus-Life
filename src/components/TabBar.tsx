@@ -12,20 +12,21 @@ export function TabBar() {
   ]
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-10 border-t border-surface bg-card pb-[env(safe-area-inset-bottom)]">
-      <ul className="mx-auto grid max-w-md grid-cols-5">
+    <nav className="fixed inset-x-0 bottom-0 z-10 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+      <ul className="mx-auto flex max-w-md items-center justify-between rounded-full bg-card/80 px-2 py-2 shadow-lg ring-1 ring-surface backdrop-blur-xl">
         {tabs.map(({ to, label, icon: Icon }) => (
           <li key={to}>
             <NavLink
               to={to}
+              end={to === '/feed'}
+              aria-label={label}
               className={({ isActive }) =>
-                `flex min-h-16 flex-col items-center justify-center gap-1 px-0.5 text-center text-xs leading-tight font-medium transition-colors ${
-                  isActive ? 'text-primary' : 'text-muted hover:text-ink'
+                `flex size-11 items-center justify-center rounded-full transition-colors ${
+                  isActive ? 'bg-primary text-white' : 'text-muted'
                 }`
               }
             >
-              <Icon className="size-6" strokeWidth={1.75} aria-hidden />
-              {label}
+              <Icon className="size-5" strokeWidth={1.75} aria-hidden />
             </NavLink>
           </li>
         ))}

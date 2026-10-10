@@ -46,7 +46,7 @@ export function AgentWidget() {
   }
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-30 flex justify-center">
+    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(5.75rem+env(safe-area-inset-bottom))] z-30 flex justify-center">
       <div className="flex w-full max-w-md flex-col items-end gap-3 px-4">
         {open && (
           <section

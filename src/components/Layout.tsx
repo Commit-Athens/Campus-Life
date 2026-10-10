@@ -25,7 +25,7 @@ export function Layout() {
     <div className="mx-auto min-h-dvh max-w-md bg-page">
       <ScrollToTop />
       <Header />
-      <main className="flex flex-col gap-6 px-4 pt-6 pb-28">
+      <main className="flex flex-col gap-6 px-4 pt-6 pb-32">
         <Outlet />
       </main>
       <AgentWidget />

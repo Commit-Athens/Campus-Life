@@ -9,7 +9,7 @@ import { UniversityBadge } from './UniversityBadge'
 export function Header() {
   const { account, verified } = useAuth()
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-surface bg-card/90 px-4 backdrop-blur">
+    <header className="sticky top-0 z-10 flex h-16 items-center justify-between bg-card/75 px-4 backdrop-blur-xl">
       <Link to="/feed" aria-label={el.brand.name} className="flex min-h-11 items-center">
         <Logo />
       </Link>
