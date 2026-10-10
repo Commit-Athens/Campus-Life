@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusLife</title>
+  <meta name="description" content="Campus announcements, student hub, and community — in one place." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #14201a;
+      --ink-soft: #3d4f45;
+      --muted: #6b7c72;
+      --line: rgba(20, 32, 26, 0.1);
+      --surface: rgba(255, 255, 255, 0.72);
+      --surface-strong: #f7faf7;
+      --bg-deep: #0f1f18;
+      --bg-mid: #1a3328;
+      --accent: #e8a54b;
+      --accent-deep: #c47d22;
+      --success: #2f8f62;
+      --danger: #c45c4a;
+      --shadow: 0 12px 40px rgba(15, 31, 24, 0.12);
+      --radius: 18px;
+      --nav-h: 68px;
+      --font: "DM Sans", system-ui, sans-serif;
+      --display: "Instrument Serif", Georgia, serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      color: var(--ink);
+      min-height: 100dvh;
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(232, 165, 75, 0.22), transparent 55%),
+        radial-gradient(900px 500px at 100% 0%, rgba(47, 143, 98, 0.18), transparent 50%),
+        linear-gradient(165deg, #eef4ef 0%, #dfeae3 45%, #e8efe9 100%);
+      background-attachment: fixed;
+      padding-bottom: calc(var(--nav-h) + 24px);
+    }
+
+    img { max-width: 100%; display: block; }
+
+    a { color: var(--accent-deep); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    button {
+      font: inherit;
+      border: none;
+      cursor: pointer;
+      background: none;
+    }
+
+    .app {
+      width: min(720px, 100%);
+      margin: 0 auto;
+      padding: 20px 16px 0;
+    }
+
+    /* —— Header —— */
+    .topbar {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      animation: rise 0.55s ease both;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-mark {
+      font-family: var(--display);
+      font-size: clamp(2rem, 7vw, 2.6rem);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      color: var(--bg-deep);
+    }
+
+    .brand-mark span {
+      color: var(--accent-deep);
+      font-style: italic;
+    }
+
+    .brand-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .points-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--bg-deep);
+      color: #f4f7f4;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .points-pill.bump {
+      transform: scale(1.06);
+      background: #1f3d2e;
+    }
+
+    .points-pill strong {
+      font-variant-numeric: tabular-nums;
+      color: var(--accent);
+    }
+
+    .points-pill small {
+      opacity: 0.7;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* —— Panels —— */
+    .panel { display: none; animation: rise 0.4s ease both; }
+    .panel.active { display: block; }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel-intro {
+      margin-bottom: 16px;
+    }
+
+    .panel-intro h1 {
+      font-family: var(--display);
+      font-size: clamp(1.7rem, 5vw, 2.15rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .panel-intro p {
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+      line-height: 1.45;
+      max-width: 36ch;
+    }
+
+    /* —— Filters —— */
+    .filters {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 14px;
+      scrollbar-width: none;
+    }
+
+    .filters::-webkit-scrollbar { display: none; }
+
+    .filter-btn {
+      flex: 0 0 auto;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.55);
+      color: var(--ink-soft);
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .filter-btn.active {
+      background: var(--bg-deep);
+      color: #fff;
+      border-color: var(--bg-deep);
+    }
+
+    /* —— Feed cards —— */
+    .stack { display: grid; gap: 12px; }
+
+    .card {
+      background: var(--surface);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 4px 20px rgba(15, 31, 24, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .tag.announce { background: rgba(232, 165, 75, 0.2); color: #8a5a12; }
+    .tag.post { background: rgba(47, 143, 98, 0.15); color: #1f6b45; }
+    .tag.lost { background: rgba(196, 92, 74, 0.15); color: #9a3d30; }
+
+    .card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .card p {
+      color: var(--ink-soft);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .card-photo {
+      margin: 12px 0;
+      border-radius: 14px;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      background:
+        linear-gradient(135deg, rgba(15, 31, 24, 0.08), rgba(232, 165, 75, 0.15)),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 8px,
+          rgba(20, 32, 26, 0.03) 8px,
+          rgba(20, 32, 26, 0.03) 16px
+        );
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .card-photo.found {
+      background:
+        linear-gradient(160deg, #2a4a38 0%, #1a3328 60%, #3d5c48 100%);
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      transition: transform 0.15s ease, background 0.2s, color 0.2s;
+    }
+
+    .btn:active { transform: scale(0.97); }
+
+    .btn-primary {
+      background: var(--bg-deep);
+      color: #fff;
+    }
+
+    .btn-primary:hover { background: var(--bg-mid); }
+
+    .btn-ghost {
+      background: rgba(20, 32, 26, 0.06);
+      color: var(--ink);
+    }
+
+    .btn-ghost.liked {
+      background: rgba(196, 92, 74, 0.14);
+      color: var(--danger);
+    }
+
+    .btn-ghost.joined {
+      background: rgba(47, 143, 98, 0.16);
+      color: var(--success);
+    }
+
+    .btn-link {
+      color: var(--accent-deep);
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 9px 4px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+      border: 1px dashed var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    /* —— Hub sections —— */
+    .section {
+      margin-bottom: 22px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .section-head h2 {
+      font-family: var(--display);
+      font-size: 1.45rem;
+      font-weight: 400;
+    }
+
+    .section-head span {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .link-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .link-tile {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 14px;
+      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: inherit;
+      text-decoration: none;
+      transition: transform 0.15s, border-color 0.2s;
+    }
+
+    .link-tile:hover {
+      transform: translateY(-2px);
+      border-color: rgba(232, 165, 75, 0.5);
+      text-decoration: none;
+    }
+
+    .link-tile strong { font-size: 0.92rem; }
+    .link-tile small { color: var(--muted); font-size: 0.75rem; }
+
+    .progress-wrap {
+      margin-bottom: 12px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+      margin-bottom: 6px;
+    }
+
+    .progress-bar {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(20, 32, 26, 0.08);
+      overflow: hidden;
+    }
+
+    .progress-bar > i {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--success), #4cb087);
+      border-radius: inherit;
+      transition: width 0.35s ease;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .check-item:last-child { border-bottom: none; }
+
+    .check-box {
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
+      border: 2px solid rgba(20, 32, 26, 0.25);
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: grid;
+      place-items: center;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .check-item.done .check-box {
+      background: var(--success);
+      border-color: var(--success);
+      color: #fff;
+      font-size: 0.75rem;
+    }
+
+    .check-item.done .check-text {
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
+    .check-text {
+      font-size: 0.92rem;
+      line-height: 1.4;
+    }
+
+    .row-list { display: grid; gap: 8px; }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+    }
+
+    .row strong { display: block; font-size: 0.92rem; }
+    .row small { color: var(--muted); font-size: 0.78rem; }
+
+    .badge {
+      flex-shrink: 0;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(232, 165, 75, 0.18);
+      color: #8a5a12;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .badge.soon { background: rgba(47, 143, 98, 0.15); color: #1f6b45; }
+
+    /* —— Community —— */
+    .housing {
+      display: grid;
+      gap: 10px;
+    }
+
+    .house-card {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border-radius: var(--radius);
+      background: var(--surface);
+      border: 1px solid var(--line);
+    }
+
+    .house-thumb {
+      width: 72px;
+      height: 72px;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #1a3328, #3d5c48);
+      display: grid;
+      place-items: center;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 6px;
+    }
+
+    .house-card h3 { font-size: 0.95rem; margin-bottom: 2px; }
+    .house-card p { font-size: 0.8rem; color: var(--muted); }
+
+    .notes-list {
+      display: grid;
+      gap: 0;
+    }
+
+    .note-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.9rem;
+    }
+
+    .note-row:last-child { border-bottom: none; }
+
+    .roadmap {
+      margin-top: 8px;
+      padding: 16px;
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, var(--bg-deep), var(--bg-mid));
+      color: #e8efe9;
+    }
+
+    .roadmap h2 {
+      font-family: var(--display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+
+    .roadmap p {
+      font-size: 0.85rem;
+      opacity: 0.75;
+      margin-bottom: 12px;
+      line-height: 1.45;
+    }
+
+    .roadmap ul {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .roadmap li {
+      font-size: 0.85rem;
+      padding-left: 18px;
+      position: relative;
+      opacity: 0.9;
+    }
+
+    .roadmap li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    /* —— Bottom nav —— */
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      bottom: 12px;
+      transform: translateX(-50%);
+      width: min(400px, calc(100% - 24px));
+      height: var(--nav-h);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      padding: 8px;
+      background: rgba(15, 31, 24, 0.92);
+      backdrop-filter: blur(16px);
+      border-radius: 22px;
+      box-shadow: 0 16px 40px rgba(15, 31, 24, 0.35);
+      z-index: 50;
+      animation: rise 0.6s 0.1s ease both;
+    }
+
+    .nav-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      border-radius: 16px;
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-btn.active {
+      background: rgba(232, 165, 75, 0.18);
+      color: var(--accent);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(var(--nav-h) + 28px);
+      transform: translateX(-50%) translateY(20px);
+      background: var(--bg-deep);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+      z-index: 60;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (min-width: 720px) {
+      .app { padding-top: 28px; }
+      .link-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">Campus<span>Life</span></div>
+        <div class="brand-sub">Athens · student demo</div>
+      </div>
+      <div class="points-pill" id="pointsPill" title="Activity points">
+        <div>
+          <small>Points</small><br />
+          <strong id="pointsValue">0</strong>
+        </div>
+      </div>
+    </header>
+
+    <!-- CAMPUS FEED -->
+    <section class="panel active" id="panel-feed" data-panel="feed">
+      <div class="panel-intro">
+        <h1>Campus Feed</h1>
+        <p>Announcements, student posts, and Lost &amp; Found — sample campus data.</p>
+      </div>
+
+      <div class="filters" role="tablist" aria-label="Feed filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="announce">Announcements</button>
+        <button class="filter-btn" data-filter="post">Posts</button>
+        <button class="filter-btn" data-filter="lost">Lost &amp; Found</button>
+      </div>
+
+      <div class="stack" id="feedStack"></div>
+    </section>
+
+    <!-- STUDENT HUB -->
+    <section class="panel" id="panel-hub" data-panel="hub">
+      <div class="panel-intro">
+        <h1>Student Hub</h1>
+        <p>Links, checklist, discounts, exams, and opportunities in one place.</p>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h2>University links</h2>
+        </div>
+        <div class="link-grid">
+          <a class="link-tile" href="https://www.uoa.gr/" target="_blank" rel="noopener">
+            <strong>University site</strong>
+            <small>uoa.gr</small>
+          </a>
+          <a class="link-tile" href="https://eclass.uoa.gr/" target="_blank" rel="noopener">
+            <strong>eClass</strong>
+            <small>Courses &amp; grades</small>
+          </a>
+          <a class="link-tile" href="https://my-studies.uoa.gr/" target="_blank" rel="noopener">
+            <strong>my-studies</strong>
+            <small>Enrollment</small>
+          </a>
+          <a class="link-tile" href="https://www.lib.uoa.gr/" target="_blank" rel="noopener">
+            <strong>Library</strong>
+            <small>Hours &amp; search</small>
+          </a>
+          <a class="link-tile" href="https://www.interamicus.gr/" target="_blank" rel="noopener">
+            <strong>Student services</strong>
+            <small>Support desk</small>
+          </a>
+          <a class="link-tile" href="https://www.uoa.gr/foitites/" target="_blank" rel="noopener">
+            <strong>Student portal</strong>
+            <small>Guides &amp; news</small>
+          </a>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h2>First-year checklist</h2>
+          <span id="checkProgressLabel">0 / 6</span>
+        </div>
+        <div class="card">
+          <div class="progress-wrap">
+            <div class="progress-label">
+              <span>Getting settled</span>
+              <span id="checkPercent">0%</span>
+            </div>
+            <div class="progress-bar"><i id="checkBar"></i></div>
+          </div>
+          <div id="checklist"></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h2>Discounts &amp; food</h2>
+        </div>
+        <div class="row-list">
+          <div class="row">
+            <div>
+              <strong>Student meal card</strong>
+              <small>Campus dining · lunch from €2.50</small>
+            </div>
+            <span class="badge">Sample</span>
+          </div>
+          <div class="row">
+            <div>
+              <strong>Bookshop −15%</strong>
+              <small>Show student ID · weekdays</small>
+            </div>
+            <span class="badge">Sample</span>
+          </div>
+          <div class="row">
+            <div>
+              <strong>Coffee near Exarchia</strong>
+              <small>Student deal · iced freddo €2</small>
+            </div>
+            <span class="badge">Sample</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h2>Exam calendar</h2>
+        </div>
+        <div class="row-list">
+          <div class="row">
+            <div>
+              <strong>Algorithms midterm</strong>
+              <small>Mon 12 May · Room A12</small>
+            </div>
+            <span class="badge soon">Soon</span>
+          </div>
+          <div class="row">
+            <div>
+              <strong>Discrete Math final</strong>
+              <small>Thu 22 May · Amph. II</small>
+            </div>
+            <span class="badge">May</span>
+          </div>
+          <div class="row">
+            <div>
+              <strong>English B2 oral</strong>
+              <small>Fri 30 May · Language Lab</small>
+            </div>
+            <span class="badge">May</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h2>Internships &amp; hackathons</h2>
+        </div>
+        <div class="row-list">
+          <div class="row">
+            <div>
+              <strong>Commit Athens Hack</strong>
+              <small>48h · teams of 4 · register by Fri</small>
+            </div>
+            <span class="badge soon">Open</span>
+          </div>
+          <div class="row">
+            <div>
+              <strong>Summer internship · Civic Tech</strong>
+              <small>Remote / hybrid · apply by 1 Jun</small>
+            </div>
+            <span class="badge">Jun</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STUDENT COMMUNITY -->
+    <section class="panel" id="panel-community" data-panel="community">
+      <div class="panel-intro">
+        <h1>Student Community</h1>
+        <p>Study groups, notes, housing, and points for joining in.</p>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h2>Study sessions</h2>
+          <span>Join for +10 pts</span>
+        </div>
+        <div class="stack" id="sessionsStack"></div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h2>Course notes</h2>
+        </div>
+        <div class="card">
+          <div class="notes-list">
+            <div class="note-row">
+              <span><strong>CS101</strong> — Week 4 slides + exercises</span>
+              <button class="btn-link" type="button" data-toast="Notes link (sample)">Open</button>
+            </div>
+            <div class="note-row">
+              <span><strong>MATH220</strong> — Linear algebra cheatsheet</span>
+              <button class="btn-link" type="button" data-toast="Notes link (sample)">Open</button>
+            </div>
+            <div class="note-row">
+              <span><strong>ECON110</strong> — Midterm summary (PDF)</span>
+              <button class="btn-link" type="button" data-toast="Notes link (sample)">Open</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h2>Housing &amp; roommates</h2>
+        </div>
+        <div class="housing">
+          <article class="house-card">
+            <div class="house-thumb">Exarchia<br />€320</div>
+            <div>
+              <h3>Room near campus</h3>
+              <p>Furnished · metro 8 min · looking for quiet roommate</p>
+            </div>
+          </article>
+          <article class="house-card">
+            <div class="house-thumb">Pangrati<br />€280</div>
+            <div>
+              <h3>Shared flat · 3 bed</h3>
+              <p>1 spot open · utilities included · non-smoking</p>
+            </div>
+          </article>
+          <article class="house-card">
+            <div class="house-thumb">Zografou<br />€250</div>
+            <div>
+              <h3>Studio sublet · June–Aug</h3>
+              <p>Summer only · near faculty buildings</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="roadmap">
+        <h2>Later on the roadmap</h2>
+        <p>Not in this demo — needs backend, privacy, or partner work.</p>
+        <ul>
+          <li>Live university website crawling</li>
+          <li>Real-time chat</li>
+          <li>Student verification login</li>
+          <li>Partner discount redemption</li>
+          <li>Auto exam calendar sync</li>
+          <li>Carpool matching &amp; AR nav</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <nav class="bottom-nav" aria-label="Main">
+    <button class="nav-btn active" data-nav="feed" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h14"/></svg>
+      Feed
+    </button>
+    <button class="nav-btn" data-nav="hub" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10l8-6 8 6v9a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9z"/></svg>
+      Hub
+    </button>
+    <button class="nav-btn" data-nav="community" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="9" r="2.5"/><path d="M3.5 19c.8-3 3-4.5 5.5-4.5S14 16 14.8 19M14 14.5c1.6 0 3.2.7 4.2 2.5"/></svg>
+      Community
+    </button>
+  </nav>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    const STORAGE = {
+      likes: "campuslife-likes",
+      confirms: "campuslife-confirms",
+      checklist: "campuslife-checklist",
+      joins: "campuslife-joins",
+      points: "campuslife-points",
+    };
+
+    const feedItems = [
+      {
+        id: "a1",
+        type: "announce",
+        tag: "Announcement",
+        source: "Registrar",
+        time: "2h ago",
+        title: "Spring exam period dates posted",
+        body: "Provisional exam schedule for May–June is live. Check your department board for room assignments.",
+        link: "https://www.uoa.gr/",
+        linkLabel: "Source",
+        action: "like",
+      },
+      {
+        id: "p1",
+        type: "post",
+        tag: "Student post",
+        source: "Maria K.",
+        time: "4h ago",
+        title: "Anyone have last year’s OS past papers?",
+        body: "Looking for Operating Systems practice exams — happy to trade Algorithms notes.",
+        action: "like",
+      },
+      {
+        id: "l1",
+        type: "lost",
+        tag: "Lost & Found",
+        source: "Found · Library",
+        time: "Yesterday",
+        title: "Blue water bottle near Level 2 desks",
+        body: "Hydro Flask with stickers. Turned in at the front desk if it’s yours.",
+        photo: "found",
+        photoLabel: "Photo · Level 2",
+        action: "confirm",
+      },
+      {
+        id: "a2",
+        type: "announce",
+        tag: "Announcement",
+        source: "Student Union",
+        time: "Yesterday",
+        title: "Career fair next Wednesday",
+        body: "Local startups and NGOs on campus. Bring CVs — workshops start at 11:00 in the foyer.",
+        link: "https://www.uoa.gr/foitites/",
+        linkLabel: "Details",
+        action: "like",
+      },
+      {
+        id: "p2",
+        type: "post",
+        tag: "Student post",
+        source: "Nikos P.",
+        time: "2d ago",
+        title: "Study playlist for finals week",
+        body: "Low-fi + no lyrics. Drop your tracks in the comments (demo — comments later).",
+        action: "like",
+      },
+      {
+        id: "l2",
+        type: "lost",
+        tag: "Lost & Found",
+        source: "Lost · Cafeteria",
+        time: "3d ago",
+        title: "Black notebook with Discrete Math notes",
+        body: "Left on a table around 14:00. Has my name on the first page.",
+        photo: "lost",
+        photoLabel: "Photo · sample",
+        action: "confirm",
+      },
+    ];
+
+    const checklistItems = [
+      { id: "c1", text: "Activate university email" },
+      { id: "c2", text: "Register for eClass courses" },
+      { id: "c3", text: "Pick up student ID / meal card" },
+      { id: "c4", text: "Find the library and reading rooms" },
+      { id: "c5", text: "Join at least one study group" },
+      { id: "c6", text: "Save exam dates in your calendar" },
+    ];
+
+    const sessions = [
+      {
+        id: "s1",
+        title: "Algorithms problem set",
+        meta: "Tonight · 19:00 · Room B3 · 6 seats",
+        body: "Working through graph problems. Bring whiteboard markers.",
+      },
+      {
+        id: "s2",
+        title: "Linear algebra review",
+        meta: "Tomorrow · 11:00 · Library Annex · 4 seats",
+        body: "Eigenvalues &amp; SVD before the midterm. Quiet zone.",
+      },
+      {
+        id: "s3",
+        title: "Hackathon team sync",
+        meta: "Sat · 10:00 · Innovation Hub · open",
+        body: "Forming teams for Commit Athens Hack. All years welcome.",
+      },
+    ];
+
+    function loadJSON(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch {
+        return fallback;
+      }
+    }
+
+    function saveJSON(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    let likes = loadJSON(STORAGE.likes, {});
+    let confirms = loadJSON(STORAGE.confirms, {});
+    let checks = loadJSON(STORAGE.checklist, {});
+    let joins = loadJSON(STORAGE.joins, {});
+    let points = Number(localStorage.getItem(STORAGE.points) || 0);
+
+    const feedStack = document.getElementById("feedStack");
+    const checklistEl = document.getElementById("checklist");
+    const sessionsStack = document.getElementById("sessionsStack");
+    const toastEl = document.getElementById("toast");
+    const pointsValue = document.getElementById("pointsValue");
+    const pointsPill = document.getElementById("pointsPill");
+    let toastTimer;
+
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove("show"), 1800);
+    }
+
+    function setPoints(n, silent) {
+      points = Math.max(0, n);
+      localStorage.setItem(STORAGE.points, String(points));
+      pointsValue.textContent = points;
+      if (!silent) {
+        pointsPill.classList.remove("bump");
+        void pointsPill.offsetWidth;
+        pointsPill.classList.add("bump");
+      }
+    }
+
+    function addPoints(delta, reason) {
+      setPoints(points + delta);
+      if (reason) showToast(reason);
+    }
+
+    /* —— Navigation —— */
+    function showPanel(name) {
+      document.querySelectorAll(".panel").forEach((p) => {
+        p.classList.toggle("active", p.dataset.panel === name);
+      });
+      document.querySelectorAll(".nav-btn").forEach((b) => {
+        b.classList.toggle("active", b.dataset.nav === name);
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.querySelectorAll(".nav-btn").forEach((btn) => {
+      btn.addEventListener("click", () => showPanel(btn.dataset.nav));
+    });
+
+    /* —— Feed —— */
+    let activeFilter = "all";
+
+    function renderFeed() {
+      const items = feedItems.filter(
+        (item) => activeFilter === "all" || item.type === activeFilter
+      );
+
+      if (!items.length) {
+        feedStack.innerHTML = `<div class="empty">Nothing in this filter yet.</div>`;
+        return;
+      }
+
+      feedStack.innerHTML = items
+        .map((item) => {
+          const liked = !!likes[item.id];
+          const confirmed = !!confirms[item.id];
+          const count = liked ? (item.baseLikes || 12) + 1 : item.baseLikes || 12;
+
+          let actionHtml = "";
+          if (item.action === "like") {
+            actionHtml = `<button class="btn btn-ghost ${liked ? "liked" : ""}" type="button" data-like="${item.id}">
+              ${liked ? "♥ Liked" : "♡ Like"} · ${count}
+            </button>`;
+          } else {
+            actionHtml = `<button class="btn btn-ghost ${confirmed ? "joined" : ""}" type="button" data-confirm="${item.id}">
+              ${confirmed ? "✓ Confirmed" : "Confirm sighting"}
+            </button>`;
+          }
+
+          const linkHtml = item.link
+            ? `<a class="btn-link" href="${item.link}" target="_blank" rel="noopener">${item.linkLabel || "Source"}</a>`
+            : "";
+
+          const photoHtml = item.photo
+            ? `<div class="card-photo ${item.photo === "found" ? "found" : ""}">${item.photoLabel}</div>`
+            : "";
+
+          return `<article class="card" data-type="${item.type}">
+            <div class="card-meta">
+              <span class="tag ${item.type}">${item.tag}</span>
+              <span>${item.source} · ${item.time}</span>
+            </div>
+            <h3>${item.title}</h3>
+            <p>${item.body}</p>
+            ${photoHtml}
+            <div class="card-actions">
+              ${actionHtml}
+              ${linkHtml}
+            </div>
+          </article>`;
+        })
+        .join("");
+    }
+
+    document.querySelectorAll(".filter-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        activeFilter = btn.dataset.filter;
+        document.querySelectorAll(".filter-btn").forEach((b) =>
+          b.classList.toggle("active", b === btn)
+        );
+        renderFeed();
+      });
+    });
+
+    feedStack.addEventListener("click", (e) => {
+      const likeBtn = e.target.closest("[data-like]");
+      if (likeBtn) {
+        const id = likeBtn.dataset.like;
+        if (likes[id]) {
+          delete likes[id];
+          saveJSON(STORAGE.likes, likes);
+          renderFeed();
+          showToast("Like removed");
+        } else {
+          likes[id] = true;
+          saveJSON(STORAGE.likes, likes);
+          addPoints(2, "+2 points · liked a post");
+          renderFeed();
+        }
+        return;
+      }
+
+      const confirmBtn = e.target.closest("[data-confirm]");
+      if (confirmBtn) {
+        const id = confirmBtn.dataset.confirm;
+        if (confirms[id]) {
+          delete confirms[id];
+          saveJSON(STORAGE.confirms, confirms);
+          renderFeed();
+          showToast("Confirmation cleared");
+        } else {
+          confirms[id] = true;
+          saveJSON(STORAGE.confirms, confirms);
+          addPoints(5, "+5 points · confirmed Lost & Found");
+          renderFeed();
+        }
+      }
+    });
+
+    /* —— Checklist —— */
+    function updateChecklistUI() {
+      const done = checklistItems.filter((c) => checks[c.id]).length;
+      const total = checklistItems.length;
+      const pct = Math.round((done / total) * 100);
+      document.getElementById("checkProgressLabel").textContent = `${done} / ${total}`;
+      document.getElementById("checkPercent").textContent = `${pct}%`;
+      document.getElementById("checkBar").style.width = `${pct}%`;
+    }
+
+    function renderChecklist() {
+      checklistEl.innerHTML = checklistItems
+        .map((item) => {
+          const done = !!checks[item.id];
+          return `<div class="check-item ${done ? "done" : ""}" data-check="${item.id}" role="checkbox" aria-checked="${done}">
+            <div class="check-box">${done ? "✓" : ""}</div>
+            <div class="check-text">${item.text}</div>
+          </div>`;
+        })
+        .join("");
+      updateChecklistUI();
+    }
+
+    checklistEl.addEventListener("click", (e) => {
+      const row = e.target.closest("[data-check]");
+      if (!row) return;
+      const id = row.dataset.check;
+      if (checks[id]) {
+        delete checks[id];
+        saveJSON(STORAGE.checklist, checks);
+        renderChecklist();
+      } else {
+        checks[id] = true;
+        saveJSON(STORAGE.checklist, checks);
+        addPoints(3, "+3 points · checklist item");
+        renderChecklist();
+        if (checklistItems.every((c) => checks[c.id])) {
+          showToast("Checklist complete — nice work!");
+        }
+      }
+    });
+
+    /* —— Sessions —— */
+    function renderSessions() {
+      sessionsStack.innerHTML = sessions
+        .map((s) => {
+          const joined = !!joins[s.id];
+          return `<article class="card">
+            <div class="card-meta">
+              <span class="tag post">Study group</span>
+              <span>${s.meta}</span>
+            </div>
+            <h3>${s.title}</h3>
+            <p>${s.body}</p>
+            <div class="card-actions">
+              <button class="btn ${joined ? "btn-ghost joined" : "btn-primary"}" type="button" data-join="${s.id}">
+                ${joined ? "✓ Joined" : "Join session"}
+              </button>
+            </div>
+          </article>`;
+        })
+        .join("");
+    }
+
+    sessionsStack.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-join]");
+      if (!btn) return;
+      const id = btn.dataset.join;
+      if (joins[id]) {
+        delete joins[id];
+        saveJSON(STORAGE.joins, joins);
+        setPoints(points - 10);
+        showToast("Left session · −10 points");
+        renderSessions();
+      } else {
+        joins[id] = true;
+        saveJSON(STORAGE.joins, joins);
+        addPoints(10, "+10 points · joined study session");
+        renderSessions();
+      }
+    });
+
+    document.querySelectorAll("[data-toast]").forEach((el) => {
+      el.addEventListener("click", () => showToast(el.dataset.toast));
+    });
+
+    /* —— Init —— */
+    setPoints(points, true);
+    renderFeed();
+    renderChecklist();
+    renderSessions();
+  </script>
+</body>
+</html>
