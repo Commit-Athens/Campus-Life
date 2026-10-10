@@ -7,7 +7,6 @@ import { EmptyState } from '../components/EmptyState'
 import { FeedCard } from '../components/FeedCard'
 import { SpeakButton } from '../components/SpeakButton'
 import { PageTitle } from '../components/PageTitle'
-import { Toggle } from '../components/Toggle'
 import { announcements } from '../data/announcements'
 import { universitySources } from '../data/sources'
 import { getUniversity } from '../data/universities'
@@ -26,7 +25,7 @@ const filters: Filter[] = ['all', 'announcement', 'rooms', 'school', 'web']
 /** Official feed: university announcements plus info collected from the web. */
 export default function Feed() {
   const [filter, setFilter] = useState<Filter>('all')
-  const { showAll, setShowAll, scope, withUniversity } = useFeedScope()
+  const { showAll, scope, withUniversity } = useFeedScope()
   const { university } = useUniversity()
   const { votes, vote } = useVotes()
   const { commentsFor, addComment } = useComments()
@@ -48,13 +47,6 @@ export default function Feed() {
           <Chip key={f} label={el.feed.filters[f]} active={filter === f} onClick={() => setFilter(f)} />
         ))}
       </div>
-
-      <Toggle
-        label={el.feed.allUniversities}
-        description={el.feed.allUniversitiesHint}
-        checked={showAll}
-        onChange={setShowAll}
-      />
 
       <p className="text-caption text-muted">
         {filter === 'web' ? el.feed.webNotice : el.feed.sampleNotice}

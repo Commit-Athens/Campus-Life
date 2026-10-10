@@ -1,6 +1,7 @@
-import { BookOpen, Coffee, Dumbbell, Settings, Utensils, type LucideIcon } from 'lucide-react'
+import { BookOpen, Coffee, Gift, Dumbbell, Settings, Utensils, type LucideIcon } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '../../components/Button'
+import { EmptyState } from '../../components/EmptyState'
 import { IconCircle, type Tone } from '../../components/IconCircle'
 import { ProgressBar } from '../../components/ProgressBar'
 import { Sheet } from '../../components/Sheet'
@@ -43,40 +44,46 @@ export function PassesSection() {
         <p className="text-caption text-muted">{el.passes.intro}</p>
       </div>
 
-      <div className="flex flex-col gap-2 rounded-2xl bg-white p-4 ring-1 ring-surface">
-        <p className="font-semibold">{el.passes.count(claimedCount, items.length)}</p>
-        <ProgressBar value={claimedCount} max={items.length} label={el.passes.title} />
-      </div>
+      {items.length === 0 ? (
+        <EmptyState icon={Gift} title={el.passes.empty} description={el.passes.emptyHint} />
+      ) : (
+        <>
+          <div className="flex flex-col gap-2 rounded-2xl bg-white p-4 ring-1 ring-surface">
+            <p className="font-semibold">{el.passes.count(claimedCount, items.length)}</p>
+            <ProgressBar value={claimedCount} max={items.length} label={el.passes.title} />
+          </div>
 
-      <ul className="flex flex-col gap-3">
-        {items.map((pass) => {
-          const style = categoryStyle[pass.category]
-          const isClaimed = claimed.includes(pass.id)
-          return (
-            <li key={pass.id}>
-              <button
-                type="button"
-                onClick={() => setOpen(pass)}
-                className="flex min-h-16 w-full items-center gap-3 rounded-2xl bg-white p-3 text-left shadow-sm ring-1 ring-surface transition-colors hover:bg-page"
-              >
-                <IconCircle icon={style.icon} tone={style.tone} />
-                <span className="min-w-0 flex-1">
-                  <span className="block font-semibold">{pass.partner}</span>
-                  <span className="block text-caption text-ink">{pass.offer}</span>
-                  <span className="block text-xs text-muted">
-                    {pass.area} · {el.passes.sample}
-                  </span>
-                </span>
-                {isClaimed && (
-                  <span className="shrink-0 rounded-full bg-success-soft px-3 py-1 text-xs font-semibold text-success">
-                    {el.passes.claimed}
-                  </span>
-                )}
-              </button>
-            </li>
-          )
-        })}
-      </ul>
+          <ul className="flex flex-col gap-3">
+            {items.map((pass) => {
+              const style = categoryStyle[pass.category]
+              const isClaimed = claimed.includes(pass.id)
+              return (
+                <li key={pass.id}>
+                  <button
+                    type="button"
+                    onClick={() => setOpen(pass)}
+                    className="flex min-h-16 w-full items-center gap-3 rounded-2xl bg-white p-3 text-left shadow-sm ring-1 ring-surface transition-colors hover:bg-page"
+                  >
+                    <IconCircle icon={style.icon} tone={style.tone} />
+                    <span className="min-w-0 flex-1">
+                      <span className="block font-semibold">{pass.partner}</span>
+                      <span className="block text-caption text-ink">{pass.offer}</span>
+                      <span className="block text-xs text-muted">
+                        {pass.area} · {el.passes.sample}
+                      </span>
+                    </span>
+                    {isClaimed && (
+                      <span className="shrink-0 rounded-full bg-success-soft px-3 py-1 text-xs font-semibold text-success">
+                        {el.passes.claimed}
+                      </span>
+                    )}
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        </>
+      )}
 
       <p className="text-caption text-muted">{el.passes.demoNotice}</p>
 

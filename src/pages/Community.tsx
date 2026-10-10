@@ -8,7 +8,6 @@ import { EmptyState } from '../components/EmptyState'
 import { PageTitle } from '../components/PageTitle'
 import { SearchInput } from '../components/SearchInput'
 import { Sheet } from '../components/Sheet'
-import { Toggle } from '../components/Toggle'
 import { sampleChat, chatChannels } from '../data/chat'
 import { forumAliases, forumPosts } from '../data/forum'
 import { studyGroups } from '../data/groups'
@@ -49,7 +48,7 @@ export default function Community() {
   const [creating, setCreating] = useState(false)
   const [preview, setPreview] = useState<(typeof courseNotes)[number] | null>(null)
   const [openPost, setOpenPost] = useState<string | null>(null)
-  const { showAll, setShowAll, scope, withUniversity } = useFeedScope()
+  const { showAll, scope, withUniversity } = useFeedScope()
   const { university } = useUniversity()
   const { award } = usePoints()
   const verified = useVerified()
@@ -118,12 +117,6 @@ export default function Community() {
         ))}
       </div>
 
-      <Toggle
-        label={el.community.allUniversities}
-        description={el.community.allUniversitiesHint}
-        checked={showAll}
-        onChange={setShowAll}
-      />
       <p className="text-caption text-muted">{el.community.sampleNotice}</p>
 
       {section === 'groups' && (
