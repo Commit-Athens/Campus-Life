@@ -29,7 +29,7 @@ export default function Onboarding() {
       />
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/25 to-ink/80"
+        className="absolute inset-0 bg-gradient-to-b from-night/70 via-night/25 to-night/80"
       />
 
       <div className="relative z-10 flex flex-1 flex-col px-5 pt-14 pb-10">

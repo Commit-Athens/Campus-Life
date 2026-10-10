@@ -7,8 +7,8 @@ const base =
 
 const variants: Record<Variant, string> = {
   primary: 'bg-primary text-white hover:bg-primary/90',
-  secondary: 'border-2 border-primary bg-white text-primary hover:bg-primary-soft',
-  inverse: 'bg-white text-ink hover:bg-white/90',
+  secondary: 'border-2 border-primary bg-card text-primary hover:bg-primary-soft',
+  inverse: 'bg-white text-night hover:bg-white/90',
 }
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant }

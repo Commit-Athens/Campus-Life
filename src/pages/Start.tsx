@@ -1,4 +1,5 @@
 import { Navigate, useNavigate } from 'react-router'
+import { Avatar } from '../components/Avatar'
 import { Logo } from '../components/Logo'
 import { DEMO_PASSWORD, demoAccounts } from '../data/demoAccounts'
 import { getUniversity } from '../data/universities'
@@ -38,11 +39,9 @@ export default function Start() {
               key={a.email}
               type="button"
               onClick={() => pick(a.email)}
-              className="flex min-h-16 w-full items-center gap-3 rounded-2xl bg-white p-3 text-left ring-1 ring-surface transition-colors hover:bg-page"
+              className="flex min-h-16 w-full items-center gap-3 rounded-2xl bg-card p-3 text-left ring-1 ring-surface transition-colors hover:bg-page"
             >
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-soft text-caption font-semibold text-primary">
-                {a.initials}
-              </span>
+              <Avatar name={a.name} />
               <span className="min-w-0 flex-1">
                 <span className="flex items-center gap-2 font-semibold">
                   {a.name}

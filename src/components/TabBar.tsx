@@ -12,7 +12,7 @@ const tabs: { to: string; label: string; icon: LucideIcon }[] = [
 
 export function TabBar() {
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-10 border-t border-surface bg-white pb-[env(safe-area-inset-bottom)]">
+    <nav className="fixed inset-x-0 bottom-0 z-10 border-t border-surface bg-card pb-[env(safe-area-inset-bottom)]">
       <ul className="mx-auto grid max-w-md grid-cols-5">
         {tabs.map(({ to, label, icon: Icon }) => (
           <li key={to}>

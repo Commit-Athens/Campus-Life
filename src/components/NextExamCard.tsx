@@ -16,7 +16,7 @@ export function NextExamCard({ exam, onOpen }: NextExamCardProps) {
       type="button"
       onClick={onOpen}
       aria-label={el.exams.nextOpen}
-      className="flex w-full items-center gap-3 rounded-2xl bg-white p-4 text-left shadow-sm ring-1 ring-surface transition-colors hover:bg-page"
+      className="flex w-full items-center gap-3 rounded-2xl bg-card p-4 text-left shadow-sm ring-1 ring-surface transition-colors hover:bg-page"
     >
       <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-warning-soft text-warning">
         <Calendar className="size-5" strokeWidth={2} aria-hidden />

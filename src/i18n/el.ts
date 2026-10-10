@@ -258,6 +258,7 @@ export const el = {
     empty: 'Κανένα μήνυμα σε αυτό το κανάλι',
   },
   sources: {
+    photoAlt: (name: string) => `Φωτογραφία: ${name}`,
     title: 'Πηγές πανεπιστημίων',
     updated: (time: string) => `Τελευταία ενημέρωση (δείγμα): ${time}`,
     homepage: (shortName: string) => `Ιστοσελίδα ${shortName}`,
@@ -359,6 +360,9 @@ export const el = {
   },
   settings: {
     title: 'Ρυθμίσεις',
+    theme: 'Εμφάνιση',
+    themes: { system: 'Αυτόματο', light: 'Φωτεινό', dark: 'Σκοτεινό' },
+    themeHint: 'Το «Αυτόματο» ακολουθεί τη ρύθμιση της συσκευής σου.',
     allUniversities: 'Όλα τα πανεπιστήμια',
     allUniversitiesHint: 'Δείξε ανακοινώσεις, αναρτήσεις, ομάδες και αγγελίες και από τα άλλα πανεπιστήμια',
   },
@@ -383,6 +387,12 @@ export const el = {
       hint: 'Σβήνει ψήφους, σχόλια, αναρτήσεις, πόντους και πρόοδο σε αυτή τη συσκευή. Η σύνδεση μένει.',
       confirmTitle: 'Επαναφορά δεδομένων demo;',
       confirm: 'Ναι, επαναφορά',
+    },
+    credits: {
+      title: 'Φωτογραφίες',
+      campus: (shortName: string, credit: string) => `${shortName}: ${credit}`,
+      faces: 'Φωτογραφίες φοιτητών: πρόσωπα από AI (thispersondoesnotexist.com). Δεν είναι πραγματικά πρόσωπα.',
+      illustrations: 'Εικονίδια: DiceBear «Notionists» της Zoish, CC0 1.0.',
     },
     roadmap: {
       title: 'Roadmap',

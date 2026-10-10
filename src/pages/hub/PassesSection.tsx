@@ -48,7 +48,7 @@ export function PassesSection() {
         <EmptyState icon={Gift} title={el.passes.empty} description={el.passes.emptyHint} />
       ) : (
         <>
-          <div className="flex flex-col gap-2 rounded-2xl bg-white p-4 ring-1 ring-surface">
+          <div className="flex flex-col gap-2 rounded-2xl bg-card p-4 ring-1 ring-surface">
             <p className="font-semibold">{el.passes.count(claimedCount, items.length)}</p>
             <ProgressBar value={claimedCount} max={items.length} label={el.passes.title} />
           </div>
@@ -62,7 +62,7 @@ export function PassesSection() {
                   <button
                     type="button"
                     onClick={() => setOpen(pass)}
-                    className="flex min-h-16 w-full items-center gap-3 rounded-2xl bg-white p-3 text-left shadow-sm ring-1 ring-surface transition-colors hover:bg-page"
+                    className="flex min-h-16 w-full items-center gap-3 rounded-2xl bg-card p-3 text-left shadow-sm ring-1 ring-surface transition-colors hover:bg-page"
                   >
                     <IconCircle icon={style.icon} tone={style.tone} />
                     <span className="min-w-0 flex-1">

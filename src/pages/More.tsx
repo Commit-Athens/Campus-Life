@@ -1,15 +1,18 @@
 import { BadgeCheck, Star } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
+import { Avatar } from '../components/Avatar'
 import { Button } from '../components/Button'
+import { Chip } from '../components/Chip'
 import { PageTitle } from '../components/PageTitle'
 import { Sheet } from '../components/Sheet'
 import { Toggle } from '../components/Toggle'
 import { UniversitySwitcher } from '../components/UniversitySwitcher'
 import { VerifySheet } from '../components/VerifySheet'
-import { getUniversity } from '../data/universities'
+import { getUniversity, universities } from '../data/universities'
 import { useAuth } from '../hooks/useAuth'
 import { useFeedScope } from '../hooks/useFeedScope'
 import { usePoints } from '../hooks/usePoints'
+import { THEME_KEY, useTheme, type ThemePreference } from '../hooks/useTheme'
 import { useUniversity } from '../hooks/useUniversity'
 import { el } from '../i18n/el'
 import { playSpeech } from '../lib/elevenlabs'
@@ -18,8 +21,10 @@ import { maskStudentId } from '../lib/verification'
 const DEMO_LINE =
   'Γεια σου! Είμαι ο βοηθός του CampusLife. Μπορώ να σου διαβάσω ανακοινώσεις και συμβουλές για την πανεπιστημιακή ζωή.'
 
+const themeOptions: ThemePreference[] = ['system', 'light', 'dark']
+
 /** Kept on reset so the user stays logged in and skips onboarding. */
-const KEEP_ON_RESET = ['campuslife.session', 'campuslife.university', 'campuslife.onboarded']
+const KEEP_ON_RESET = ['campuslife.session', 'campuslife.university', 'campuslife.onboarded', THEME_KEY]
 
 function resetDemoData() {
   try {
@@ -34,7 +39,7 @@ function resetDemoData() {
 
 function Card({ title, children }: { title?: string; children: ReactNode }) {
   return (
-    <section className="flex flex-col gap-4 rounded-2xl bg-white p-5 ring-1 ring-surface">
+    <section className="flex flex-col gap-4 rounded-2xl bg-card p-5 ring-1 ring-surface">
       {title && <h2 className="text-h3">{title}</h2>}
       {children}
     </section>
@@ -56,6 +61,7 @@ export default function More() {
   const { university } = useUniversity()
   const { points } = usePoints()
   const { showAll, setShowAll } = useFeedScope()
+  const { preference, setPreference } = useTheme()
   const [verifying, setVerifying] = useState(false)
   const [switching, setSwitching] = useState(false)
   const [confirmReset, setConfirmReset] = useState(false)
@@ -92,11 +98,11 @@ export default function More() {
 
       <Card title={el.account.title}>
         <div className="flex items-center gap-3">
-          <span className="relative flex size-14 shrink-0 items-center justify-center rounded-full bg-primary-soft text-h3 text-primary">
-            {account.initials}
+          <span className="relative shrink-0">
+            <Avatar name={account.name} size="lg" />
             {verified && (
               <BadgeCheck
-                className="absolute -right-0.5 -bottom-0.5 size-5 rounded-full bg-white text-success"
+                className="absolute -right-0.5 -bottom-0.5 size-5 rounded-full bg-card text-success"
                 strokeWidth={2.25}
                 aria-label={el.verify.badge}
               />
@@ -145,6 +151,20 @@ export default function More() {
       </Card>
 
       <Card title={el.settings.title}>
+        <div className="flex flex-col gap-2">
+          <p className="font-semibold">{el.settings.theme}</p>
+          <div className="flex flex-wrap gap-2" role="group" aria-label={el.settings.theme}>
+            {themeOptions.map((option) => (
+              <Chip
+                key={option}
+                label={el.settings.themes[option]}
+                active={preference === option}
+                onClick={() => setPreference(option)}
+              />
+            ))}
+          </div>
+          <p className="text-caption text-muted">{el.settings.themeHint}</p>
+        </div>
         <Toggle
           label={el.settings.allUniversities}
           description={el.settings.allUniversitiesHint}
@@ -175,6 +195,16 @@ export default function More() {
               {item}
             </li>
           ))}
+        </ul>
+      </Card>
+
+      <Card title={el.more.credits.title}>
+        <ul className="flex flex-col gap-1 text-caption text-muted">
+          {universities.map((u) => (
+            <li key={u.id}>{el.more.credits.campus(u.shortName, u.photoCredit)}</li>
+          ))}
+          <li>{el.more.credits.faces}</li>
+          <li>{el.more.credits.illustrations}</li>
         </ul>
       </Card>
 

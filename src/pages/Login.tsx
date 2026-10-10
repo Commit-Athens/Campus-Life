@@ -33,7 +33,7 @@ export default function Login() {
         <p className="text-caption text-muted">{el.brand.tagline}</p>
       </header>
 
-      <form onSubmit={onSubmit} className="flex flex-col gap-4 rounded-2xl bg-white p-5 ring-1 ring-surface">
+      <form onSubmit={onSubmit} className="flex flex-col gap-4 rounded-2xl bg-card p-5 ring-1 ring-surface">
         <div>
           <h1 className="text-h2">{el.login.title}</h1>
           <p className="text-caption text-muted">{el.login.subtitle}</p>

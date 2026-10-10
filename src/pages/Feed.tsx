@@ -70,7 +70,7 @@ export default function Feed() {
   return (
     <>
       <div className="flex items-center gap-2">
-        <p className="min-h-11 flex-1 rounded-full bg-ink px-4 py-2.5 text-caption font-semibold text-white">
+        <p className="min-h-11 flex-1 rounded-full bg-night px-4 py-2.5 text-caption font-semibold text-white">
           {el.feed.greeting(firstName)}
         </p>
         <Link
@@ -97,7 +97,7 @@ export default function Feed() {
             >
               <span
                 className={`flex size-14 items-center justify-center rounded-full ring-1 transition-colors ${
-                  active ? 'bg-primary text-white ring-primary' : 'bg-white text-ink ring-surface'
+                  active ? 'bg-primary text-white ring-primary' : 'bg-card text-ink ring-surface'
                 }`}
               >
                 <Icon className="size-6" strokeWidth={1.75} aria-hidden />
@@ -119,7 +119,7 @@ export default function Feed() {
                 key={item.id}
                 type="button"
                 onClick={() => scrollToCard(item.id)}
-                className="flex w-56 shrink-0 snap-start flex-col gap-2 rounded-2xl bg-white p-4 text-left ring-1 ring-surface"
+                className="flex w-56 shrink-0 snap-start flex-col gap-2 rounded-2xl bg-card p-4 text-left ring-1 ring-surface"
               >
                 <p className="text-caption text-muted">
                   {item.source} · {relativeTime(item.minutesAgo)}
@@ -139,7 +139,7 @@ export default function Feed() {
               key={to}
               to={to}
               className={`flex h-36 w-40 shrink-0 snap-start flex-col justify-between rounded-2xl p-4 ${
-                accent ? 'bg-primary text-white' : 'bg-white text-ink ring-1 ring-surface'
+                accent ? 'bg-primary text-white' : 'bg-card text-ink ring-1 ring-surface'
               }`}
             >
               <span
@@ -179,8 +179,9 @@ export default function Feed() {
                 ref={(node) => {
                   for (const card of cards) cardRefs.current[card.id] = node
                 }}
-                className="flex flex-col gap-3 rounded-2xl bg-white p-4 ring-1 ring-surface"
+                className="flex flex-col gap-3 overflow-hidden rounded-2xl bg-card p-4 ring-1 ring-surface"
               >
+                <img src={uni.photo} alt={el.sources.photoAlt(uni.name)} className="-mx-4 -mt-4 aspect-[5/2] w-[calc(100%+2rem)] max-w-none object-cover" />
                 <div className="flex items-start gap-2">
                   <div className="min-w-0 flex-1">
                     <h3 className="text-h3">{uni.shortName}</h3>
@@ -239,6 +240,7 @@ export default function Feed() {
             >
               <FeedCard
                 source={item.source}
+                avatarSrc={item.universityId === 'all' ? undefined : getUniversity(item.universityId).photo}
                 time={relativeTime(item.minutesAgo)}
                 label={withUniversity(item.universityId, el.feed.filters[item.category])}
                 title={item.title}

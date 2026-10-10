@@ -112,7 +112,7 @@ Look and feel: clean, friendly, light UI. White cards on a very light blue-grey 
 | Token | Hex | Use |
 |-------|-----|-----|
 | `primary` | `#2563EB` | Buttons, active tab, links, "Life" in the logo |
-| `ink` | `#0F172A` | Text, dark splash background |
+| `ink` | `#0F172A` | Text (the splash uses the fixed `night` token, same hex) |
 | `surface` | `#E2E8F0` | Chips, inputs, dividers, tags (page background is a lighter tint, e.g. `#F8FAFF`) |
 | `success` | `#22C55E` | Confirmed, joined, completed |
 | `warning` | `#F59E0B` | Pending, deadlines |
@@ -157,7 +157,7 @@ Outline style, 1.5-2px stroke, via `lucide-react`: `Home`, `Gift`, `Users`, `Boo
 
 - Header: logo + "CampusLife" on the left; search and avatar on the right; small university badge (short name) opens the switcher
 - Splash (dark `ink` background, centered logo and tagline) then a one-screen onboarding (illustration placeholder, "Όλα όσα χρειάζεσαι για τη φοιτητική ζωή", primary "Ξεκίνα" button, "Παράλειψη" link). Show onboarding once, remembered in `localStorage`; it is also where the university is picked
-- Light mode only; dark mode only for the splash
+- Light and dark themes: "Αυτόματο" (follows the device, default), "Φωτεινό" or "Σκοτεινό", chosen in More → Ρυθμίσεις. Dark mode redefines the same color tokens (see `src/index.css`), so components never need `dark:` variants. The splash is always dark (`night` token)
 
 ### Screen patterns to match
 - **Live Feed**: title "Live Feed", filter chips (Όλα, Ανακοινώσεις, Αίθουσες, Σχολή), then a vertical list of FeedCards
