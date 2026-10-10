@@ -14,3 +14,14 @@ export type University = {
 
 /** Every content item in src/data carries this. */
 export type Scoped = { universityId: UniversityScope }
+
+/** Sample student account for the demo login. Not a real user. */
+export type DemoAccount = {
+  email: string
+  password: string
+  name: string
+  initials: string
+  universityId: UniversityId
+  department: string
+  year: number
+}

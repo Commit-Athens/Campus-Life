@@ -6,7 +6,23 @@ export const el = {
   },
   header: {
     profile: 'Το προφίλ μου',
-    profileInitials: 'ΜΦ',
+  },
+  login: {
+    title: 'Σύνδεση',
+    subtitle: 'Συνδέσου με έναν δοκιμαστικό λογαριασμό.',
+    email: 'Email',
+    password: 'Κωδικός',
+    submit: 'Σύνδεση',
+    error: 'Λάθος email ή κωδικός.',
+    demoTitle: 'Δοκιμαστικοί λογαριασμοί (demo)',
+    demoHint: 'Πάτα έναν λογαριασμό για να συμπληρωθούν τα στοιχεία.',
+    demoPassword: 'Κωδικός για όλους',
+    demoNotice: 'Demo εφαρμογή: δεν γίνεται πραγματική ταυτοποίηση φοιτητή.',
+  },
+  account: {
+    title: 'Ο λογαριασμός μου',
+    year: (n: number) => `${n}ο έτος`,
+    logout: 'Αποσύνδεση',
   },
   tabs: {
     feed: 'Home',
