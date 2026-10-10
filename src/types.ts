@@ -40,3 +40,28 @@ export type Announcement = Scoped & {
   body: string
   confirms: number
 }
+
+/** Student post in the social feed (sample, fictional author). */
+export type StudentPost = Scoped & {
+  id: string
+  author: string
+  department: string
+  minutesAgo: number
+  body: string
+  tags: string[]
+  confirms: number
+}
+
+/** Lost & Found post with a placeholder photo from public/. */
+export type LostFoundItem = Scoped & {
+  id: string
+  kind: 'lost' | 'found'
+  author: string
+  minutesAgo: number
+  title: string
+  body: string
+  location: string
+  image: string
+  imageAlt: string
+  confirms: number
+}
