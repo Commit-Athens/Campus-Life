@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CampusLife Feature Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&subset=greek&display=swap">
+<style>
+  /* Layout: one centered column grouped by the app's bottom tabs; status filter and copy actions on top. Brand tokens from CLAUDE.md. */
+  :root {
+    --page: #f8faff;
+    --card: #ffffff;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --primary: #2563eb;
+    --primary-soft: #dbeafe;
+    --success: #15803d;
+    --success-soft: #dcfce7;
+    --warning: #b45309;
+    --warning-soft: #fef3c7;
+    --error: #b91c1c;
+    --error-soft: #fee2e2;
+    --neutral-soft: #eef2f7;
+    --on-primary: #ffffff;
+    --font: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --page: #0b1220; --card: #111a2e; --ink: #e5ecf6; --muted: #94a3b8; --line: #23304a;
+      --primary: #6b9bff; --primary-soft: #1b2b52; --success: #4ade80; --success-soft: #12301f;
+      --warning: #fbbf24; --warning-soft: #33270c; --error: #f87171; --error-soft: #3a1414;
+      --neutral-soft: #1a2438; --on-primary: #0b1220; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --page: #0b1220; --card: #111a2e; --ink: #e5ecf6; --muted: #94a3b8; --line: #23304a;
+    --primary: #6b9bff; --primary-soft: #1b2b52; --success: #4ade80; --success-soft: #12301f;
+    --warning: #fbbf24; --warning-soft: #33270c; --error: #f87171; --error-soft: #3a1414;
+    --neutral-soft: #1a2438; --on-primary: #0b1220; color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { color-scheme: light; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0; background: var(--page); color: var(--ink); font-family: var(--font);
+    font-size: 16px; line-height: 1.5; padding-inline: 16px; padding-block: 32px 64px;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+
+  header { display: flex; flex-direction: column; gap: 12px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; }
+  .brand span { color: var(--primary); }
+  h1 { font-size: 32px; line-height: 40px; margin: 0; text-wrap: balance; }
+  .lede { color: var(--muted); margin: 0; max-width: 62ch; }
+  .updated { font-size: 13px; color: var(--muted); }
+
+  .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }
+  .stat b { display: block; font-size: 24px; line-height: 32px; font-variant-numeric: tabular-nums; }
+  .stat small { color: var(--muted); font-size: 14px; }
+
+  .toolbar { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    min-height: 40px; padding: 0 16px; border-radius: 999px; border: 0; cursor: pointer;
+    font: 500 14px var(--font); background: var(--line); color: var(--ink);
+  }
+  .chip[aria-pressed="true"] { background: var(--primary); color: var(--on-primary); }
+  .copy {
+    min-height: 40px; padding: 0 16px; border-radius: 999px; cursor: pointer;
+    font: 600 14px var(--font); background: var(--card); color: var(--primary); border: 2px solid var(--primary);
+  }
+  .copy.small { min-height: 32px; padding: 0 12px; font-size: 13px; border-width: 1.5px; }
+  .copy.done { background: var(--success-soft); color: var(--success); border-color: var(--success); }
+  button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+  section { display: flex; flex-direction: column; gap: 12px; }
+  .sec-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  h2 { font-size: 22px; line-height: 30px; margin: 0; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  h2 .route { font: 500 13px var(--mono); color: var(--muted); }
+  .note { color: var(--muted); font-size: 14px; margin: 0; }
+
+  .list { background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  .row { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; padding: 14px 16px; border-top: 1px solid var(--line); }
+  .row:first-child { border-top: 0; }
+  .row h3 { font-size: 16px; line-height: 24px; margin: 0; font-weight: 600; min-width: 0; }
+  .row p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 14px; line-height: 20px; }
+  .meta { display: flex; gap: 6px; align-items: center; justify-self: end; white-space: nowrap; }
+  .step { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .who { font-size: 12px; color: var(--muted); }
+  .pill { font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 999px; }
+  .built .pill { background: var(--success-soft); color: var(--success); }
+  .next .pill { background: var(--primary-soft); color: var(--primary); }
+  .planned .pill { background: var(--warning-soft); color: var(--warning); }
+  .blocked .pill { background: var(--error-soft); color: var(--error); }
+  .empty { padding: 16px; color: var(--muted); font-size: 14px; }
+
+  .roadmap-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .roadmap-grid span { background: var(--neutral-soft); color: var(--muted); border-radius: 999px; padding: 6px 12px; font-size: 14px; }
+
+  #copy-fallback { width: 100%; min-height: 160px; font: 13px/1.5 var(--mono); border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: var(--card); color: var(--ink); }
+
+  footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
+  @media (max-width: 420px) { .row { grid-template-columns: 1fr; } .meta { justify-self: start; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M16 6 2 13l14 7 14-7-14-7Z" fill="var(--primary)"/>
+        <path d="M8 16.5v5c0 2 3.6 4 8 4s8-2 8-4v-5l-8 4-8-4Z" fill="var(--primary)" opacity=".75"/>
+        <path d="M28 14v7" stroke="var(--primary)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      Campus<span>Life</span>
+    </div>
+    <h1>Feature map</h1>
+    <p class="lede">What's built in the CampusLife prototype for ΕΚΠΑ, ΕΜΠ and ΠΑΔΑ and what's left, grouped by the app's five bottom tabs. Step numbers refer to <code>BUILD_PLAN.md</code>; Track A is gribone, Track B is Odisseas.</p>
+    <span class="updated">Updated 10 Oct 2026, after PR #8</span>
+  </header>
+
+  <div class="summary" id="summary"></div>
+
+  <div class="toolbar">
+    <div class="filters" role="group" aria-label="Filter by status">
+      <button class="chip" type="button" data-filter="all" aria-pressed="true">All</button>
+      <button class="chip" type="button" data-filter="built" aria-pressed="false">Built</button>
+      <button class="chip" type="button" data-filter="next" aria-pressed="false">Up next</button>
+      <button class="chip" type="button" data-filter="planned" aria-pressed="false">Planned</button>
+      <button class="chip" type="button" data-filter="blocked" aria-pressed="false">Blocked</button>
+    </div>
+    <button class="copy" type="button" id="copy-all">Copy whole list</button>
+  </div>
+
+  <textarea id="copy-fallback" readonly hidden aria-label="Feature list as text"></textarea>
+
+  <div id="sections" style="display:flex;flex-direction:column;gap:28px"></div>
+
+  <section>
+    <h2>Roadmap only</h2>
+    <p class="note">Out of scope: the real systems behind the demos. Shown on a non-interactive Roadmap card in More (step 11).</p>
+    <div class="roadmap-grid">
+      <span>Live university crawling</span><span>Real-time chat backend</span><span>Real student verification (SSO)</span>
+      <span>Real discount redemption</span><span>More universities (AUEB, AUTH, Patras)</span><span>Automatic exam collection</span>
+      <span>Carpool matching</span><span>AR navigation</span><span>LLM / RAG assistant</span>
+    </div>
+  </section>
+
+  <footer>Copied text is a Markdown checklist ([x] built, [ ] not yet), so it pastes cleanly into GitHub, Notion, Slack or a doc.</footer>
+</div>
+
+<script>
+  const B = 'built', N = 'next', P = 'planned', X = 'blocked';
+  // [status, step, track, name, description]
+  const groups = [
+    { title: 'Across the app', items: [
+      [B, '1', 'A', 'Brand theme and shared components', 'Tailwind tokens, Inter with Greek subset, Button, Chip, SearchInput, ListRow, EmptyState, Toggle, Sheet, ProgressBar, SectionNav.'],
+      [B, '2', 'A', 'App shell with 5-tab bar', 'Header with logo and avatar; tabs Ανακοινώσεις, Φοιτητές, Προνόμια, Study Groups, Περισσότερα.'],
+      [B, '3', 'A', 'University data and selection', 'ΕΚΠΑ, ΕΜΠ, ΠΑΔΑ in one file; every item scoped by university; choice saved.'],
+      [B, '4', 'A', 'Splash, onboarding and switcher', 'Dark splash, one-time onboarding with university picker, header badge opens the switcher.'],
+      [B, '+', 'A', 'Demo login', 'Three sample student accounts, one per university.'],
+      [B, 'P1', 'A', 'Student verification (demo)', 'Name + student card ID with format checks, verified badge in the header, cleared on logout. Unlocks chat.'],
+      [B, '+', 'A', 'Activity points', 'Earned once per action: votes, comments, checklist items, joins, verification.'],
+      [X, '21', 'B', 'Auto-deploy to Cloudflare', 'Runs on every merge to main. Failing since 12:05: the Cloudflare API token expired. Odisseas is replacing it.'],
+    ]},
+    { title: 'Ανακοινώσεις', route: '/feed', items: [
+      [B, '5', 'A', 'Live Feed of announcements', 'Sample announcements per university with source and homepage link.'],
+      [B, '5', 'A', 'Category chips', 'Όλα, Ανακοινώσεις, Αίθουσες, Σχολή, Από το web.'],
+      [B, '+', 'A', '“Από το web” items', 'Static sample items standing in for crawled info; real crawling is roadmap.'],
+      [B, 'P3', 'B', 'University source cards', 'One card per university on the “Από το web” filter, homepage links only.'],
+      [B, '6', 'A', 'All-universities toggle', 'Mixes all three universities and labels each card.'],
+      [B, '12', 'A', 'Useful / not useful vote', 'Icon + count, one vote per card, saved, +1 point on first vote.'],
+      [B, '+', 'A', 'Comments', 'Thread under each card with sample comments and your own, saved.'],
+    ]},
+    { title: 'Φοιτητές', route: '/posts', items: [
+      [B, '6', 'A', 'Student posts', 'Per-university and shared posts with author, department and hashtags.'],
+      [B, '6', 'A', 'Lost & Found', 'Placeholder photos, Χάθηκε / Βρέθηκε badge and location.'],
+      [B, '12', 'A', 'Votes and comments', 'Same vote and comment thread as the official feed.'],
+    ]},
+    { title: 'Προνόμια (Hub)', route: '/hub', items: [
+      [B, '7', 'A', 'Benefits', 'Search, category chips, featured banner, detail sheet, no-results state.'],
+      [B, '8', 'A', 'Hub sections', 'Tabs for checklist, useful links (homepage + in-app), sample exam calendar, internships and hackathons.'],
+      [B, '13', 'A', 'Checklist progress', 'Tick items off, progress bar, saved, +1 point per item.'],
+      [N, 'P2', 'A', 'Partner passes', '15 fictional partners, 5 per university, “Show pass” sheet with demo code, claims saved.'],
+      [P, '16', 'A', 'My exams and countdown', 'Tap an exam to add it; countdown to the next one.'],
+    ]},
+    { title: 'Study Groups', route: '/community', items: [
+      [B, '9', 'B', 'Study groups and notes', 'Search, suggested groups, sample notes, “+” button.'],
+      [B, '14', 'B', 'Join / Joined toggle', 'Member count +1, saved, +1 point.'],
+      [B, '10', 'B', 'Housing cards', 'Housing and roommate listings.'],
+      [B, '15', 'B', 'Notes PDF', 'Sample PDF in public/notes.'],
+      [B, 'P4', 'B', 'Anonymous support forum', 'Aliases, categories, posts and replies, safety note.'],
+      [B, 'P5', 'B', 'Campus chat (demo)', 'Channels per university, local messages, locked until verified.'],
+    ]},
+    { title: 'Περισσότερα', route: '/more', items: [
+      [B, '+', 'A', 'Account card', 'Name, department, year, university, verify button, logout.'],
+      [B, '+', 'B', 'Voice demo (ElevenLabs)', '“Hear campus tip” via the Worker proxy. Needs the ELEVENLABS_API_KEY secret; English strings to tidy.'],
+      [P, '11', 'A', 'Profile, switcher and roadmap', 'Profile card, university switcher, Roadmap card.'],
+      [P, '10', 'A', 'Points counter', 'Shows total activity points.'],
+    ]},
+    { title: 'Finish together', items: [
+      [P, '17', 'A+B', 'Content pass', 'Realistic Greek sample data in every section for all three universities.'],
+      [P, '18', 'A+B', 'Empty states and dead buttons', 'Every list and filter has a no-results state; nothing does nothing.'],
+      [P, '19', 'A+B', 'Visual polish', 'Design-system check at 390px; split the large Community page into components.'],
+      [P, '20', 'A+B', 'Test and fix', 'Build, lint and a click-through on a phone.'],
+      [P, '—', 'A+B', 'English toggle (stretch)', 'Only if everything else is done.'],
+    ]},
+  ];
+
+  const label = { built: 'Built', next: 'Up next', planned: 'Planned', blocked: 'Blocked' };
+  const stepText = s => s === '+' ? 'extra' : s === '—' ? 'stretch' : /^P/.test(s) ? s : 'step ' + s;
+  const all = groups.flatMap(g => g.items);
+  const count = s => all.filter(i => i[0] === s).length;
+
+  document.getElementById('summary').innerHTML = [
+    [count(B), 'built'], [count(N), 'up next'], [count(P), 'still planned'], [count(X), 'blocked'],
+  ].map(([n, t]) => `<div class="stat"><b>${n}</b><small>${t}</small></div>`).join('');
+
+  let filter = 'all';
+  const visible = g => g.items.filter(i => filter === 'all' || i[0] === filter);
+
+  function groupText(g) {
+    const items = visible(g);
+    if (!items.length) return '';
+    const head = `## ${g.title}${g.route ? ` (${g.route})` : ''}`;
+    const lines = items.map(([s, step, who, name, desc]) =>
+      `- [${s === B ? 'x' : ' '}] ${name} (${stepText(step)}, Track ${who}${s === B ? '' : ', ' + label[s].toLowerCase()}): ${desc}`);
+    return [head, ...lines].join('\n');
+  }
+  function allText() {
+    const title = filter === 'all' ? 'CampusLife features' : `CampusLife features: ${label[filter].toLowerCase()}`;
+    return [`# ${title}`, ...groups.map(groupText).filter(Boolean)].join('\n\n');
+  }
+
+  const fallback = document.getElementById('copy-fallback');
+  async function copy(text, btn) {
+    const original = btn.textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+      fallback.hidden = true;
+      btn.textContent = 'Copied';
+      btn.classList.add('done');
+      setTimeout(() => { btn.textContent = original; btn.classList.remove('done'); }, 1600);
+    } catch {
+      fallback.value = text;
+      fallback.hidden = false;
+      fallback.focus();
+      fallback.select();
+      btn.textContent = 'Press Cmd/Ctrl+C';
+      setTimeout(() => { btn.textContent = original; }, 2400);
+    }
+  }
+
+  const root = document.getElementById('sections');
+  function render() {
+    root.innerHTML = groups.map((g, gi) => {
+      const items = visible(g);
+      const rows = items.length
+        ? items.map(([s, step, who, name, desc]) => `
+          <div class="row ${s}">
+            <h3>${name}</h3>
+            <div class="meta"><span class="who">Track ${who}</span><span class="step">${stepText(step)}</span><span class="pill">${label[s]}</span></div>
+            <p>${desc}</p>
+          </div>`).join('')
+        : `<div class="empty">Nothing ${label[filter].toLowerCase()} here.</div>`;
+      return `<section>
+        <div class="sec-head">
+          <h2>${g.title}${g.route ? `<span class="route">${g.route}</span>` : ''}</h2>
+          ${items.length ? `<button class="copy small" type="button" data-copy="${gi}">Copy section</button>` : ''}
+        </div>
+        <div class="list">${rows}</div>
+      </section>`;
+    }).join('');
+    root.querySelectorAll('[data-copy]').forEach(btn =>
+      btn.addEventListener('click', () => copy(groupText(groups[+btn.dataset.copy]), btn)));
+  }
+  render();
+
+  document.getElementById('copy-all').addEventListener('click', e => copy(allText(), e.currentTarget));
+  document.querySelectorAll('.chip').forEach(chip => chip.addEventListener('click', () => {
+    filter = chip.dataset.filter;
+    document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', String(c === chip)));
+    render();
+  }));
+</script>
+
+</body>
+</html>
