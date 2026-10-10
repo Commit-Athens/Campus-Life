@@ -131,6 +131,10 @@ export const el = {
   checklist: {
     title: 'Λίστα πρωτοετών',
     intro: 'Τα πρώτα βήματα για να ξεκινήσεις το εξάμηνο χωρίς άγχος.',
+    progress: (done: number, total: number) => `${done}/${total} ολοκληρώθηκαν`,
+    progressLabel: 'Πρόοδος λίστας πρωτοετών',
+    allDone: 'Τα έκανες όλα! Καλή αρχή στο εξάμηνο.',
+    pointHint: '+1 πόντος για κάθε βήμα που ολοκληρώνεις',
   },
   exams: {
     title: 'Εξεταστική',
