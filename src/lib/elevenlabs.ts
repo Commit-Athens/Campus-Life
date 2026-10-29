@@ -1,7 +1,5 @@
 export type TtsRequest = {
   text: string
-  voiceId?: string
-  modelId?: string
 }
 
 /** Call the CampusLife Worker proxy (keeps the ElevenLabs key server-side). */
