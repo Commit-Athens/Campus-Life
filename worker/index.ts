@@ -1,27 +1,42 @@
+/** Cloudflare rate limiting binding (see "ratelimits" in wrangler.jsonc). */
+interface RateLimit {
+  limit(options: { key: string }): Promise<{ success: boolean }>
+}
+
 export interface Env {
   ASSETS: Fetcher
   ELEVENLABS_API_KEY: string
   /** Optional override; defaults to a multilingual ElevenLabs voice. */
   ELEVENLABS_VOICE_ID?: string
+  /** Caps TTS calls per IP so the key's credits can't be drained. */
+  TTS_LIMITER?: RateLimit
 }
 
 const DEFAULT_VOICE_ID = 'EXAVITQu4vr4xnSDxMaL' // Sarah — multilingual
-const DEFAULT_MODEL = 'eleven_multilingual_v2'
+const MODEL_ID = 'eleven_multilingual_v2'
 
-const corsHeaders: Record<string, string> = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-}
+// No CORS headers: the API is same-origin only, so other sites can't call it from a browser.
 
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json; charset=utf-8', ...corsHeaders },
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
   })
 }
 
 async function handleTts(request: Request, env: Env): Promise<Response> {
+  // Browsers always send Origin on a POST; reject calls from other sites.
+  const origin = request.headers.get('Origin')
+  if (origin && origin !== new URL(request.url).origin) {
+    return json({ error: 'Forbidden' }, 403)
+  }
+
+  if (env.TTS_LIMITER) {
+    const ip = request.headers.get('CF-Connecting-IP') || 'unknown'
+    const { success } = await env.TTS_LIMITER.limit({ key: ip })
+    if (!success) return json({ error: 'Too many requests, try again in a minute' }, 429)
+  }
+
   if (!env.ELEVENLABS_API_KEY) {
     return json(
       { error: 'ELEVENLABS_API_KEY is not configured on this Worker' },
@@ -29,7 +44,7 @@ async function handleTts(request: Request, env: Env): Promise<Response> {
     )
   }
 
-  let body: { text?: string; voiceId?: string; modelId?: string }
+  let body: { text?: string }
   try {
     body = (await request.json()) as typeof body
   } catch {
@@ -40,8 +55,8 @@ async function handleTts(request: Request, env: Env): Promise<Response> {
   if (!text) return json({ error: 'text is required' }, 400)
   if (text.length > 2500) return json({ error: 'text too long (max 2500)' }, 400)
 
-  const voiceId = (body.voiceId || env.ELEVENLABS_VOICE_ID || DEFAULT_VOICE_ID).trim()
-  const modelId = (body.modelId || DEFAULT_MODEL).trim()
+  // Voice and model are fixed server-side; clients only choose the text.
+  const voiceId = env.ELEVENLABS_VOICE_ID || DEFAULT_VOICE_ID
 
   const upstream = await fetch(
     `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voiceId)}`,
@@ -54,21 +69,15 @@ async function handleTts(request: Request, env: Env): Promise<Response> {
       },
       body: JSON.stringify({
         text,
-        model_id: modelId,
+        model_id: MODEL_ID,
       }),
     },
   )
 
   if (!upstream.ok) {
-    const detail = await upstream.text()
-    return json(
-      {
-        error: 'ElevenLabs request failed',
-        status: upstream.status,
-        detail: detail.slice(0, 500),
-      },
-      upstream.status === 401 || upstream.status === 403 ? 502 : 502,
-    )
+    // Log the details for `wrangler tail`, but don't send account or quota info to the browser.
+    console.error('ElevenLabs request failed', upstream.status, (await upstream.text()).slice(0, 500))
+    return json({ error: 'Speech service unavailable' }, 502)
   }
 
   return new Response(upstream.body, {
@@ -76,7 +85,6 @@ async function handleTts(request: Request, env: Env): Promise<Response> {
     headers: {
       'Content-Type': upstream.headers.get('Content-Type') || 'audio/mpeg',
       'Cache-Control': 'no-store',
-      ...corsHeaders,
     },
   })
 }
@@ -85,17 +93,12 @@ async function handleHealth(env: Env): Promise<Response> {
   return json({
     ok: true,
     elevenlabsConfigured: Boolean(env.ELEVENLABS_API_KEY),
-    defaultVoiceId: env.ELEVENLABS_VOICE_ID || DEFAULT_VOICE_ID,
   })
 }
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url)
-
-    if (request.method === 'OPTIONS' && url.pathname.startsWith('/api/')) {
-      return new Response(null, { status: 204, headers: corsHeaders })
-    }
 
     if (url.pathname === '/api/elevenlabs/health' && request.method === 'GET') {
       return handleHealth(env)
