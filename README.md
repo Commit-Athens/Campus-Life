@@ -4,7 +4,7 @@
 
 CampusLife is a mobile-first campus app prototype for university students in Athens. It brings official announcements, student posts, benefits, study groups and community tools together in one Greek-first app. It was built in a ~3-hour hackathon sprint as a polished, working demo.
 
-**Live demo:** https://campuslife.webpartner-apps.workers.dev
+**Live demo:** https://campuslife.gr
 
 > **This is a demo.** All content is sample data from static files in `src/data/`. Logins, student verification, chat, partner passes and the "Από το web" items run in the browser and are stored locally. Nothing is connected to any university system.
 
